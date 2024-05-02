@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// 使用 npx prisma db pull 来同步数据库
+
+// 管理后台用户表
+model admin_users {
+  user_id           Int    @id @default(autoincrement())
+  administration_id Int    @default(0) // 0:超级管理员 1:普通管理员
+  user_name         String @db.VarChar(20)
+  user_password     String @db.VarChar(20) // 加密后储存的密码
+}
+
+// 访问端用户表 用以记录 用户点赞点踩等操作
+model client_users {
+  id          Int      @default(autoincrement())
+  user_ip     String   @db.VarChar(32)
+  create_time DateTime @db.DateTime(0)
+
+  @@id([id, user_ip])
+}
+
+// 文章表
+model mj_articles {
+  article_id            Int       @id @default(autoincrement()) // 文章id
+  type_id               Int // 文章类型id  1: technology 2: life 3: question 4: remark（其他）
+  type_name             String    @db.VarChar(255) // 文章类型名
+  article_title         String    @db.VarChar(255) // 文章标题
+  article_content       String    @db.MediumText // 文章内容
+  article_comment_count Int?      @default(0) // 评论数
+  create_time           DateTime  @db.DateTime(0) // 创建时间
+  update_time           DateTime? @db.DateTime(0) // 更新时间
+  article_like_count    Int?      @default(0) // 点赞数
+  read_count            Int       @default(1) // 阅读数
+  article_weight        Int?      @default(0) // 权重
+}
+
+// 文章类型表
+model type_list {
+  id           Int    @id @default(autoincrement()) // 类型id
+  type_name_en String @db.VarChar(255) // 类型英文名 1: technology 2: life 3: question 4: remark（其他）
+  type_name    String @db.VarChar(255)
+}
+
+// 用户评论表
+model user_comments {
+  comment_id        Int      @default(autoincrement())
+  user_id           String   @db.VarChar(255)
+  article_id        Int
+  create_time       DateTime @db.DateTime(0)
+  comment_content   String   @db.VarChar(255)
+  parent_comment_id Int?
+  like_count        Int      @default(0)
+
+  @@id([comment_id, user_id])
+}
+
+// 用户点赞表
+model user_like_list {
+  like_id          Int    @default(autoincrement())
+  user_ip          String @db.VarChar(255)
+  like_article_ids Json?
+  like_comment_ids Json?
+
+  @@id([like_id, user_ip])
+}
