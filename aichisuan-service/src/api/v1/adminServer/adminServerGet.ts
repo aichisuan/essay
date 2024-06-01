@@ -4,6 +4,7 @@ import { getArticleDetail, getArticleList, getCommentDetail, getCommentList, get
 import { ArticleType } from '../../../common/types';
 import { tokenConfig, refreshVerifyToken } from '../../../common/lib/token';
 import { Prisma } from '@prisma/client';
+import getIpd from '../../../common/lib/getIpd';
 
 const router = new Router({
   prefix: `${Config.API_PREFIX}v1`,
@@ -32,9 +33,10 @@ const tokenValidate = async (ctx: any): Promise<boolean> => {
 };
 
 // 获取文章列表
-router.get('/admin/article_list', async (ctx, next) => {
+router.get('/admin/article_list', async (ctx) => {
   // token 验证 >>>>>>
   // if(!(await tokenValidate(ctx))) return;
+  // @ts-ignore 
   const { type_id, page = 1, pageSize = 10 } = ctx.request.query as unknown as { type_id: ArticleType; page: number; pageSize: number };
   const query = type_id ? { type_id: Number(type_id) } : {};
   const res = await getArticleList(page, pageSize, query);

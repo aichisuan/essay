@@ -3,6 +3,7 @@ import Config from '../../../config/config';
 import { createArticleLike, createCommentLike, deleteComment, getUserLikePcList, prisma, updateArticle, updateArticleLike } from '../../../server/prismaSql';
 import { Prisma } from '@prisma/client';
 import { IncOrDec } from '../../../common/types';
+import getIpd from '../../../common/lib/getIpd';
 
 const router = new Router({
   prefix: `${Config.API_PREFIX}v1`,
@@ -62,7 +63,8 @@ router.post('/pc/add_visit', async (ctx) => {
 
 // 点赞/取消点赞  文章 pc端使用节流
 router.post('/pc/like_article', async (ctx) => {
-  const { article_id, figure, user_idp } = ctx.request.body as { article_id: string; figure: IncOrDec; user_idp: string };
+  const user_idp = getIpd(ctx);
+  const { article_id, figure } = ctx.request.body as { article_id: string; figure: IncOrDec; };
 
   const userLikeList = await getUserLikePcList(user_idp);
 
@@ -102,7 +104,8 @@ router.post('/pc/like_article', async (ctx) => {
 
 // 点赞/取消点赞 评论 pc端使用节流
 router.post('/pc/like_comment', async (ctx) => {
-  const { comment_id, figure, user_idp } = ctx.request.body as { comment_id: string; figure: IncOrDec; user_idp: string };
+  const user_idp = getIpd(ctx);
+  const { comment_id, figure } = ctx.request.body as { comment_id: string; figure: IncOrDec; };
 
   const userLikeList = await getUserLikePcList(user_idp);
 

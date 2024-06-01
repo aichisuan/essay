@@ -4,7 +4,7 @@ import koaBodyParser from 'koa-bodyparser';
 import path from 'path';
 import { getAllFilesExport } from '../common/utils';
 // @ts-ignore
-import getIp from 'koa-real-ip'; 
+import getIp from 'koa-real-ip';
 import type Router from 'koa-router';
 import Config from '../config/config';
 import { catchError } from '../middlewares/catchError';
@@ -16,7 +16,7 @@ class Init {
     Init.app = app;
     Init.server = server;
     //
-    Init.app.use(getIp());
+    Init.app.use(getIp({ proxy: true }));
     Init.loadBodyParser();
     Init.initCatchError();
     Init.initLoadRouters();

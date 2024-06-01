@@ -2,6 +2,7 @@ import Router from 'koa-router';
 import Config from '../../../config/config';
 import { getArticleDetail, getArticleList, getCommentDetail, getCommentList, getUserLikePcList } from '../../../server/prismaSql';
 import { ArticleType } from '../../../common/types';
+import getIpd from '../../../common/lib/getIpd';
 
 const router = new Router({
   prefix: `${Config.API_PREFIX}v1`,
@@ -40,7 +41,7 @@ router.get('/pc/commentDetail', async (ctx) => {
 
 // 获取某个用户的喜欢点赞列表
 router.get('/pc/likeList', async (ctx) => {
-  const { user_idp } = ctx.request.query as { user_idp: string };
+  const user_idp = getIpd(ctx);
   const res = await getUserLikePcList(user_idp);
   ctx.body = {
     code: 200,
