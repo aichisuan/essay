@@ -70,7 +70,7 @@ const hanldeToDetail = () => {
   height: 18rem;
   margin: 0 20px 20px 0;
   position: relative;
-  /deep/ .el-card__body {
+  :deep(.el-card__body) {
     padding: 0;
     height: 100%;
     width: 100%;

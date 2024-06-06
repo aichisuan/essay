@@ -1,10 +1,11 @@
 <template>
   <div class="login">
     <a-row>
-      <a-col :xs="0" :md="0" :sm="12" :lg="14" :xl="16"></a-col>
-      <a-col :xs="24" :sm="24" :md="12" :lg="10" :xl="6">
+      <a-col :span="16"></a-col>
+      <a-col :span="6">
         <div class="login__form">
           <div class="login__hello">您好!</div>
+          <br>
           <div class="login__title">欢迎登陆aichisuan 管理后台</div>
           <a-form
             ref="formRef"
@@ -78,17 +79,20 @@ const formRef = ref();
 const { login } = useUserStore();
 const router = useRouter();
 
-const handleSubmit = () => {
-  formRef.value
-    .validate()
-    .then(() => {
-      login(form);
-      // 接口完成之后这里要写登陆模块 >>>>>>
-      router.push('/');
-    })
-    .catch(() => {
-      message.error('请检查输入项');
-    });
+const handleSubmit = async () => {
+  try {
+    await formRef.value.validate();
+  } catch (error) {
+    message.error('请检查输入项');
+    return;
+  }
+
+  const res = await login(form);
+  if (res) {
+    message.success('登录成功');
+    console.log(23213123)
+    router.push({path: '/layout/home'});
+  }
 };
 </script>
 

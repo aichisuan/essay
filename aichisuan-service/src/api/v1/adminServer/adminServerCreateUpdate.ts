@@ -1,8 +1,9 @@
 import Router from 'koa-router';
 import Config from '../../../config/config';
-import { createArticle, deleteArticle, deleteComment, getAdminUser, updateArticle } from '../../../server/prismaSql';
+import { createArticle, createComment, deleteArticle, deleteComment, getAdminUser, replyComment, updateArticle } from '../../../server/prismaSql';
 import { tokenConfig, addToken, refreshVerifyToken } from '../../../common/lib/token';
 import { Prisma } from '@prisma/client';
+import { formatTimeQuery } from '../../../common/utils';
 
 const router = new Router({
   prefix: `${Config.API_PREFIX}v1`,
@@ -42,7 +43,10 @@ router.post('/admin/login', async (ctx) => {
       data: {
         access_token,
         refresh_token,
+        user_id: res[0].user_id,
         user_name: res[0].user_name,
+        user_avatar: res[0].user_avatar,
+        administration_id: res[0].administration_id,
       },
     };
   } else {
@@ -55,8 +59,8 @@ router.post('/admin/login', async (ctx) => {
 
 // 退出登录
 router.post('/admin/logout', async (ctx) => {
-  // token 验证 >>>>>>
-  // if(!(await tokenValidate(ctx))) return;
+  // token 验证
+  if(!(await tokenValidate(ctx))) return;
   ctx.body = {
     code: 200,
     data: {
@@ -67,24 +71,30 @@ router.post('/admin/logout', async (ctx) => {
 
 // 创建文章
 router.post('/admin/create_article', async (ctx) => {
-  // token 验证 >>>>>>
-  // if(!(await tokenValidate(ctx))) return;
+  // token 验证
+  if(!(await tokenValidate(ctx))) return;
   const data = ctx.request.body as Prisma.mj_articlesCreateInput;
-  const res = await createArticle(data);
+  const body = {
+    ...data,
+    create_time: formatTimeQuery(data.create_time),
+    update_time: data.update_time ? formatTimeQuery(data.update_time) : null,
+  }
+  const res = await createArticle(body);
   if (!res) throw Error('创建文章失败');
   ctx.body = {
     code: 200,
     data: {
       msg: 'success',
+      article_id: res.article_id,
     },
   };
 });
 
 // 删除文章
-router.post('/admin/delete_article', async (ctx) => {
-  // token 验证 >>>>>>
-  // if(!(await tokenValidate(ctx))) return;
-  const { article_id } = ctx.request.body as { article_id: string };
+router.delete('/admin/delete_article/:article_id', async (ctx) => {
+  // token 验证
+  if(!(await tokenValidate(ctx))) return;
+  const { article_id } = ctx.params as { article_id: string };
   const res = await deleteArticle(Number(article_id));
   if (!res) throw Error('删除文章失败');
   ctx.body = {
@@ -96,11 +106,17 @@ router.post('/admin/delete_article', async (ctx) => {
 });
 
 // 更新文章
-router.post('/admin/update_article', async (ctx) => {
-  // token 验证 >>>>>>
-  // if(!(await tokenValidate(ctx))) return;
-  const { article_id, ...data } = ctx.request.body as { article_id: string };
-  const res = await updateArticle(Number(article_id), data);
+router.put('/admin/update_article/:article_id', async (ctx) => {
+  // token 验证
+  if(!(await tokenValidate(ctx))) return;
+  const { article_id } = ctx.params as { article_id: string };
+  const { ...data } = ctx.request.body as Prisma.mj_articlesCreateInput;
+  const body = {
+    ...data,
+    create_time: formatTimeQuery(data.create_time),
+    update_time: data.update_time ? formatTimeQuery(data.update_time) : null,
+  }
+  const res = await updateArticle(Number(article_id), body);
   if (!res) throw Error('更新文章失败');
   ctx.body = {
     code: 200,
@@ -111,10 +127,10 @@ router.post('/admin/update_article', async (ctx) => {
 });
 
 // 删除评论
-router.post('/admin/delete_comment', async (ctx) => {
-  // token 验证 >>>>>>
-  // if(!(await tokenValidate(ctx))) return;
-  const { comment_id } = ctx.request.body as { comment_id: string };
+router.post('/admin/delete_comment/:comment_id', async (ctx) => {
+  // token 验证
+  if(!(await tokenValidate(ctx))) return;
+  const { comment_id } = ctx.params as { comment_id: string };
   const res = await deleteComment(Number(comment_id));
   if (!res) throw Error('删除评论失败');
   ctx.body = {
@@ -126,11 +142,12 @@ router.post('/admin/delete_comment', async (ctx) => {
 });
 
 // 回复评论
-router.post('/admin/reply_comment', async (ctx) => {
-  // token 验证 >>>>>>
-  // if(!(await tokenValidate(ctx))) return;
-  const { comment_id, data } = ctx.request.body as { comment_id: string; data: Prisma.user_commentsCreateInput };
-  const res = await updateArticle(Number(comment_id), data);
+router.post('/admin/reply_comment/:comment_id', async (ctx) => {
+  // token 验证
+  if(!(await tokenValidate(ctx))) return;
+  const { comment_id } = ctx.params as { comment_id: string };
+  const {  data } = ctx.request.body as { data: Prisma.user_commentsCreateInput };
+  const res = await replyComment(Number(comment_id), data);
   if (!res) throw Error('回复评论失败');
   ctx.body = {
     code: 200,
@@ -142,10 +159,10 @@ router.post('/admin/reply_comment', async (ctx) => {
 
 // 创建评论
 router.post('/admin/create_comment', async (ctx) => {
-  // token 验证 >>>>>>
-  // if(!(await tokenValidate(ctx))) return;
+  // token 验证
+  if(!(await tokenValidate(ctx))) return;
   const data = ctx.request.body as Prisma.user_commentsCreateInput;
-  const res = await updateArticle(Number(data.article_id), data);
+  const res = await createComment(data);
   if (!res) throw Error('创建评论失败');
   ctx.body = {
     code: 200,

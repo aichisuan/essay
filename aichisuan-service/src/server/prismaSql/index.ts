@@ -21,7 +21,18 @@ export const getAdminUser = async (user_name: string, user_password: string) => 
       } as Prisma.admin_usersWhereUniqueInput
     })
   } catch (error) {
+    console.log(error, 'error')
     throw new Error('获取用户sql失败');
+  }
+}
+
+// 获取文章类型
+export const getArticleType = async () => {
+  try {
+    return await prisma.type_list.findMany()
+  } catch (error) {
+    console.log(error, 'error')
+    throw new Error('获取文章类型sql失败');
   }
 }
 
@@ -30,15 +41,24 @@ export const getAdminUser = async (user_name: string, user_password: string) => 
 export const getArticleList = async (page: number, pageSize: number, query: ArticleQuery, ) => {
   const where = {...query};
   try {
-    return await prisma.mj_articles.findMany({
+    // 返回总数
+    const total = await prisma.mj_articles.count({
+      where
+    })
+    const resList = await prisma.mj_articles.findMany({
       where,
-      skip: (page - 1) * pageSize,
-      take: pageSize,
+      skip: (+page - 1) * +pageSize,
+      take: +pageSize,
       orderBy: {
-        article_id: 'desc'
+        article_id: 'asc'
       }
     })
+    return {
+      resList,
+      total
+    }
   } catch (error) {
+    console.log(error, 'error')
     throw new Error('获取文章列表sql失败');
   }
 }
@@ -52,6 +72,7 @@ export const getArticleDetail = async (article_id: number) => {
       }
     })
   } catch (error) {
+    console.log(error, 'error')
     throw new Error('获取文章详情sql失败');
   }
 }
@@ -63,6 +84,7 @@ export const createArticle = async (data: Prisma.mj_articlesCreateInput) => {
       data
     })
   } catch (error) {
+    console.log(error, 'error')
     throw new Error('创建文章sql失败');
   }
 }
@@ -77,6 +99,7 @@ export const updateArticle = async (article_id: number, data: Prisma.mj_articles
       data
     })
   } catch (error) {
+    console.log(error, 'error')
     throw new Error('更新文章sql失败');
   }
 }
@@ -90,6 +113,7 @@ export const deleteArticle = async (article_id: number) => {
       }
     })
   } catch (error) {
+    console.log(error, 'error')
     throw new Error('删除文章sql失败');
   }
 }
@@ -101,10 +125,11 @@ export const getCommentList = async (page: number, pageSize: number, query: Pris
       skip: (page - 1) * pageSize,
       take: pageSize,
       orderBy: {
-        comment_id: 'desc'
+        comment_id: 'asc',
       }
     })
   } catch (error) {
+    console.log(error, 'error')
     throw new Error('获取评论列表sql失败');
   }
 };
@@ -117,10 +142,11 @@ export const getCommentDetail = async (article_id: number) => {
         article_id
       },
       orderBy: {
-        comment_id: 'desc'
+        comment_id: 'asc'
       }
     })
   } catch (error) {
+    console.log(error, 'error')
     throw new Error('获取评论详情sql失败');
   }
 }
@@ -134,6 +160,7 @@ export const deleteComment = async (comment_id: number) => {
       }
     })
   } catch (error) {
+    console.log(error, 'error')
     throw new Error('删除评论sql失败');
   }
 }
@@ -145,6 +172,7 @@ export const createComment = async (data: Prisma.user_commentsCreateInput) => {
       data
     })
   } catch (error) {
+    console.log(error, 'error')
     throw new Error('创建评论sql失败');
   }
 }
@@ -157,11 +185,14 @@ export const replyComment = async (comment_id: number, data: Prisma.user_comment
         comment_id
       }
     })
-    if (!res) throw new Error('评论不存在');
+    if (!res) {
+      throw new Error('评论不存在');
+    }
     return await prisma.user_comments.create({
-      data
+      data,
     })
   } catch (error) {
+    console.log(error, 'error')
     throw new Error('回复评论sql失败');
   }
 }
@@ -176,6 +207,7 @@ export const updateComment = async (comment_id: number, data: Prisma.user_commen
       data
     })
   } catch (error) {
+    console.log(error, 'error')
     throw new Error('更新评论sql失败');
   }
 }
@@ -189,6 +221,7 @@ export const getUserLikePcList = async (user_ip: string) => {
       },
     })
   } catch (error) {
+    console.log(error, 'error')
     throw new Error('获取点赞列表sql失败');
   }
 }
@@ -201,10 +234,11 @@ export const getLikeListAdmin = async (page: number, pageSize: number, query: Pr
       skip: (page - 1) * pageSize,
       take: pageSize,
       orderBy: {
-        like_id: 'desc'
+        like_id: 'asc'
       }
     })
   } catch (error) {
+    console.log(error, 'error')
     throw new Error('获取点赞列表sql失败');
   }
 }
@@ -233,11 +267,13 @@ export const createArticleLike = async (article_id:number, data: Prisma.user_lik
       await Promise.all([createArticleLike, createUserLike])
     }
     main().catch(e => {
-      throw new Error(e)
+      console.log(e, 'error')
+    throw new Error(e)
     }).finally(async () => {
       await prisma.$disconnect()
     })
   } catch (error) {
+    console.log(error, 'error')
     throw new Error('创建点赞sql失败');
   }
 }
@@ -265,11 +301,13 @@ export const updateArticleLike = async (article_id:number, user_ip: string, num:
       await Promise.all([updateArticleLike, updateUserLike])
     }
     main().catch(e => {
-      throw new Error(e)
+      console.log(e, 'error')
+    throw new Error(e)
     }).finally(async () => {
       await prisma.$disconnect()
     })
   } catch (error) {
+    console.log(error, 'error')
     throw new Error('更新点赞sql失败');
   }
 }
@@ -296,11 +334,13 @@ export const createCommentLike = async (comment_id:number, data: Prisma.user_lik
       await Promise.all([createCommentLike, createUserLike])
     }
     main().catch(e => {
-      throw new Error(e)
+      console.log(e, 'error')
+    throw new Error(e)
     }).finally(async () => {
       await prisma.$disconnect()
     })
   } catch (error) {
+    console.log(error, 'error')
     throw new Error('创建点赞sql失败');
   }
 }
@@ -330,11 +370,13 @@ export const updateCommentLike = async (comment_id:number, user_ip: string, num:
       await Promise.all([updateCommentLike, updateUserLike])
     }
     main().catch(e => {
-      throw new Error(e)
+      console.log(e, 'error')
+    throw new Error(e)
     }).finally(async () => {
       await prisma.$disconnect()
     })
   } catch (error) {
+    console.log(error, 'error')
     throw new Error('更新点赞sql失败');
   }
 }

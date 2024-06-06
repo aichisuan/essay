@@ -1,44 +1,26 @@
-import { _getLocalItem } from '@/lib/storage'
+import { _getLocalItem } from '@/lib/storage/'
 import { whiteList } from './normalizeRoute'
-import { type Router, type RouteRecordRaw } from 'vue-router'
-import dayjs from 'dayjs';
+import { type Router } from 'vue-router'
 
 
 const loginPath = '/login'
-const defultPath = '/'
-
-const validTime = (time: string) => {
- const nowTime = dayjs();
- const hour = nowTime.diff(dayjs(time), 'hour');
- return hour < 12
-}
-
 // 权限验证
 
 export const permission = (router: Router) => {
-  
   router.beforeEach((to, from, next) => {
-    //  判断是否有token
-    if (_getLocalItem('admin-token_obj')){
-      const time = _getLocalItem('admin-token_obj').time;
-
-      // 判断token是否过期
-      if (time && validTime(time)) {
-        if (to.path === loginPath) {
-          next({ path: defultPath })
-        } else {
-          next()
-        }
+    const token = _getLocalItem('admin-token-auth')
+    if (token) {
+      if (to.path === loginPath) {
+        next({ path: '/' })
       } else {
-        next({ path: loginPath, query: { redirect: to.fullPath } })
+        next()
       }
     } else {
-      if (whiteList.includes(to.path)) {
+      if (whiteList.indexOf(to.path) !== -1) {
         next()
       } else {
-        next({ path: loginPath, query: { redirect: to.fullPath } })
+        next({ path: loginPath, query: { from: from.path }})
       }
     }
   })
-
 }

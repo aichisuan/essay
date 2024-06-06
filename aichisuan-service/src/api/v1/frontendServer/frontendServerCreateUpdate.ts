@@ -51,7 +51,7 @@ router.post('/pc/create_comment', async (ctx) => {
 // 增加访问记录
 router.post('/pc/add_visit', async (ctx) => {
   const { article_id } = ctx.request.body as { article_id: string };
-  const res = await updateArticle(Number(article_id), { read_count: { increment: 1 } });
+  const res = await updateArticle(Number(article_id), { article_read_count: { increment: 1 } });
   if (!res) throw Error('增加访问记录失败');
   ctx.body = {
     code: 200,

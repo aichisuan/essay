@@ -4,6 +4,11 @@ import { type RouteRecordRaw } from 'vue-router'
 
 export const normalizeRoute: RouteRecordRaw[] = [
   {
+    path: '/',
+    name: 'root',
+    redirect: '/layout/home'
+  },
+  {
     path: '/login',
     name: 'login',
     component: () => import('@/views/Login/login.vue')
@@ -11,7 +16,38 @@ export const normalizeRoute: RouteRecordRaw[] = [
   {
     path: '/layout',
     name: 'layout',
-    component: () => import('@/views/Layout/index.vue')
+    component: () => import('@/views/Layout/index.vue'),
+    children: [
+      {
+        path: 'home',
+        name: 'home',
+        component: () => import('@/views/Home/index.vue')
+      },
+      // 文章列表
+      {
+        path: 'article-list',
+        name: 'article-list',
+        component: () => import('@/views/ArticleList/index.vue')
+      },
+      // 修改文章
+      {
+        path: 'article-update/:article_id',
+        name: 'article-update',
+        component: () => import('@/views/ArticleCreate/index.vue')
+      },
+      // 创建文章
+      {
+        path: 'article-create',
+        name: 'article-create',
+        component: () => import('@/views/ArticleCreate/index.vue')
+      },
+      // 评论列表
+      {
+        path: 'comments-list',
+        name: 'comments-list',
+        component: () => import('@/views/CommentList/index.vue')
+      },
+    ]
   },
   {
     path: '/404',
@@ -23,4 +59,7 @@ export const normalizeRoute: RouteRecordRaw[] = [
 
 // 白名单(路径)
 
-export const whiteList = ['/login', '/403', '/404', '/500']
+export const whiteList = ['/login', '/404']
+
+// 需要弹窗的路由
+export const popupRoute = ['/layout/article-create', '/laylout/article-update']

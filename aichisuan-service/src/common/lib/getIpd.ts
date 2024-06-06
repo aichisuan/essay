@@ -7,7 +7,6 @@ const getClientIp = (ctx: Context) => {
 
 export default function getIpd(ctx: Context) {
   const ip = getClientIp(ctx);
-  console.log(ip)
   return encrypt(ip as string, process.env.passphrase as string);
 }
 

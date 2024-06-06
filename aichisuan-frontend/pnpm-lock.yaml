@@ -20,6 +20,9 @@ dependencies:
   element-plus:
     specifier: ^2.7.2
     version: 2.7.2(vue@3.4.26)
+  highlight.js:
+    specifier: ^11.9.0
+    version: 11.9.0
   md-editor-v3:
     specifier: ^4.14.1
     version: 4.14.1(@codemirror/view@6.26.3)(@lezer/common@1.2.1)(vue@3.4.26)
@@ -2463,6 +2466,11 @@ packages:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==, tarball: https://r2.cnpmjs.org/he/-/he-1.2.0.tgz}
     hasBin: true
     dev: true
+
+  /highlight.js@11.9.0:
+    resolution: {integrity: sha512-fJ7cW7fQGCYAkgv4CPfwFHrfd/cLS4Hau96JuJ+ZTOWhjnhoeN1ub1tFmALm/+lW5z4WCAuAV9bm05AP0mS6Gw==}
+    engines: {node: '>=12.0.0'}
+    dev: false
 
   /html-tags@3.3.1:
     resolution: {integrity: sha512-ztqyC3kLto0e9WbNp0aeP+M3kTt+nbaIveGmUxAtZa+8iFgKLUOD4YKM5j+f3QD89bra7UeumolZHKuOXnTmeQ==}

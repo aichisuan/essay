@@ -1,3 +1,0 @@
-[2024-05-18T20:23:26.380] [ERROR] cheese - [GET] /api/v1/test - ::1 - UnauthorizedError: Token is required
-[2024-05-18T20:24:13.813] [ERROR] cheese - [GET] /api/v1/test - ::1 - UnauthorizedError: Token is required
-[2024-05-18T20:24:54.913] [ERROR] cheese - [GET] /api/v1/test - ::1 - UnauthorizedError: Token is required

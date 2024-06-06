@@ -14,7 +14,8 @@ model admin_users {
   user_id           Int    @id @default(autoincrement())
   administration_id Int    @default(0) // 0:超级管理员 1:普通管理员
   user_name         String @db.VarChar(20)
-  user_password     String @db.VarChar(20) // 加密后储存的密码
+  user_password     String @db.VarChar(255) // 加密后储存的密码
+  user_avatar       String? @db.VarChar(255) // 头像
 }
 
 // 访问端用户表 用以记录 用户点赞点踩等操作
@@ -39,6 +40,8 @@ model mj_articles {
   article_like_count    Int?      @default(0) // 点赞数
   read_count            Int       @default(1) // 阅读数
   article_weight        Int?      @default(0) // 权重
+  article_cover         String?   @db.VarChar(255) // 封面图
+  is_dfat               Boolean   @default(false) // 是否为草稿
 }
 
 // 文章类型表
@@ -50,23 +53,18 @@ model type_list {
 
 // 用户评论表
 model user_comments {
-  comment_id        Int      @default(autoincrement())
-  user_id           String   @db.VarChar(255)
+  comment_id        Int      @id @default(autoincrement())
+  user_idp          String   @db.VarChar(255)
   article_id        Int
   create_time       DateTime @db.DateTime(0)
   comment_content   String   @db.VarChar(255)
   parent_comment_id Int?
   like_count        Int      @default(0)
-
-  @@id([comment_id, user_id])
 }
 
-// 用户点赞表
 model user_like_list {
-  like_id          Int    @default(autoincrement())
-  user_ip          String @db.VarChar(255)
+  like_id          Int    @id @default(autoincrement())
+  user_ip          String @unique(map: "user_ip") @db.VarChar(255)
   like_article_ids Json?
   like_comment_ids Json?
-
-  @@id([like_id, user_ip])
 }

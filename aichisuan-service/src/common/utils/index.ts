@@ -2,6 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import Config from '../../config/config';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.locale('zh-cn');
 
 // 文件默认导出
 
@@ -77,7 +80,16 @@ export const toLineObj = (obj: object): object => {
   }
 }
 
+dayjs.extend(utc); // Extend dayjs with the 'utc' plugin
+
 // format时间
 export const formatTime = (time: string | number | Date, format: string = Config.DEFAULT_DATE_FORMAT) => {
-  return dayjs(time).format(format);
+  return dayjs.utc(time).format(format);
 }
+
+export const formatTimeQuery = (time: string | number | Date, isEnd:boolean = false, format: string = Config.DEFAULT_DATE_QUERY) => {
+  if (isEnd) {
+    return dayjs.utc(time).endOf('day').format(format);
+  }
+  return dayjs.utc(time).startOf('day').format(format);
+};
