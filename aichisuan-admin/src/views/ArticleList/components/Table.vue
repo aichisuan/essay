@@ -1,10 +1,8 @@
 <template>
   <a-table
-    rowKey="article_id"
+    :row-key="(record : ArticleItem) => record.article_id"
     :data-source="articleList"
-    :pagination="{
-      hideOnSinglePage: true,
-    }"
+    :pagination="false"
     :columns="columns"
     :scroll="{
       scrollToFirstRowOnChange: true,
@@ -34,8 +32,8 @@
 
 <script setup lang="ts">
 import { Dayjs } from 'dayjs';
-import { ref, defineProps, inject, Ref } from 'vue';
-import type { ArticleType } from '../../../lib/commenType/article';
+import { ref, defineProps, inject, type Ref } from 'vue';
+import type { ArticleItem, ArticleType } from '../../../lib/commenType/article';
 import { formatTime } from '../../../lib/timeFormat';
 import TableAction from './TableAction.vue';
 import { fixImgTable } from '../../../lib/imgFix';
@@ -46,6 +44,7 @@ defineProps({
   articleList: {
     type: Array,
     required: true,
+    immutable: true,
   },
 });
 

@@ -74,7 +74,7 @@ router.post('/pc/like_article', async (ctx) => {
 
   if (isNewUser) {
     await createArticleLike(Number(article_id), {
-      user_ip: user_idp,
+      user_idp,
       like_article_ids: [article_id],
       like_comment_ids: [],
     });
@@ -90,7 +90,7 @@ router.post('/pc/like_article', async (ctx) => {
     if (figure === -1 && index !== -1) ids.splice(index, 1);
 
     await updateArticleLike(Number(article_id), user_idp, figure, {
-      user_ip: user_idp,
+      user_idp,
       like_article_ids: JSON.stringify(ids),
     });
   }
@@ -115,7 +115,7 @@ router.post('/pc/like_comment', async (ctx) => {
 
   if (isNewUser) {
     await createCommentLike(Number(comment_id), {
-      user_ip: user_idp,
+      user_idp,
       like_article_ids: [],
       like_comment_ids: [comment_id],
     });
@@ -131,7 +131,7 @@ router.post('/pc/like_comment', async (ctx) => {
     if (figure === -1 && index !== -1) ids.splice(index, 1);
 
     await updateArticleLike(Number(comment_id), user_idp, figure, {
-      user_ip: user_idp,
+      user_idp,
       like_comment_ids: JSON.stringify(ids),
     });
   }

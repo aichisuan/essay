@@ -20,11 +20,11 @@ const service = {
   // 获取文章详情
   getArticleDetail: (article_id: string | number) => fetch.get(`/article_detail/${article_id}`),
   // 获取文章评论列表
-  getArticleCommentList: (query: Record<string, any>) => fetch.get(`/article_comment_list`, query),
+  getCommentList: (query: Record<string, any>) => fetch.get(`/comment_list`, query),
   // 获取单个文章id的评论列表
-  getArticleComment: (article_id: string | number) => fetch.get(`/article_commentDetail/${article_id}`),
+  getArticleComment: (article_id: string | number) => fetch.get(`/article_comment_detail/${article_id}`),
   // 获取用户喜欢列表 点赞文章 评论文章
-  getUserLikeList: (query: Record<string, any>) => fetch.get(`/like/list`, query),
+  getUserLikeList: (query: Record<string, any>) => fetch.get(`/like_list`, query),
 
   // 创建文章
   createArticle: (body: Record<string, any>) => fetch.post('/create_article', body),
@@ -33,9 +33,11 @@ const service = {
   // 更新文章
   updateArticle: (article_id: string | number, body: Record<string, any>) => fetch.put(`/update_article/${article_id}`, body),
   // 删除评论
-  deleteComment: (comment_id: string) => fetch.delete(`/delete_comment/${comment_id}`),
+  deleteComment: (comment_id: string | number) => fetch.delete(`/delete_comment/${comment_id}`),
+  // 更新评论
+  updateComment: (comment_id: string | number, body: Record<string, any>) => fetch.put(`/update_comment/${comment_id}`, body),
   // 回复评论
-  replyComment: (comment_id: string, body: Record<string, any>) => fetch.post(`/reply_comment/${comment_id}`, body),
+  replyComment: (comment_id: string | number, body: Record<string, any>) => fetch.post(`/reply_comment/${comment_id}`, body),
   // 创建评论
   createComment: (body: Record<string, any>) => fetch.post(`/create_comment`, body),
 };

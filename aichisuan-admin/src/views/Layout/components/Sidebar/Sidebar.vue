@@ -25,8 +25,7 @@
 import Logo from '../Logo/Logo.vue';
 
 import { ref, reactive, onMounted } from 'vue';
-import { useRouter, onBeforeRouteLeave } from 'vue-router';
-import { popupRoute } from '@/router/normalizeRoute';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
@@ -44,13 +43,13 @@ const selectedKeys = ref<string[]>(['1']);
 const items: Item[] = reactive([
   {
     key: '1',
-    icon: 'PieChartOutlined',
+    icon: 'HomeOutlined',
     title: '首页',
     path: '/layout/home',
   },
   {
     key: '2',
-    icon: 'DesktopOutlined',
+    icon: 'FileMarkdownOutlined',
     title: '文章',
     children: [
       {
@@ -67,13 +66,25 @@ const items: Item[] = reactive([
   },
   {
     key: '3',
-    icon: 'UserOutlined',
+    icon: 'CommentOutlined',
     title: '评论',
     children: [
       {
         key: '3-1',
         title: '评论列表',
         path: '/layout/comments-list',
+      },
+    ],
+  },
+  {
+    key: '4',
+    icon: 'UserOutlined',
+    title: '用户',
+    children: [
+      {
+        key: '4-1',
+        title: '喜欢列表',
+        path: '/layout/user-like-list',
       },
     ],
   },

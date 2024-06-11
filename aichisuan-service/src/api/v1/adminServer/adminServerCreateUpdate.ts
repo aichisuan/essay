@@ -1,6 +1,6 @@
 import Router from 'koa-router';
 import Config from '../../../config/config';
-import { createArticle, createComment, deleteArticle, deleteComment, getAdminUser, replyComment, updateArticle } from '../../../server/prismaSql';
+import { createArticle, createComment, deleteArticle, deleteComment, getAdminUser, replyComment, updateArticle, updateComment } from '../../../server/prismaSql';
 import { tokenConfig, addToken, refreshVerifyToken } from '../../../common/lib/token';
 import { Prisma } from '@prisma/client';
 import { formatTimeQuery } from '../../../common/utils';
@@ -141,13 +141,32 @@ router.post('/admin/delete_comment/:comment_id', async (ctx) => {
   };
 });
 
+// 更新评论
+router.put('/admin/update_comment/:comment_id', async (ctx) => {
+  // token 验证
+  if(!(await tokenValidate(ctx))) return;
+  const { comment_id } = ctx.params as { comment_id: string };
+  const { ...data } = ctx.request.body as Prisma.user_commentsCreateInput;
+  const res = await updateComment(Number(comment_id), data);
+  if (!res) throw Error('更新评论失败');
+  ctx.body = {
+    code: 200,
+    data: {
+      msg: 'success',
+    },
+  };
+});
+
 // 回复评论
 router.post('/admin/reply_comment/:comment_id', async (ctx) => {
   // token 验证
   if(!(await tokenValidate(ctx))) return;
   const { comment_id } = ctx.params as { comment_id: string };
-  const {  data } = ctx.request.body as { data: Prisma.user_commentsCreateInput };
-  const res = await replyComment(Number(comment_id), data);
+  const {  ...data } = ctx.request.body as Prisma.user_commentsCreateInput;
+  const res = await replyComment(Number(comment_id), {
+    ...data,
+    create_time: formatTimeQuery(data.create_time),
+  });
   if (!res) throw Error('回复评论失败');
   ctx.body = {
     code: 200,

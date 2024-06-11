@@ -47,6 +47,12 @@ export const normalizeRoute: RouteRecordRaw[] = [
         name: 'comments-list',
         component: () => import('@/views/CommentList/index.vue')
       },
+      // 用户喜欢列表
+      {
+        path: 'user-like-list',
+        name: 'user-like-list',
+        component: () => import('@/views/UserLikeList/index.vue')
+      },
     ]
   },
   {

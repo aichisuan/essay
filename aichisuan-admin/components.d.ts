@@ -35,6 +35,7 @@ declare module 'vue' {
     ASpin: typeof import('ant-design-vue/es')['Spin']
     ASubMenu: typeof import('ant-design-vue/es')['SubMenu']
     ATable: typeof import('ant-design-vue/es')['Table']
+    ATextarea: typeof import('ant-design-vue/es')['Textarea']
     AUpload: typeof import('ant-design-vue/es')['Upload']
     copy: typeof import('./src/components/UploadImg/index copy.vue')['default']
     ImgUpload: typeof import('./src/components/imgUpload/index.vue')['default']

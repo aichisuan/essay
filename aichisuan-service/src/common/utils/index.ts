@@ -93,3 +93,26 @@ export const formatTimeQuery = (time: string | number | Date, isEnd:boolean = fa
   }
   return dayjs.utc(time).startOf('day').format(format);
 };
+
+// 格式化查询参数 
+//
+
+const intQuerys = ['id', 'comment_id', 'article_id', 'status', 'parent_comment_id', 'is_admin'];
+const emptyValue = [null, undefined, '']
+
+export const formatQuery = (query: any) => {
+  const newQuery = {...query};
+  for (let key in newQuery) {
+    if (newQuery[key] === '') {
+      delete newQuery[key];
+    }
+    if (newQuery[key] === 'null') {
+      delete newQuery[key]
+    }
+
+    if (!emptyValue.includes(newQuery[key]) && intQuerys.includes(key)) {
+      newQuery[key] = +newQuery[key];
+    }
+  }
+  return newQuery;
+}

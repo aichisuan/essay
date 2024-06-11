@@ -65,6 +65,7 @@ import type { Dayjs } from 'dayjs';
 import { formatTimeDayjs } from '../../lib/timeFormat';
 import { message } from 'ant-design-vue';
 import UploadImg from '@/components/UploadImg/index.vue';
+import { format } from 'crypto-js';
 
 type FormState = {
   article_title: string;
@@ -118,7 +119,7 @@ const getArticleDetail = async () => {
     article_title,
     article_content,
     create_time: formatTimeDayjs(create_time),
-    update_time: formatTimeDayjs(update_time),
+    update_time: update_time ? formatTimeDayjs(update_time) : update_time,
     type_id,
     is_dfat,
     article_like_count,

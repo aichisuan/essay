@@ -50,14 +50,18 @@ model user_comments {
   user_idp          String   @db.VarChar(255)
   article_id        Int
   create_time       DateTime @db.DateTime(0)
-  comment_content   String   @db.VarChar(255)
+  comment_content   String   @db.VarChar(1000)
   parent_comment_id Int?
   like_count        Int      @default(0)
+  comment_email     String?  @db.VarChar(255)
+  status            Int?     @default(1)
+  short_time_name   String   @db.VarChar(12)
+  is_admin          Int      @default(0)
 }
 
 model user_like_list {
   like_id          Int    @id @default(autoincrement())
-  user_ip          String @unique(map: "user_ip") @db.VarChar(255)
+  user_idp         String @unique(map: "user_ip") @db.VarChar(255)
   like_article_ids Json?
   like_comment_ids Json?
 }

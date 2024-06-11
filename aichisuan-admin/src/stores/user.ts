@@ -31,6 +31,13 @@ const localInfo = _getLocalItem('admin-info') || {
   administration_id: '',
 };
 
+let user_idp = _getLocalItem('user_idp');
+
+if (!user_idp) {
+  user_idp = uuidv4().toString();
+  _setLocalItem('user_idp', user_idp);
+}
+
 console.log(localInfo)
 
 export const useUserStore = defineStore('counter', () => {
@@ -43,6 +50,8 @@ export const useUserStore = defineStore('counter', () => {
     administration_id: localInfo.administration_id, // 管理可以做的事情 ，根据id来判断
     // routers: [],// 路由 这里不做这个处理
   });
+
+  const userIdp = ref<string>(user_idp);
 
   const setToken = (token: string) => {
     userInfo.token = token;
@@ -91,5 +100,5 @@ export const useUserStore = defineStore('counter', () => {
     return true;
   };
 
-  return { userInfo, login, logout };
+  return { userInfo, login, logout, userIdp };
 });

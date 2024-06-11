@@ -120,14 +120,22 @@ export const deleteArticle = async (article_id: number) => {
 
 export const getCommentList = async (page: number, pageSize: number, query: Prisma.user_commentsWhereInput) => {
   try {
-    return await prisma.user_comments.findMany({
+      // 返回总数
+    const total = await prisma.user_comments.count({
+      where: query
+    })
+    const commentList = await prisma.user_comments.findMany({
       where: query,
-      skip: (page - 1) * pageSize,
-      take: pageSize,
+      skip: (+page - 1) * +pageSize,
+      take: +pageSize,
       orderBy: {
         comment_id: 'asc',
       }
     })
+    return {
+      commentList,
+      total
+    }
   } catch (error) {
     console.log(error, 'error')
     throw new Error('获取评论列表sql失败');
@@ -179,6 +187,7 @@ export const createComment = async (data: Prisma.user_commentsCreateInput) => {
 
 // 回复评论
 export const replyComment = async (comment_id: number, data: Prisma.user_commentsCreateInput) => {
+  console.log(data, 'data')
   try {
     const res = await prisma.user_comments.findUnique({
       where: {
@@ -213,11 +222,11 @@ export const updateComment = async (comment_id: number, data: Prisma.user_commen
 }
 
 // 获取单个用户点赞列表 用于pc端
-export const getUserLikePcList = async (user_ip: string) => {
+export const getUserLikePcList = async (user_idp: string) => {
   try {
     return await prisma.user_like_list.findUnique({
       where: {
-        user_ip
+        user_idp
       },
     })
   } catch (error) {
@@ -229,14 +238,21 @@ export const getUserLikePcList = async (user_ip: string) => {
 // 获取用户点赞列表 用于admin端
 export const getLikeListAdmin = async (page: number, pageSize: number, query: Prisma.user_like_listWhereInput) => {
   try {
-    return await prisma.user_like_list.findMany({
+    const total = await prisma.user_like_list.count({
       where: query,
-      skip: (page - 1) * pageSize,
-      take: pageSize,
+    })
+    const likeList = await prisma.user_like_list.findMany({
+      where: query,
+      skip: (+page - 1) * +pageSize,
+      take: +pageSize,
       orderBy: {
         like_id: 'asc'
       }
     })
+    return {
+      total,
+      likeList
+    }
   } catch (error) {
     console.log(error, 'error')
     throw new Error('获取点赞列表sql失败');
@@ -279,7 +295,7 @@ export const createArticleLike = async (article_id:number, data: Prisma.user_lik
 }
 
 // 更新用户点赞 文章 （老的，数据库有该用户点赞记录）
-export const updateArticleLike = async (article_id:number, user_ip: string, num: IncOrDec,data: Prisma.user_like_listUpdateInput) => {
+export const updateArticleLike = async (article_id:number, user_idp: string, num: IncOrDec,data: Prisma.user_like_listUpdateInput) => {
   const count = num === 1 ? {increment: 1} : {decrement: 1}
   try {
     const main = async () => {
@@ -294,7 +310,7 @@ export const updateArticleLike = async (article_id:number, user_ip: string, num:
       })
       const updateUserLike = prisma.user_like_list.update({
         where: {
-          user_ip
+          user_idp
         },
         data
       })
@@ -348,7 +364,7 @@ export const createCommentLike = async (comment_id:number, data: Prisma.user_lik
 
 
 // 更新用户点赞 评论
-export const updateCommentLike = async (comment_id:number, user_ip: string, num: IncOrDec,data: Prisma.user_like_listUpdateInput) => {
+export const updateCommentLike = async (comment_id:number, user_idp: string, num: IncOrDec,data: Prisma.user_like_listUpdateInput) => {
   const count = num === 1 ? {increment: 1} : {decrement: 1}
   try {
     const main = async () => {
@@ -363,7 +379,7 @@ export const updateCommentLike = async (comment_id:number, user_ip: string, num:
       })
       const updateUserLike = prisma.user_like_list.update({
         where: {
-          user_ip
+          user_idp
         },
         data
       })
