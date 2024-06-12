@@ -1,6 +1,6 @@
 import Router from 'koa-router';
 import Config from '../../../config/config';
-import { getArticleDetail, getArticleList, getCommentDetail, getCommentList, getUserLikePcList } from '../../../server/prismaSql';
+import { getArticleDetail, getArticleList, getCommentDetail, getCommentList, getUserPcUnique } from '../../../server/prismaSql';
 import { ArticleType } from '../../../common/types';
 import getIpd from '../../../common/lib/getIpd';
 
@@ -30,7 +30,7 @@ router.get('/pc/article_detail', async (ctx) => {
 });
 
 // 获取某个文章评论列表
-router.get('/pc/commentDetail', async (ctx) => {
+router.get('/pc/comment_detail', async (ctx) => {
   const { article_id } = ctx.request.query as { article_id: string };
   const res = await getCommentDetail(Number(article_id));
   ctx.body = {
@@ -40,9 +40,9 @@ router.get('/pc/commentDetail', async (ctx) => {
 });
 
 // 获取某个用户的喜欢点赞列表
-router.get('/pc/likeList', async (ctx) => {
+router.get('/pc/user_touch_list', async (ctx) => {
   const user_idp = getIpd(ctx);
-  const res = await getUserLikePcList(user_idp);
+  const res = await getUserPcUnique(user_idp);
   ctx.body = {
     code: 200,
     data: res,

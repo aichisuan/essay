@@ -1,6 +1,6 @@
 import Router from 'koa-router';
 import Config from '../../../config/config';
-import { getArticleDetail, getArticleList, getArticleType, getCommentDetail, getCommentList, getLikeListAdmin } from '../../../server/prismaSql';
+import { getArticleDetail, getArticleList, getArticleType, getCommentDetail, getCommentList, getUserListAdmin } from '../../../server/prismaSql';
 import { tokenConfig, refreshVerifyToken } from '../../../common/lib/token';
 import { Prisma } from '@prisma/client';
 import { formatQuery, formatTime, formatTimeQuery } from '../../../common/utils';
@@ -180,16 +180,16 @@ router.get('/admin/article_comment_detail/:article_id', async (ctx) => {
 });
 
 // 获取用户喜欢列表  点赞评论，点赞文章
-router.get('/admin/like_list', async (ctx) => {
+router.get('/admin/user_list', async (ctx) => {
   if (!(await tokenValidate(ctx))) return;
-  const { page = 1, pageSize = 10, query } = ctx.request.query as unknown as { page: number; pageSize: number; query: Prisma.user_like_listWhereInput };
+  const { page = 1, pageSize = 10, query } = ctx.request.query as unknown as { page: number; pageSize: number; query: Prisma.pc_usersWhereInput };
   const {
-    likeList,
+    userList,
     total,
-  } = await getLikeListAdmin(page, pageSize, query);
+  } = await getUserListAdmin(page, pageSize, query);
   ctx.body = {
     code: 200,
-    data: likeList,
+    data: userList,
     pageInfo: {
       page: +page,
       pageSize: +pageSize,

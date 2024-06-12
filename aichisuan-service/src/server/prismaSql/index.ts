@@ -222,9 +222,9 @@ export const updateComment = async (comment_id: number, data: Prisma.user_commen
 }
 
 // 获取单个用户点赞列表 用于pc端
-export const getUserLikePcList = async (user_idp: string) => {
+export const getUserPcUnique = async (user_idp: string) => {
   try {
-    return await prisma.user_like_list.findUnique({
+    return await prisma.pc_users.findUnique({
       where: {
         user_idp
       },
@@ -236,22 +236,22 @@ export const getUserLikePcList = async (user_idp: string) => {
 }
 
 // 获取用户点赞列表 用于admin端
-export const getLikeListAdmin = async (page: number, pageSize: number, query: Prisma.user_like_listWhereInput) => {
+export const getUserListAdmin = async (page: number, pageSize: number, query: Prisma.pc_usersWhereInput) => {
   try {
-    const total = await prisma.user_like_list.count({
+    const total = await prisma.pc_users.count({
       where: query,
     })
-    const likeList = await prisma.user_like_list.findMany({
+    const userList = await prisma.pc_users.findMany({
       where: query,
       skip: (+page - 1) * +pageSize,
       take: +pageSize,
       orderBy: {
-        like_id: 'asc'
+        user_id: 'asc'
       }
     })
     return {
       total,
-      likeList
+      userList
     }
   } catch (error) {
     console.log(error, 'error')
@@ -263,7 +263,7 @@ export const getLikeListAdmin = async (page: number, pageSize: number, query: Pr
 
 
 // 创建用户点赞 文章 （新的，数据库没有该用户点赞记录）
-export const createArticleLike = async (article_id:number, data: Prisma.user_like_listCreateInput) => {
+export const createArticleLike = async (article_id:number, data: Prisma.pc_usersCreateInput) => {
   try {
     const main = async () => {
       // 这里创建用户点赞需要做两件事，一件是创建用户点赞记录，一件是更新文章点赞数
@@ -277,7 +277,7 @@ export const createArticleLike = async (article_id:number, data: Prisma.user_lik
           }
         }
       })
-      const createUserLike = prisma.user_like_list.create({
+      const createUserLike = prisma.pc_users.create({
         data
       })
       await Promise.all([createArticleLike, createUserLike])
@@ -295,7 +295,7 @@ export const createArticleLike = async (article_id:number, data: Prisma.user_lik
 }
 
 // 更新用户点赞 文章 （老的，数据库有该用户点赞记录）
-export const updateArticleLike = async (article_id:number, user_idp: string, num: IncOrDec,data: Prisma.user_like_listUpdateInput) => {
+export const updateArticleLike = async (article_id:number, user_idp: string, num: IncOrDec,data: Prisma.pc_usersUpdateInput) => {
   const count = num === 1 ? {increment: 1} : {decrement: 1}
   try {
     const main = async () => {
@@ -308,7 +308,7 @@ export const updateArticleLike = async (article_id:number, user_idp: string, num
           article_like_count: count
         }
       })
-      const updateUserLike = prisma.user_like_list.update({
+      const updateUserLike = prisma.pc_users.update({
         where: {
           user_idp
         },
@@ -330,7 +330,7 @@ export const updateArticleLike = async (article_id:number, user_idp: string, num
 
 
 // 创建用户点赞 评论
-export const createCommentLike = async (comment_id:number, data: Prisma.user_like_listCreateInput) => {
+export const createCommentLike = async (comment_id:number, data: Prisma.pc_usersCreateInput) => {
   try {
     const main = async () => {
       // 这里创建用户点赞需要做两件事，一件是更新文章点赞数，一件是创建用户点赞记录，
@@ -344,7 +344,7 @@ export const createCommentLike = async (comment_id:number, data: Prisma.user_lik
           }
         }
       })
-      const createUserLike = prisma.user_like_list.create({
+      const createUserLike = prisma.pc_users.create({
         data
       })
       await Promise.all([createCommentLike, createUserLike])
@@ -364,7 +364,7 @@ export const createCommentLike = async (comment_id:number, data: Prisma.user_lik
 
 
 // 更新用户点赞 评论
-export const updateCommentLike = async (comment_id:number, user_idp: string, num: IncOrDec,data: Prisma.user_like_listUpdateInput) => {
+export const updateCommentLike = async (comment_id:number, user_idp: string, num: IncOrDec,data: Prisma.pc_usersUpdateInput) => {
   const count = num === 1 ? {increment: 1} : {decrement: 1}
   try {
     const main = async () => {
@@ -377,7 +377,7 @@ export const updateCommentLike = async (comment_id:number, user_idp: string, num
           like_count: count
         }
       })
-      const updateUserLike = prisma.user_like_list.update({
+      const updateUserLike = prisma.pc_users.update({
         where: {
           user_idp
         },

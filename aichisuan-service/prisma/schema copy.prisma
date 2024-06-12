@@ -7,64 +7,66 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// 使用 npx prisma db pull 来同步数据库
-
-// 管理后台用户表
 model admin_users {
-  user_id           Int    @id @default(autoincrement())
-  administration_id Int    @default(0) // 0:超级管理员 1:普通管理员
-  user_name         String @db.VarChar(20)
-  user_password     String @db.VarChar(255) // 加密后储存的密码
-  user_avatar       String? @db.VarChar(255) // 头像
+  user_id           Int     @id @default(autoincrement())
+  administration_id Int     @default(0)
+  user_name         String  @db.VarChar(20)
+  user_password     String  @db.VarChar(255)
+  user_avatar       String? @db.VarChar(255)
 }
 
-// 访问端用户表 用以记录 用户点赞点踩等操作
 model client_users {
   id          Int      @default(autoincrement())
-  user_ip     String   @db.VarChar(32)
+  user_idp    String   @db.VarChar(32)
   create_time DateTime @db.DateTime(0)
 
-  @@id([id, user_ip])
+  @@id([id, user_idp])
 }
 
-// 文章表
 model mj_articles {
-  article_id            Int       @id @default(autoincrement()) // 文章id
-  type_id               Int // 文章类型id  1: technology 2: life 3: question 4: remark（其他）
-  type_name             String    @db.VarChar(255) // 文章类型名
-  article_title         String    @db.VarChar(255) // 文章标题
-  article_content       String    @db.MediumText // 文章内容
-  article_comment_count Int?      @default(0) // 评论数
-  create_time           DateTime  @db.DateTime(0) // 创建时间
-  update_time           DateTime? @db.DateTime(0) // 更新时间
-  article_like_count    Int?      @default(0) // 点赞数
-  read_count            Int       @default(1) // 阅读数
-  article_weight        Int?      @default(0) // 权重
-  article_cover         String?   @db.VarChar(255) // 封面图
-  is_dfat               Boolean   @default(false) // 是否为草稿
+  article_id              Int       @id @default(autoincrement())
+  type_id                 Int
+  article_title           String    @db.VarChar(255)
+  article_content         String    @db.MediumText
+  article_comment_count   Int?      @default(0)
+  create_time             DateTime  @db.DateTime(0)
+  update_time             DateTime? @db.DateTime(0)
+  article_like_count      Int?      @default(0)
+  article_read_count      Int       @default(1)
+  article_weight          Int?      @default(0)
+  article_cover           String?   @db.VarChar(255)
+  is_dfat                 Int       @default(0)
+  article_content_preview String?   @db.VarChar(100)
+  type                    type_list @relation(fields: [type_id], references: [id])
+
+  @@index([type_id], map: "mj_articles_type_id_fkey")
 }
 
-// 文章类型表
 model type_list {
-  id           Int    @id @default(autoincrement()) // 类型id
-  type_name_en String @db.VarChar(255) // 类型英文名 1: technology 2: life 3: question 4: remark（其他）
-  type_name    String @db.VarChar(255)
+  id           Int           @id @default(autoincrement())
+  type_name_en String        @db.VarChar(255)
+  type_name    String        @db.VarChar(255)
+  mj_articles  mj_articles[]
 }
 
-// 用户评论表
 model user_comments {
   comment_id        Int      @id @default(autoincrement())
   user_idp          String   @db.VarChar(255)
   article_id        Int
   create_time       DateTime @db.DateTime(0)
-  comment_content   String   @db.VarChar(255)
+  comment_content   String   @db.VarChar(1000)
   parent_comment_id Int?
   like_count        Int      @default(0)
+  comment_email     String?  @db.VarChar(255)
+  status            Int?     @default(1)
+  short_time_name   String   @db.VarChar(12)
+  is_admin          Int      @default(0)
 }
 
-model user_like_list {
-  like_id          Int    @id @default(autoincrement())
-  user_ip          String @unique(map: "user_ip") @db.VarChar(255)
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model pc_users {
+  user_id          Int    @id @default(autoincrement())
+  user_idp         String @unique(map: "user_ip") @db.VarChar(255)
   like_article_ids Json?
   like_comment_ids Json?
 }

@@ -83,8 +83,8 @@ const items: Item[] = reactive([
     children: [
       {
         key: '4-1',
-        title: '喜欢列表',
-        path: '/layout/user-like-list',
+        title: '用户列表',
+        path: '/layout/client-user-list',
       },
     ],
   },

@@ -23,8 +23,8 @@ const service = {
   getCommentList: (query: Record<string, any>) => fetch.get(`/comment_list`, query),
   // 获取单个文章id的评论列表
   getArticleComment: (article_id: string | number) => fetch.get(`/article_comment_detail/${article_id}`),
-  // 获取用户喜欢列表 点赞文章 评论文章
-  getUserLikeList: (query: Record<string, any>) => fetch.get(`/like_list`, query),
+  // 获取用户    喜欢列表 点赞文章 评论文章
+  getUserLikeList: (query: Record<string, any>) => fetch.get(`/user_list`, query),
 
   // 创建文章
   createArticle: (body: Record<string, any>) => fetch.post('/create_article', body),
@@ -40,6 +40,9 @@ const service = {
   replyComment: (comment_id: string | number, body: Record<string, any>) => fetch.post(`/reply_comment/${comment_id}`, body),
   // 创建评论
   createComment: (body: Record<string, any>) => fetch.post(`/create_comment`, body),
+
+  // 获取用户列表
+  getUserList: (query: Record<string, any>) => fetch.get('/user_list', query),
 };
 
 export default service;

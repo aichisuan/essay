@@ -16,6 +16,16 @@
       <template v-if="column.key === 'action'">
         <TableAction @update="$emit('update')" :row="record" />
       </template>
+      <template v-if="column.key === 'comment_content'">
+        <a-popover title="预览">
+          <template #content>
+            <div style="width: 300px">
+              <p class="preview-p" v-html="text"></p>
+            </div>
+          </template>
+          <p>{{ text ? text.slice(0, 20) : '' }}</p>
+        </a-popover>
+      </template>
     </template>
   </a-table>
 </template>
@@ -67,6 +77,12 @@ const columns = ref([
     dataIndex: 'short_time_name',
     key: 'short_time_name',
     width: 100,
+  },
+  {
+    title: '内容',
+    dataIndex: 'comment_content',
+    key: 'comment_content',
+    width: 200,
   },
   {
     title: '文章id',

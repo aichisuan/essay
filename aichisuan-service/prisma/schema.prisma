@@ -17,10 +17,10 @@ model admin_users {
 
 model client_users {
   id          Int      @default(autoincrement())
-  user_ip     String   @db.VarChar(32)
+  user_idp    String   @db.VarChar(32)
   create_time DateTime @db.DateTime(0)
 
-  @@id([id, user_ip])
+  @@id([id, user_idp])
 }
 
 model mj_articles {
@@ -37,12 +37,16 @@ model mj_articles {
   article_cover           String?   @db.VarChar(255)
   is_dfat                 Int       @default(0)
   article_content_preview String?   @db.VarChar(100)
+  type                    type_list @relation(fields: [type_id], references: [id])
+
+  @@index([type_id], map: "mj_articles_type_id_fkey")
 }
 
 model type_list {
-  id           Int    @id @default(autoincrement())
-  type_name_en String @db.VarChar(255)
-  type_name    String @db.VarChar(255)
+  id           Int           @id @default(autoincrement())
+  type_name_en String        @db.VarChar(255)
+  type_name    String        @db.VarChar(255)
+  mj_articles  mj_articles[]
 }
 
 model user_comments {
@@ -59,8 +63,9 @@ model user_comments {
   is_admin          Int      @default(0)
 }
 
-model user_like_list {
-  like_id          Int    @id @default(autoincrement())
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model pc_users {
+  user_id          Int    @id @default(autoincrement())
   user_idp         String @unique(map: "user_ip") @db.VarChar(255)
   like_article_ids Json?
   like_comment_ids Json?

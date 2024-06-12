@@ -1,7 +1,7 @@
 <template>
   <a-form layout="inline" :model="formState" class="comment_form">
     <a-form-item>
-      <a-input v-model:value="formState.like_id" placeholder="喜欢id(搜索)"> </a-input>
+      <a-input v-model:value="formState.user_id" placeholder="喜欢id(搜索)"> </a-input>
     </a-form-item>
     <a-form-item>
       <a-input v-model:value="formState.user_idp" placeholder="用户id(搜索)"> </a-input>
@@ -25,12 +25,12 @@ import UTable from './components/Table.vue';
 import type { PageInfo } from '../../lib/commenType/article';
 
 interface FormState {
-  like_id: string;
+  user_id: string;
   user_idp: string;
 }
 
 const formState = reactive<FormState>({
-  like_id: '',
+  user_id: '',
   user_idp: '',
 });
 
@@ -50,10 +50,10 @@ onMounted(async () => {
 const getLikeList = async (query: FormState) => {
   query = query || formState;
   
-  const { like_id, user_idp  } = query;
+  const { user_id, user_idp  } = query;
 
   const queryObj: FormState = {
-    like_id,
+    user_id,
     user_idp,
   };
 
@@ -81,7 +81,7 @@ const handleSearch = () => {
 };
 
 const handleReset = () => {
-  formState.like_id = '';
+  formState.user_id = '';
   formState.user_idp = '';
   pageInfo.page = 1;
   pageInfo.pageSize = 10;

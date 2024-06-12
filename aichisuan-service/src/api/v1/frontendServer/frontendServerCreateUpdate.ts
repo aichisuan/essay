@@ -1,6 +1,6 @@
 import Router from 'koa-router';
 import Config from '../../../config/config';
-import { createArticleLike, createCommentLike, deleteComment, getUserLikePcList, prisma, updateArticle, updateArticleLike } from '../../../server/prismaSql';
+import { createArticleLike, createCommentLike, deleteComment, getUserPcUnique, prisma, updateArticle, updateArticleLike } from '../../../server/prismaSql';
 import { Prisma } from '@prisma/client';
 import { IncOrDec } from '../../../common/types';
 import getIpd from '../../../common/lib/getIpd';
@@ -66,7 +66,7 @@ router.post('/pc/like_article', async (ctx) => {
   const user_idp = getIpd(ctx);
   const { article_id, figure } = ctx.request.body as { article_id: string; figure: IncOrDec; };
 
-  const userLikeList = await getUserLikePcList(user_idp);
+  const userLikeList = await getUserPcUnique(user_idp);
 
   if (userLikeList === undefined) return; // sql查询失败
 
@@ -107,7 +107,7 @@ router.post('/pc/like_comment', async (ctx) => {
   const user_idp = getIpd(ctx);
   const { comment_id, figure } = ctx.request.body as { comment_id: string; figure: IncOrDec; };
 
-  const userLikeList = await getUserLikePcList(user_idp);
+  const userLikeList = await getUserPcUnique(user_idp);
 
   if (userLikeList === undefined) return; // sql查询失败
 

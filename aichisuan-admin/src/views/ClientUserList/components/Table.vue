@@ -39,9 +39,9 @@ const tableHeight = 'calc(100vh - 320px)';
 
 const columns = ref([
   {
-    title: 'like_id',
-    dataIndex: 'like_id',
-    key: 'like_id',
+    title: 'user_id',
+    dataIndex: 'user_id',
+    key: 'user_id',
     width: 100,
   },
   {
