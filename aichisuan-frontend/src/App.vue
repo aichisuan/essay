@@ -3,6 +3,7 @@
   <template v-else>
     <el-config-provider :locale="locale">
       <div class="app-content">
+        <Loading v-show="pageLoading" />
         <Nav />
         <Router-view />
       </div>
@@ -15,13 +16,26 @@ import Nav from '@/components/Nav/index.vue';
 import { ElConfigProvider } from 'element-plus';
 
 import zhCn from 'element-plus/es/locale/lang/zh-cn';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useFetchState } from '@/stores/fetchState';
+import Loading from '@/components/Loading/index.vue';
+
+const { baseState, getSelectArticleList, getTypeList } = useFetchState();
 
 const locale = ref(zhCn);
 
 const route = useRoute();
 
-console.log(route.name);
+const pageLoading = ref<boolean>(false);
+
+onMounted(async () => {
+  pageLoading.value = true;
+  if (baseState.selectArticleList.length === 0) {
+    await getSelectArticleList();
+  }
+  await getTypeList();
+  pageLoading.value = false;
+});
 </script>
 
 <style scoped lang="less">

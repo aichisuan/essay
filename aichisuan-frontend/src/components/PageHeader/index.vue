@@ -29,4 +29,13 @@ import {} from "vue"
     background-position: center center;
   }
 }
+
+@media screen and (max-width: 768px){
+  .page-header {
+    height: 20rem;
+    &__bg {
+      height: 20rem;
+    }
+  }
+}
 </style>

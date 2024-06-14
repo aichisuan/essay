@@ -23,7 +23,7 @@ select {
 }
 
 body {
-  font: 14px '宋体', 'Arial Narrow', HELVETICA;
+  font: 14px "Punctuation SC", "Inter", ui-sans-serif, system-ui, "PingFang SC", "Noto Sans CJK SC", "Noto Sans SC", "Heiti SC", "Microsoft YaHei", "DengXian", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   background: #fff;
   -webkit-text-size-adjust: 100%;
   min-height: 100vh;
@@ -46,6 +46,7 @@ em {
 
 li {
   list-style: none;
+  unicode-bidi: isolate;
 }
 
 img {
@@ -60,4 +61,17 @@ table {
 
 p {
   word-wrap: break-word;
+}
+
+
+input {
+  border: none;
+  background: none;
+  outline: none;
+  color: inherit; /* 文字颜色继承父元素 */
+  padding: 0; /* 如果需要移除内边距 */
+}
+ 
+input::placeholder {
+  color: #909090; /* 占位符颜色 */
 }

@@ -1,42 +1,42 @@
 <template>
-  <el-card class="card">
-    <div class="card__box" @click="hanldeToDetail">
-      <el-skeleton
-        v-if="param.loading"
-        :loading="param.loading"
-        style="height: 100%"
-        animated
-      >
+  <li class="article-item">
+    <div class="article-item__box" @click="hanldeToDetail">
+      <el-skeleton v-if="param.loading" :loading="param.loading" style="height: 100%" animated>
         <!-- 写骨架屏 -->
       </el-skeleton>
       <template v-else>
-        <!-- 图片区域 -->
-        <el-image
-          object-fit="cover"
-          src="http://img.mrzym.top/FswlMLf30bR2MeXCgorQSkUQ3ky1"
-          class="card__thumbnail-img"
-        >
-          <template #error>
-            <div class="image-slot">
-              <i class="el-icon-picture-outline"></i>
+        <!-- 移动端标题 -->
+        <div class="article-item__mobile-title">
+          {{ '这是一个标题' }}
+        </div>
+        <div class="article-item__info-wrap">
+          <div class="article-item__info-desc">
+            <!-- pc端标题 -->
+            <div class="article-item__title">{{ '这是一个标题' }}</div>
+            <div class="article-item__short-details">
+              {{
+                '这是一个酣畅的详情这是一个酣畅的详情这是一个酣畅的详情这是一个酣畅的详情这是一个酣畅的详情这是一个酣畅的详情这是一个酣畅的详情这是一个酣畅的详情这是一个酣畅的详情这是一个酣畅的详情'
+              }}
             </div>
-          </template>
-        </el-image>
-        <!-- 简介区域 -->
-        <div class="card__desc">
-          <h3>{{ '这是一个很长的标题这是一个很长的标题这是一个很长的标题这是一个很长的标题这是一个很长的标题' }}</h3>
-          <p>发表时间： {{ '2024-05-19 19:23:23' }}</p>
-          <p>更新时间： {{ '2024-05-19 19:23:23' }}</p>
-          <p>浏览量： {{ 0.8 }}k</p>
-          <p class="card__desc-intro"></p>
+            <div class="article-item__tips">
+              <span class="article-item__tips-d" v-for="item in 2" :key="item">{{ '发布：2024-0611' }}</span>
+            </div>
+          </div>
+          <div class="article-item__info-img">
+            <ElImage src="https://element-plus.gitee.io/element-plus-docs/images/element-plus.png" fit="cover" class="img-el" />
+          </div>
+        </div>
+        <!-- pc端tips -->
+        <div class="article-item__mobile-tips">
+          <span class="article-item__tips-d" v-for="item in 2" :key="item">{{ '发布：2024-0611' }}</span>
         </div>
       </template>
     </div>
-  </el-card>
+  </li>
 </template>
 
 <script setup>
-import { } from 'vue';
+import {} from 'vue';
 import { useRouter } from 'vue-router';
 import { ElImage } from 'element-plus';
 
@@ -57,67 +57,109 @@ const hanldeToDetail = () => {
     query: {
       id: 1,
     },
-  })
-}
-
+  });
+};
 </script>
 
 <style lang="less" scoped>
-.card {
-  box-shadow: 0 3px 6px 3px rgba(7, 17, 27, 0.15);
-  display: flex;
-  align-items: center;
-  height: 18rem;
-  margin: 0 20px 20px 0;
-  position: relative;
-  :deep(.el-card__body) {
-    padding: 0;
-    height: 100%;
-    width: 100%;
-  }
-  &__desc {
-    padding: 40px;
-    width: calc(100% - 18rem);
-    box-sizing: border-box;
-    position: relative;
-  }
+@import url('../../assets/style/main.less');
+.article-item {
   &__box {
-    height: 100%;
-    width: 100%;
+    .card_normal;
+  }
+  &__info-wrap {
     display: flex;
-    h3 {
-      font-size: 1.8rem;
-      font-weight: 600;
-      line-height: 3;
-      transition: 0.2s ease-in-out;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      // 省略号
-      
-      &:hover {
-        cursor: pointer;
-        color: #5cbfef;
-      }
-    }
-    p {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      line-height: 1.8rem;
-      &:hover {
-        cursor: pointer;
-        color: #5cbfef;
-      }
-    }
-    .card__desc-intro {
+    align-items: center;
+    justify-content: flex-start;
+  }
+  &__info-desc {
+    flex: 1;
+  }
+  &__info-img {
+    margin-left: 20px;
+    .img-el {
+      width: 120px;
+      height: 80px;
     }
   }
-  &__thumbnail-img {
-    height: 18rem;
-    width: 18rem;
-    flex-basis: 18rem;
-    object-fit: cover;
+  &__title {
+    width: 100%;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  &__short-details {
+    color: #86909c;
+    font-size: 14px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  &__tips {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #86909c;
+    &-d {
+      color: #4e5969;
+      &:after {
+        content: '';
+        display: inline-block;
+        width: 1px;
+        height: 8px;
+        margin: 0 10px 1px;
+        background-color: #4e5969;
+      }
+    }
+  }
+  &__mobile-title {
+    display: none;
+  }
+  &__mobile-tips {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .article-item {
+    &__title {
+      display: none;
+    }
+    &__tips {
+      display: none;
+    }
+    &__mobile-title {
+      display: block;
+    }
+    &__mobile-tips {
+      display: flex;
+      margin-top: 10px;
+      &-d {
+        color: #4e5969;
+        &:after {
+          content: '';
+          display: inline-block;
+          width: 1px;
+          height: 8px;
+          margin: 0 10px 1px;
+          background-color: #4e5969;
+        }
+      }
+    }
+    &__info-img {
+      margin-left: 20px;
+      .img-el {
+        width: 100px;
+        height: 60px;
+      }
+    }
   }
 }
 </style>

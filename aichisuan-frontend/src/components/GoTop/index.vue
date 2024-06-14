@@ -3,68 +3,58 @@
     <div class="cursor" id="cursor"></div>
     <div class="cursor2" id="cursor2">
       <div class="go-top-progress-wrap">
-        <svg
-          class="progress-circle svg-content"
-          width="100%"
-          height="100%"
-          viewBox="-1 -1 102 102"
-        >
-          <path
-            ref="progressPathRef"
-            d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"
-          />
+        <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+          <path ref="progressPathRef" d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
         </svg>
       </div>
     </div>
     <div class="cursor3" id="cursor3" @click="scrollToTop">
-      <i class="iconfont icon-huojian2"></i>
+      <i class="iconfont icon-huojian5"></i>
     </div>
   </section>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue';
 
-const showToTop = ref(false)
-const progressPathRef = ref(null)
-const pathLength = ref(0)
+const showToTop = ref(false);
+const progressPathRef = ref(null);
+const pathLength = ref(0);
 
 const handleScroll = () => {
-  showToTop.value = window.scrollY > 300
-}
+  showToTop.value = window.scrollY > 300;
+};
 
 const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+};
 
 const initProgress = () => {
-  let progressPath = progressPathRef.value
+  let progressPath = progressPathRef.value;
   pathLength.value = progressPath.getTotalLength();
   progressPath.style.transition = progressPath.style.WebkitTransition = 'none';
   progressPath.style.strokeDasharray = pathLength.value + ' ' + pathLength.value;
   progressPath.style.strokeDashoffset = pathLength.value;
   progressPath.getBoundingClientRect();
   progressPath.style.transition = progressPath.style.WebkitTransition = 'stroke-dashoffset 10ms linear';
-}
+};
 
 // 更新进度条的进度
 const updateProgress = () => {
   let scroll = window.scrollY;
   let height = document.documentElement.scrollHeight - window.innerHeight;
-  progressPathRef.value.style.strokeDashoffset = pathLength.value - (scroll * pathLength.value / height);
-}
+  progressPathRef.value.style.strokeDashoffset = pathLength.value - (scroll * pathLength.value) / height;
+};
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
 
   // 初始时更新进度条的进度
-  initProgress()
+  initProgress();
   updateProgress();
   // 监听页面滚动事件，实时更新进度条的进度
   document.addEventListener('scroll', updateProgress);
-
-})
-
+});
 </script>
 
 <style lang="less" scoped>
@@ -130,6 +120,16 @@ onMounted(() => {
 
   &:hover {
     color: #f02501;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .cursor,
+  .cursor2,
+  .cursor3 {
+    bottom: 0;
+    right: 0;
+    z-index: 200;
   }
 }
 </style>

@@ -89,7 +89,7 @@ router.get('/admin/article_list', async (ctx) => {
   query.create_time = createTime;
   query.update_time = updateTime;
 
-  // @ts-ignore  >>>>>>
+
   const { resList: res, total } = await getArticleList(page, pageSize, query);
   ctx.body = {
     code: 200,

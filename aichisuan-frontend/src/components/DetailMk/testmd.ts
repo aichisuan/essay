@@ -1,3 +1,66 @@
 export default {
-  "content": "> ES11 也就是ECMAScript2020版本, 是相对于2020 的ES新版本的特性更新,本文介绍ES11的概念和使用方法.\n\n### 总览\n* class类的私有变量 #\n* Promise.allSettled\n* String.prototype.matchAll\n* BigInt\n* 空值合并运算符??\n* 可选链式云算法?.\n* 按需获取动态import\n* globalThis\n\n__注意: 当前所有新特性都在chrome 83.0版本进行测试__\n\n#### 1. class类的私有变量 #\n在ES11 之前js是没有class类的私有变量的概念, 我们程序员一般使用 '_' 开始符号代表了私有变量,列如 ___name__ 代表了class类中name属性为私有的,而Typescript使用private 前缀代表私有属性或者方法. ES11 中使用# 代表类中的属性为私有变量.\n_code\n```\nclass Dog {\n  #name = 'owen'\n  age = 18\n  getInfo(){\n    console.log(`dog name is ${this.#name} age is ${this.age}`)\n  }\n}\n\nconst dogInstance = new Dog() // dog name is owen age is 18\n\ndogInstance.getInfo()\nconsole.log(dogInstance.#name) // Uncaught SyntaxError: Private field '#name' must be declared in an enclosing class\n```\n#### 2. Promise.allSettled\nES6引入Promise以来, Promise支持的组合型传入类型的方法只有: promise.all 和promise.race , 而这两种方法都会因为 当promise被reject或者报错的时候发生短路,导致之后的promise不会执行. 引入了Promise.allSettled之后,无论promise数组中任何一个promise状态是reslove还是reject,都会执行完毕,最后返回一个状态数组.\n_code\n```\nconst promise1 = new Promise((reslove,reject)=>{\n  setTimeout(()=>{\n    reslove('promise success')\n  },1000)\n})\nconst promise2 = new Promise((reslove,reject)=>{\n  setTimeout(()=>{\n    reject('promise fail')\n  },1000)\n})\n\nconst proResult = Promise.allSettled([promise1,promise2]).then(data=> {\n  console.log(data)\n})\n/*\n[\n  { status: 'fulfilled', value: 'promise success' },\n  { status: 'rejected', reason: 'promise fail' }\n]\n*/\n\n```\n#### 3. String.prototype.matchAll\n__语法: str.machAll(reg)__\n给定一个字符串和一个正则表达式,machAll可以返回所有的与该字符串匹配正则结果的迭代器.下面是mach() 和 machAll() 的对比\n__* 注意:   Reg正则必须是设置了全局模式g的形式，否则会抛出异常TypeError。__\n_code\n```\nconst reg = /name(\\d?)/g\nconst nameGroup = 'name1name2,name3'\nconsole.log(nameGroup.match(reg))\n // [ 'name1', 'name2', 'name3' ]\nconsole.log(nameGroup.matchAll(reg))\n// Object [RegExp String Iterator] {}\nconsole.log(...nameGroup.matchAll(reg))\n/*\n[\n  'name1',\n  '1',\n  index: 0,\n  input: 'name1name2,name3',\n  groups: undefined\n] [\n  'name2',\n  '2',\n  index: 5,\n  input: 'name1name2,name3',\n  groups: undefined\n] [\n  'name3',\n  '3',\n  index: 11,\n  input: 'name1name2,name3',\n  groups: undefined\n]\n*/\n```\n\n#### 4. BigInt 任意精度的整数\nJavaScript对数字大小有严格的固定限制范围, 当大于2的53次方的时候精度就会消失,举个简单的例子:\n```\nconsole.log(2**53) // 9007199254740992\nconsole.log(2**53 === 2**53 + 1) // true\n```\nBiglnt是一种新的数据类型,所以现在js有八种数据类型了 分别是:\n* number\n* string\n* bool\n* null\n* undefined\n* symbol\n* object\n* bigInt\n\nBigInt 产生原因是为了解决js中超过2**53 - 1 的整数精度失效问题. 要创建BigInt只需要在数字的末尾加上一个 'n' 即可. 如下示例:\n_code\n```\nconst bigNumber = 900719925474099211n\nconsole.log(bigNumber + 1n) // 900719925474099212n\n\nconsole.log(bigNumber + 1)\n // TypeError: Cannot mix BigInt and other types, use explicit conversions\n```\n__* 注意BigInt 类型无法跟Number类型互相运算.__\n\n#### 5. 空值合并运算符??\n对TypeScript了解的人,大概很早就开始使用??号符号. 在ES11 新特性之后,?? 号符号可以在我们直接书写js时候使用. \n当我们要判断某个对象的属性不存在那么就取另外一个对象的时候,列如以下情况:\n```\nconst obj = {\n  a: 1,\n  b: 0\n}\nconsole.log(obj.a || 3) // 1\nconsole.log(obj.b || 3) // 3\n```\n如果我们只是想判断obj对象中有那个属性然后取值属性值,没有的话就取值为3 ,这里就会需要多余的判断.\n为了避免这种运算,我们使用?? 运算符\n```\nconsole.log(obj.a ?? 3) // 1\nconsole.log(obj.b ?? 3) // 0\n```\n解析: 空值运算符检查所有值的属性是否为undefined或null。如果不是null或undefined，它将返回初始值，否则将返回??后面的值。\n\n#### 6. 可选链式算法符?.\n同样TypeScript 也已经有了这个运算符,当我们有如下一个对象:\n```\nconst user = {\n  info:{\n    age: 11\n  }\n}\n```\n要取值:\n```\nconsole.log(user.info.age) // 11\n```\n当无法判断user对象中是否有info的属性,info属性下面是否有age属性我们会:\n```\nconsole.log(user&&user.info&&user.info.age)\n```\n而有了?. 运算符之后 可以如此\n```\nconsole.log(user?.info?.age)\n```\n如果一个对象的属性不存在,那么就会直接返回undefined,而不用像之前的一样进行多次的判断.\n\n#### 7. 按需获取动态import\n众所周知,ES Module是一种静态加载模块,静态体现在如下信息:\n* 静态模块: import/export声明只能出现在顶层作用域，不支持按需加载、懒加载\n* 静态标识: 模块标识只能是字符串字面量，不支持运行时动态计算而来的模块名\n\n严格的静态加载,有益于基于源码的静态分析,编译优化,但也同时存在以下的问题:\n* 首屏需要加载所有import引入的模块,不利于首屏优化\n* 模块较多的时候难以确定每个模块加载的含义\n* 仅在特殊情况下需要加载的模块,首次就直接加载影响性能优化.\n\n针对于此, ES11 添加新特性 获取动态import:\n```\nimport(specifier)\n```\nimport函数传入参数模块标识specifier ,返回promise,列如以下示例:\n```\n// lib.js\nfunction add(a, b) {\nreturn a + b\n}\nexports.add = add\nexports.test = 1\n// main.js\nconst loadAdd = () => {\n  import('./lib.js').then(res=>{\n    console.log(res.default.add) // [Function: add]\n    console.log(res.default.test) // 1\n  })\n}\nloadAdd()\n```\n\n#### 8. globalThis\n> ES11 在语言标准的层面，引入`globalThis`作为顶层对象。也就是说，任何环境下，`globalThis`都是存在的，都可以从它拿到顶层对象，指向全局环境下的`this`。\n\n__列如:__\n* 在浏览器中它是 window\n* 在 worker 中它是 self\n* 在 Node.js 中它是global\n......\n所以在ES11之后在任何情况下使用globalThis 都能拿到其顶层对象\n\n### 参考文档\n* [ECMAScript 2020或ES11](https://medium.com/codingtown/ecmascript-2020-aka-es-11-9c547f69d96f)\n* [ES2020（ES11）中的JavaScript新功能](https://medium.com/javascript-in-plain-english/new-javascript-features-in-es2020-c2d76acf9c5a)\n\n### 文章书写不易,转载或引用请注明\n\n\n\n"
-}
+  content: `### 这是一篇没有代码的文
+
+![a5aba04d1c06499f86a2456f94c3f7b3_tplv-k3u1fbpfcp-watermark.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/587037990e794bb7bf8b75c0f977a4c7~tplv-k3u1fbpfcp-watermark.image)
+### DESC
+自node升级到5.x 版本之后，当我们下载npm包的时候，增加package.json 的同时也会增加一个package-lock.json, 所以它是什么? 他用来干什么的？于是去找了下[官方文档](https://www.npmjs.cn/files/package-lock.json/),翻译一下。
+>对于 npm 修改 node_modules 或 手动修改package.json 的任何操作，都会自动生成 package-lock.json。它描述了生成的依赖树，以便后续安装下载成相同版本的包，而不管在此期间对应的包是否更新版本。
+
+通俗的说， package-lock.json的作用就是锁定安装时的版本号，保证他人的npm install时的下载依赖保持一直。
+
+__所以？ 为什么要这么做？在此之前我们需要了解一定的背景。__
+
+#### 版本控制
+
+正常的时候，如今我们开发构建一个程序，会下载各种各样的所需要的工具包，每个包都有对应的版本号， 一个版本号由三个部分构成， X, Y, Z, 分别是主版本号， 次版本号， 补丁版本号。列如现在的node Current版本是 16.3.0， 所以主版本号为16， 次为3， 补丁为0。
+
+__约定成俗中：补丁版本中的更改表示不会破坏任何内容的错误修复，次版本的更改表示不会破坏任何现有功能的新功能的更新，主版本更改表示极大的破坏了兼容性的大更改。__ 
+
+__所以能理解最近热议的python之父说[Python 4.0可能不会来了](https://blog.csdn.net/itcodexy/article/details/117458477)。大版本意味着大的更改，大的学习,和必然的条件。__
+
+#### 包管理 
+
+npm 的诞生一定程度上是为了项目中的包管理更加容易，开发项目中我们会下载数百个包，每个包又会有n个依赖项，所以node_modules 就必然变得沉重繁杂。为了更加明了的去管理这些包，npm在安装一个包的时候，会在package中增加一个语义化版本，包括包名和版本号，例如我们安装dayjs，__npm i dayjs -S__. package会插入一个 键值对， __"dayjs" : "^1.10.5"__, 这意味着我们至少是使用1.10.5之上的dayjs版本，但是主版本号1 是不能更改的。
+
+#### 项目协同开发&&共享
+
+package.json中表明项目中所需要的依赖项和依赖项的版本号的好处在于，任何下载到项目中的依赖都会记录在其中，以便于我们统一管理，但是随之而来就有另外一个问题。  
+
+比如我们刚刚下载的dayjs包为1.10.5， 这个时候开发dayjs维护者发布了一个错误的版本1.10.6，新同事在代码文件夹中运行npm install，由于dayjs拥有相同主版本的更高版本，所以这个时候项目中下载的版本就是1.10.6， 从理论上来说，这两个版本并无冲突，但是这个时候你就会发现。
+
+新同事的代码不能运行，而你的代码可以运行。 
+
+__于是你用余光看了他一眼__。
+
+#### package-lock
+
+package-lock 目的就是为了避免上述的类似情况发生，所以我们会发现在安装包的时候同时也会生成一个package-lock.json ，除非你[禁用](https://www.cnblogs.com/davidgu/p/9862497.html)他。
+
+package-lock.json会列出我们每个依赖项目的详细信息，比如应该安装特定的版本，模块的URI，需要的依赖列表，包列表，等等等，这里我们以express为例子。
+
+有了以上信息之后，npm在安装包的时候，用的就是package-lock.json ,而不是package.json， 这种情况下就保证了我们在项目种安装的对应包，和包里面对应依赖等在协同开发的情况下都达到了统一。
+
+
+#### 产生的问题
+
+package-lock.json 在新增的时候，其实是有很大的歧义的，甚至我们能够搜索到的npm关于package-lock.json 的内容很大部分都是关于禁用的内容。
+
+增加package-lock之前，我们都是以package.json的内容为包的信息内容。当我们引入package-lock.json 的时候，npm在下载包的时候就以package-lock.json为基准了，这个时候就有一些问题产生:
+
+1. 比如在上面我们安装了一个express 包的版本为 4.17.1， 然后我们想安装一个更低版本的包，比如4.16.1， 这个时候我们肯定会修改 package.json种的内容为4.16.1，然后删除node_modules 对应内容，然后npm install,这个时候就发现，下载的express包还是4.17.1
+
+2. 比如当我们不小心删了package-lock.json几个包内容，这个时候package.json的内容是还有那几个包的信息的，所以我们就npm install，然后就发现项目运行不起来，就各种找问题，老同事就告诉你，你把node_modules包和package-lock.json删了重新npm install一下或许可以。
+然后你试了，真的可以，__大神就是牛__.
+
+......
+
+针对以上问题, npm在v5.10版本发布更新，如果用户更新了package.json包的内容，就会导致package-lock.json对应的锁定的包版本不生效，同时使用package.json 包的版本进行修改，并且将当前下载依赖包的版本以及其他信息添加到package-lock.json中。
+
+__同时认为，当我们发现自己的项目跑不起来，而同事的可以跑起来，这个时候有一种排查方式是查找报错的包的位置，看到版本号，与同事本地的对比，看是否统一。__
+
+
+### 参考文档
+[https://www.cnblogs.com/dreamsqin/p/10938767.html](https://www.cnblogs.com/dreamsqin/p/10938767.html)  
+[https://medium.com/coinmonks/everything-you-wanted-to-know-about-package-lock-json-b81911aa8ab8](https://medium.com/coinmonks/everything-you-wanted-to-know-about-package-lock-json-b81911aa8ab8)  
+[https://www.npmjs.cn/files/package-lock.json/](https://www.npmjs.cn/files/package-lock.json/)  `,
+};

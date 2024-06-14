@@ -4,12 +4,37 @@
 @import url('../icon/iconfont.css');
 
 // 关于全局定义的一些样式
+.card_normal() {
+  color: inherit;
+  position: relative;
+  margin: 0 auto 20px;
+  padding: 16px 20px;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  transition: all 0.3s;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  &:hover {
+    box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2);
+  }
+}
+
+.split {
+  width: 1px;
+  opacity: 0.8;
+  height: 10px;
+  background-color: #4e5969;
+}
 
 // 移动端
 @media screen and (max-width: 768px) {
   .list-page {
     padding: 0 10px;
-  }  
+  }
 }
 
 // PC端

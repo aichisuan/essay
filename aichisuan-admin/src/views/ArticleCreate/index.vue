@@ -3,7 +3,7 @@
     <a-spin :spinning="loading">
       <a-form :model="formState" class="article-form">
         <a-row>
-          <a-col :span="21">
+          <a-col :span="20">
             <a-form-item label="文章标题" class="article-form__title">
               <a-input v-model:value="formState.article_title" placeholder="请输入文章标题"></a-input>
             </a-form-item>
@@ -33,9 +33,12 @@
             <a-form-item label="权重" class="article-form__count">
               <a-input-number :min="0" v-model:value="formState.article_weight" />
             </a-form-item>
+            <a-form-item label="简述" class="article-form__count">
+              <a-textarea v-model:value="formState.article_content_preview" style="width: 250px;" placeholder="请输入文章简述"></a-textarea>
+            </a-form-item>
           </a-col>
-          <a-col :span="3">
-            <a-form-item label="文章封面" class="article-form__count">
+          <a-col :span="4">
+            <a-form-item label="封面图" class="article-form__count">
               <upload-img v-model:img-url="formState.article_cover" />
             </a-form-item>
           </a-col>
@@ -65,7 +68,8 @@ import type { Dayjs } from 'dayjs';
 import { formatTimeDayjs } from '../../lib/timeFormat';
 import { message } from 'ant-design-vue';
 import UploadImg from '@/components/UploadImg/index.vue';
-import { format } from 'crypto-js';
+import dayjs from 'dayjs';
+
 
 type FormState = {
   article_title: string;
@@ -78,6 +82,7 @@ type FormState = {
   article_read_count: number;
   article_weight: number;
   article_cover: string;
+  article_content_preview: string;
 };
 
 const loading = ref<boolean>(false);
@@ -102,6 +107,7 @@ const initFormState = () => ({
   article_read_count: 1,
   article_weight: 0,
   article_cover: '',
+  article_content_preview: '',
 });
 
 const formState = ref<FormState>(initFormState());
@@ -114,18 +120,32 @@ const getArticleType = async () => {
 const getArticleDetail = async () => {
   const { code, data } = await service.getArticleDetail(`${article_id}` as string);
   if (code !== 200) return;
-  const { article_title, article_content, create_time, update_time, type_id, is_dfat, article_like_count, article_read_count, article_weight, article_cover } = data;
-  formState.value = {
+  const {
     article_title,
     article_content,
-    create_time: formatTimeDayjs(create_time),
-    update_time: update_time ? formatTimeDayjs(update_time) : update_time,
+    create_time,
+    update_time,
     type_id,
     is_dfat,
     article_like_count,
     article_read_count,
     article_weight,
     article_cover,
+    article_content_preview = '',
+  } = data;
+  formState.value = {
+    article_title,
+    article_content,
+    create_time: formatTimeDayjs(create_time),
+    // 这个时间有待商议 >>>>>>
+    update_time: update_time ? formatTimeDayjs(update_time) : (article_id ? formatTimeDayjs(dayjs()) : null),
+    type_id,
+    is_dfat,
+    article_like_count,
+    article_read_count,
+    article_weight,
+    article_cover,
+    article_content_preview,
   };
 };
 
@@ -162,11 +182,23 @@ onBeforeRouteLeave((to, from, next) => {
 });
 
 const handleSubmit = async () => {
-  const { article_title, article_content, create_time, update_time, type_id, is_dfat, article_like_count, article_read_count, article_weight, article_cover } = formState.value;
-  const params: FormState & {article_content_preview: string} = {
+  const {
     article_title,
     article_content,
-    article_content_preview: article_content.slice(0, 100),
+    create_time,
+    update_time,
+    type_id,
+    is_dfat,
+    article_like_count,
+    article_read_count,
+    article_weight,
+    article_cover,
+    article_content_preview,
+  } = formState.value;
+  const params: FormState & { article_content_preview: string } = {
+    article_title,
+    article_content,
+    article_content_preview,
     create_time: (create_time as Dayjs)?.format('YYYY-MM-DD HH:mm:ss') || null,
     update_time: (update_time as Dayjs)?.format('YYYY-MM-DD HH:mm:ss') || null,
     type_id,

@@ -1,37 +1,35 @@
 <template>
-  <div class="pagination">
-    <el-pagination
-      background
-      :layout="layout"
-      :pager-count="pagerCount"
-      :page-sizes="pageSizes"
-      :page-size="size"
-      :total="total"
-      :currentPage="current"
-      @size-change="sizeChange"
-      @current-change="currentChange"
-      @prev-click="prev"
-      @next-click="next"
-    ></el-pagination>
-  </div>
+  <el-pagination
+    class="pagination"
+    background
+    :layout="layout"
+    :page-count="pageCount"
+    :page-size="size"
+    :total="total"
+    :currentPage="current"
+    @size-change="sizeChange"
+    @current-change="currentChange"
+    @prev-click="prev"
+    @next-click="next"
+  ></el-pagination>
 </template>
 
 <script setup lang="ts">
-import { ElPagination } from "element-plus";
-import { reactive } from "vue";
+import { ElPagination } from 'element-plus';
+import { reactive } from 'vue';
 
 const props = defineProps({
   total: {
     type: Number,
     default: 0, //数据总数
   },
-  pagerCount: {
+  pageCount: {
     type: Number,
     default: 5, //如果页数很多大概展示的页码
   },
   layout: {
     type: String,
-    default: "total,sizes, prev, pager, next, jumper, ->, slot",
+    default: 'total,sizes, prev, pager, next, jumper, ->, slot',
   },
   pageSizes: {
     type: Array,
@@ -54,36 +52,43 @@ let page = reactive({
   current: props.current,
 });
 
-const emit = defineEmits(["pagination"]);
+const emit = defineEmits(['pagination']);
 
 //选择每页显示数量 Change page size
-const sizeChange = (val:number) => {
+const sizeChange = (val: number) => {
   page.size = val;
-  emit("pagination", page);
+  emit('pagination', page);
 };
 //选择某一页
-const currentChange = (val:number) => {
+const currentChange = (val: number) => {
   page.current = val;
-  emit("pagination", page);
+  emit('pagination', page);
 };
 //上一页
-const prev = (val:number) => {
+const prev = (val: number) => {
   page.current = val - 1;
 };
 //下一页
-const next = (val:number) => {
+const next = (val: number) => {
   page.current = val + 1;
 };
 </script>
 
 <style lang="less" scoped>
 .pagination {
-  width: 100%;
   padding: 10px 0;
   text-align: center;
+  box-sizing: border-box;
   margin: 0 auto;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 768px){
+  .pagination {
+    max-width: 100vw;
+    transform: scale(0.8);
+  }
 }
 </style>

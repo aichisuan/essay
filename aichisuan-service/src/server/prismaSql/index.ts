@@ -3,11 +3,16 @@ import { ArticleType, IncOrDec } from "../../common/types";
 
 export const prisma = new PrismaClient();
 
-type ArticleQuery = {
+export type ArticleQuery = {
+  page?: number,
+  pageSize?: number,
   type_id?: ArticleType,
   // 查询权重大于多少的可以获得
   article_weight?: {
-    gt: number,
+    gte?: number,
+    gt?: number,
+    lte?: number,
+    lt?: number,
   }
 }
 
@@ -38,7 +43,7 @@ export const getArticleType = async () => {
 
 
 // 获取文章分页列表
-export const getArticleList = async (page: number, pageSize: number, query: ArticleQuery, ) => {
+export const getArticleList = async (page: number, pageSize: number, query: Prisma.mj_articlesWhereInput, ) => {
   const where = {...query};
   try {
     // 返回总数

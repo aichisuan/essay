@@ -1,6 +1,4 @@
 // 转码
-import CryptoJS from 'crypto-js'
-
 export const Base64 = {
   encode: function (v:any) {
     return window.btoa(window.encodeURIComponent(v));
@@ -87,7 +85,7 @@ export const _removeLocalItem = function (key: string) {
     return;
   }
   if (key) {
-    localStorage.removeItem(Base64.decode(key));
+    localStorage.removeItem(Base64.encode(key));
   }
 };
 // 清空session数据
@@ -96,25 +94,6 @@ export const _removeSessionItem = function (key: string) {
     return;
   }
   if (key) {
-    sessionStorage.removeItem(Base64.decode(key));
+    sessionStorage.removeItem(Base64.encode(key));
   }
 };
-
-// md5 加密
-export const toMd5 = function (str: string, salt: string) {
-  return CryptoJS.MD5(str).toString();
-}
-
-export const throttle = function (fn: Function, delay: number) {
-  let timer: any = null;
-  return function () {
-    if (!timer) {
-      timer = setTimeout(() => {
-        // @ts-ignore 
-        // eslint-disable-next-line prefer-rest-params
-        fn.apply(this, arguments);
-        timer = null;
-      }, delay);
-    }
-  }
-}

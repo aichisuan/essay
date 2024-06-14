@@ -8,6 +8,7 @@
     active-color="#000"
     inactive-color="#000"
     @change="changeT"
+    class="change-theme"
   ></el-switch>
 </template>
 
@@ -25,4 +26,15 @@ const changeT = (v) => {
 };
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.change-theme {
+  margin-right: 10px;
+}
+
+@media screen and (max-width: 768px){
+  .change-theme {
+    display: none;
+  }
+}
+
+</style>
