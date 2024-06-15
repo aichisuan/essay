@@ -1,29 +1,30 @@
 <template>
   <li class="article-item">
-    <div class="article-item__box" @click="hanldeToDetail">
-      <el-skeleton v-if="param.loading" :loading="param.loading" style="height: 100%" animated>
+    <div class="article-item__box">
+      <el-skeleton v-if="pageTypeInfo.loading" :loading="pageTypeInfo.loading" style="height: 100%" animated>
         <!-- 写骨架屏 -->
       </el-skeleton>
       <template v-else>
         <!-- 移动端标题 -->
         <div class="article-item__mobile-title">
-          {{ '这是一个标题' }}
+          {{ item.article_title }}
         </div>
         <div class="article-item__info-wrap">
-          <div class="article-item__info-desc">
+          <div class="article-item__info-desc" @click="hanldeToDetail(item)">
             <!-- pc端标题 -->
-            <div class="article-item__title">{{ '这是一个标题' }}</div>
+            <div class="article-item__title">{{ item.article_title }}</div>
             <div class="article-item__short-details">
               {{
-                '这是一个酣畅的详情这是一个酣畅的详情这是一个酣畅的详情这是一个酣畅的详情这是一个酣畅的详情这是一个酣畅的详情这是一个酣畅的详情这是一个酣畅的详情这是一个酣畅的详情这是一个酣畅的详情'
+                item.article_content_preview
               }}
             </div>
             <div class="article-item__tips">
-              <span class="article-item__tips-d" v-for="item in 2" :key="item">{{ '发布：2024-0611' }}</span>
+              <span class="article-item__tips-d" :key="item">发布:{{ getNormalTime(item.create_time) }}</span>
+              <span class="article-item__tips-d" :key="item">更新:{{ item.update_time ? getNormalTime(item.update_time) : '-' }}</span>
             </div>
           </div>
           <div class="article-item__info-img">
-            <ElImage src="https://element-plus.gitee.io/element-plus-docs/images/element-plus.png" fit="cover" class="img-el" />
+            <ElImage :src="item.article_cover" fit="cover" :preview-src-list="[item.article_cover]" class="img-el" @click.stop />
           </div>
         </div>
         <!-- pc端tips -->
@@ -35,27 +36,31 @@
   </li>
 </template>
 
-<script setup>
-import {} from 'vue';
+<script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { ElImage } from 'element-plus';
+import { useFetchState } from '@/stores/fetchState';
+import type { ArticleItemInfo } from '../../lib/commonType/article';
+import { getNormalTime } from '../../lib/timeFormat/index';
 
-const props = defineProps({
-  param: {
-    type: Object,
-    default: () => {
-      return {};
-    },
+const { pageTypeInfo } = useFetchState();
+
+const { item } = defineProps({
+  item: {
+    type: Object as () => ArticleItemInfo,
+    required: true,
   },
-});
+}) as { item: ArticleItemInfo };
 
 const router = useRouter();
 
-const hanldeToDetail = () => {
+const hanldeToDetail = (item) => {
+  const { article_id: id } = item;
+  console.log('id', id, item);
   router.push({
     path: '/detail',
     query: {
-      id: 1,
+      id,
     },
   });
 };
@@ -98,6 +103,7 @@ const hanldeToDetail = () => {
     font-size: 14px;
     margin-bottom: 8px;
     overflow: hidden;
+    word-break: break-all;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 2;

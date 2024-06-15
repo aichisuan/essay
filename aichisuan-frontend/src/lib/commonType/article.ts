@@ -1,4 +1,4 @@
-export type ArticleItem = {
+export type ArticleItemInfo = {
   article_id: number;
   type_id: number;
   type_name: string;

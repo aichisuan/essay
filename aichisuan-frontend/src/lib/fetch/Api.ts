@@ -21,8 +21,8 @@ const service = {
   getArticleComment: (article_id: string | number) => fetch.get(`/article_comment_detail/${article_id}`),
   // 获取用户    喜欢列表 点赞文章 评论文章
   getUserLikeList: (query: Record<string, any>) => fetch.get(`/user_list`, query),
-  // 创建文章
- 
+  // 获取文章更新信息
+  getArticleCountInfo: () => fetch.get(`/article_count_info`),
 };
 
 export default service;

@@ -198,7 +198,7 @@ const handleSubmit = async () => {
   const params: FormState & { article_content_preview: string } = {
     article_title,
     article_content,
-    article_content_preview,
+    article_content_preview: article_content_preview.slice(0, 99),
     create_time: (create_time as Dayjs)?.format('YYYY-MM-DD HH:mm:ss') || null,
     update_time: (update_time as Dayjs)?.format('YYYY-MM-DD HH:mm:ss') || null,
     type_id,
@@ -209,7 +209,8 @@ const handleSubmit = async () => {
     article_cover,
   };
   loading.value = true;
-  if (article_id) {
+  try {
+    if (article_id) {
     const { code } = await service.updateArticle(article_id as string, params);
     if (code === 200) {
       message.success('更新成功');
@@ -229,7 +230,10 @@ const handleSubmit = async () => {
     }
   }
   loading.value = false;
-  router.push({ path: '/layout/article-list', query: { id: `${pushArticleId.value}` } });
+  router.push({ path: '/layout/article-list', query: { id: `${pushArticleId.value}` } }); 
+  } catch (error) {
+    loading.value = false;
+  }
 };
 </script>
 

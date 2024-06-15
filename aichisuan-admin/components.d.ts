@@ -39,7 +39,6 @@ declare module 'vue' {
     AUpload: typeof import('ant-design-vue/es')['Upload']
     copy: typeof import('./src/components/UploadImg/index copy.vue')['default']
     ImgUpload: typeof import('./src/components/imgUpload/index.vue')['default']
-    'Index copy': typeof import('./src/components/UploadImg/index copy.vue')['default']
     MdEditor: typeof import('./src/components/MdEditor/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

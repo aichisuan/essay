@@ -53,6 +53,11 @@ export const normalizeRoute: RouteRecordRaw[] = [
         name: 'client-user-list',
         component: () => import('@/views/ClientUserList/index.vue')
       },
+      {
+        path: 'upload-imgs',
+        name: 'upload-imgs',
+        component: () => import('@/views/UploadImgs/index.vue')
+      }
     ]
   },
   {

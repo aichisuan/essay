@@ -20,7 +20,7 @@ import { onMounted, ref } from 'vue';
 import { useFetchState } from '@/stores/fetchState';
 import Loading from '@/components/Loading/index.vue';
 
-const { baseState, getSelectArticleList, getTypeList } = useFetchState();
+const { getSelectArticleList, getTypeList } = useFetchState();
 
 const locale = ref(zhCn);
 
@@ -30,9 +30,7 @@ const pageLoading = ref<boolean>(false);
 
 onMounted(async () => {
   pageLoading.value = true;
-  if (baseState.selectArticleList.length === 0) {
-    await getSelectArticleList();
-  }
+  await getSelectArticleList();
   await getTypeList();
   pageLoading.value = false;
 });

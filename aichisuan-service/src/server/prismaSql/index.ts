@@ -402,3 +402,34 @@ export const updateCommentLike = async (comment_id:number, user_idp: string, num
   }
 }
 
+
+// 获取文章总数 获取本月创建文章数 获取本周创建文章数
+export const getArticleCountInfo = async () => {
+  try {
+    const total = await prisma.mj_articles.count()
+    const month = await prisma.mj_articles.count({
+      where: {
+        create_time: {
+          gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+          lte: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
+        }
+      }
+    })
+    const week = await prisma.mj_articles.count({
+      where: {
+        create_time: {
+          gte: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - new Date().getDay()),
+          lte: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - new Date().getDay() + 6),
+        }
+      }
+    })
+    return {
+      total,
+      month,
+      week
+    }
+  } catch (error) {
+    console.log(error, 'error')
+    throw new Error('获取文章总数sql失败');
+  }
+}

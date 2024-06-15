@@ -1,4 +1,4 @@
-import type { ArticleListEn } from '../commenType/article';
+import type { ArticleListEn } from '../commonType/article';
 // 主页 精选 技术 生活 其他
 
 type LinkItem =  {

@@ -2,17 +2,17 @@
   <div class="info-data">
     <ul class="info-data__items">
       <li class="info-data__item">
-        <span class="info-data__val">{{ 100 }}</span>
+        <span class="info-data__val">{{ countInfo.total }}</span>
         <span class="info-data__label">文章数</span>
       </li>
       <div class="split"></div>
       <li class="info-data__item">
-        <span class="info-data__val">{{ '+10' }}</span>
+        <span class="info-data__val">{{ countInfo.month ? `+${countInfo.month}` : 0 }}</span>
         <span class="info-data__label">本月更新</span>
       </li>
       <div class="split"></div>
       <li class="info-data__item">
-        <span class="info-data__val">{{ '+5' }}</span>
+        <span class="info-data__val">{{ countInfo.week ? `+${countInfo.week}` : 0 }}</span>
         <span class="info-data__label">本周更新</span>
       </li>
     </ul>
@@ -20,7 +20,26 @@
 </template>
 
 <script setup lang="ts">
-import {} from 'vue';
+import { onMounted, ref } from 'vue';
+import  service from '@/lib/fetch/Api';
+
+const countInfo = ref({
+  total: 0,
+  month: 0,
+  week: 0,
+});
+
+onMounted(async () => {
+ const {code, data} = await service.getArticleCountInfo();
+ if (code !== 200) return;
+  countInfo.value = {
+    total: data.total || 0,
+    month: data.month || 0,
+    week: data.week || 0,
+  };
+});
+
+
 </script>
 
 <style lang="less" scoped>

@@ -3,15 +3,15 @@
     class="pagination"
     background
     :layout="layout"
-    :page-count="pageCount"
+    :pager-count="pagerCount"
+    :page-count="Math.ceil(total / size)"
     :page-size="size"
     :total="total"
     :currentPage="current"
-    @size-change="sizeChange"
     @current-change="currentChange"
     @prev-click="prev"
     @next-click="next"
-  ></el-pagination>
+  />
 </template>
 
 <script setup lang="ts">
@@ -23,7 +23,7 @@ const props = defineProps({
     type: Number,
     default: 0, //数据总数
   },
-  pageCount: {
+  pagerCount: {
     type: Number,
     default: 5, //如果页数很多大概展示的页码
   },
@@ -31,19 +31,13 @@ const props = defineProps({
     type: String,
     default: 'total,sizes, prev, pager, next, jumper, ->, slot',
   },
-  pageSizes: {
-    type: Array,
-    default: () => {
-      return [10, 20, 50]; //指定分页展示条数
-    },
-  },
   current: {
     type: Number,
     default: 1, //指定跳转到多少页
   },
   size: {
     type: Number,
-    default: 1, //每页展示的条数，根据自己实际，且会带入请求
+    default: 10, //每页展示的条数，根据自己实际，且会带入请求
   },
 });
 
@@ -52,25 +46,22 @@ let page = reactive({
   current: props.current,
 });
 
-const emit = defineEmits(['pagination']);
+const emit = defineEmits(['paginationCb']);
 
-//选择每页显示数量 Change page size
-const sizeChange = (val: number) => {
-  page.size = val;
-  emit('pagination', page);
-};
 //选择某一页
 const currentChange = (val: number) => {
   page.current = val;
-  emit('pagination', page);
+  emit('paginationCb', page);
 };
 //上一页
 const prev = (val: number) => {
   page.current = val - 1;
+  emit('paginationCb', page);
 };
 //下一页
 const next = (val: number) => {
   page.current = val + 1;
+  emit('paginationCb', page);
 };
 </script>
 

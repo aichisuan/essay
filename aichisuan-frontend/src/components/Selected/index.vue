@@ -5,13 +5,13 @@
       <span>精选文章</span>
     </div>
     <ul class="selected__list">
-      <li class="selected__list-li" v-for="(item, index) in 10" :key="item">
+      <li class="selected__list-li" v-for="(item, index) in nowList" :key="item.article_id" @click="handleToDetail(item)">
         <div class="selected__li-index">
           <i :class="`iconfont selected__li-icon ${getIconStr(index)}`"></i>
         </div>
         <div class="selected__li-content">
-          <div class="selected__li-title">Vue3.0新特性Vue3.0新特性Vue3.0新特性Vue3.0新特性Vue3.0新特性Vue3.0新特性</div>
-          <div class="selected__li-time">{{'2023-12-17'}}</div>
+          <div class="selected__li-title">{{ item.article_title }}</div>
+          <div class="selected__li-time">{{getNormalTime(item.update_time || item.create_time)}}</div>
         </div>
       </li>
     </ul>
@@ -19,7 +19,15 @@
 </template>
 
 <script setup lang="ts">
-import {} from 'vue';
+import { useFetchState } from '@/stores/fetchState';
+import { useRouter } from 'vue-router';
+import { getNormalTime } from '@/lib/timeFormat';
+
+const router = useRouter();
+const { selectArticleList } = useFetchState();
+
+const nowList = selectArticleList[1] || [];
+
 
 defineProps({
   isCard: {
@@ -45,6 +53,17 @@ const getIconStr = (index: number) => {
   };
   return Object.entries(mapIcons).map(([key, value]) => value)[index + 1] || null;
 };
+
+const handleToDetail = (item: any) => {
+  router.push(
+    {
+      name: 'detail',
+      query: {
+        id: item.article_id,
+      },
+    });
+};
+
 </script>
 
 <style lang="less" scoped>

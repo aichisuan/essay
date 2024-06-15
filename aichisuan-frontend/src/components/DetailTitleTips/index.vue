@@ -1,20 +1,20 @@
 <template>
   <div class="header">
-    <h2 class="header__title">{{ '人生如戏' }}</h2>
+    <h2 class="header__title">{{ articleDetail.article_title }}</h2>
     <ul class="header__time">
       <!-- 浏览量 -->
       <li class="header__time-li">
         <el-icon :size="12" class="header__icon">
           <Calendar />
         </el-icon>
-        <span>发布：{{ '2024-10-18 10:06:40' }}</span>
+        <span>发布：{{ getNormalTime(articleDetail.create_time) }}</span>
       </li>
       <li class="header__time-li">
         <!-- 时间 -->
         <el-icon :size="12" class="header__icon">
           <Timer />
         </el-icon>
-        <span>更新：{{ '2024-10-18 10:06:40' }}</span>
+        <span>更新：{{ articleDetail.update_time ? getNormalTime(articleDetail.update_time) : '--' }}</span>
       </li>
     </ul>
     <hr class="header__hr" />
@@ -23,7 +23,17 @@
 
 <script setup lang="ts">
 import {} from 'vue';
-import { Timer, Calendar, Brush } from '@element-plus/icons-vue';
+import { Timer, Calendar } from '@element-plus/icons-vue';
+import { ArticleItemInfo } from '@/lib/commonType/article';
+import { getNormalTime } from '@/lib/timeFormat/index';
+
+defineProps({
+  articleDetail: {
+    type: Object as () => ArticleItemInfo,
+    required: true,
+  },
+})
+
 </script>
 
 <style lang="less" scoped>

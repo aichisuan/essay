@@ -62,6 +62,11 @@ const items: Item[] = reactive([
         title: '创建文章',
         path: '/layout/article-create',
       },
+      {
+        key: '2-3',
+        title: '上传图片',
+        path: '/layout/upload-imgs',
+      },
     ],
   },
   {

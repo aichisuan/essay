@@ -24,7 +24,7 @@ import MobileSearchTop from "@/components/MobileSearchTop/index.vue";
   padding-top: 5px;
   top: 0;
   left: 0;
-  z-index: 2023;
+  z-index: 1999;
   background-color: #fff;
   overflow: hidden;
   box-sizing: border-box;

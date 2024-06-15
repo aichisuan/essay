@@ -16,7 +16,7 @@ import BlogInfos from './components/BlogInfos.vue';
 <style lang="less" scoped>
 
 .content {
-  min-height: calc(100vh - 60px);
+  min-height: calc(100vh - 120px);
   display: flex;
   position: relative;
   align-items: flex-start;

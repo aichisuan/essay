@@ -20,12 +20,19 @@
 <script setup lang="ts">
 import { staticData } from '@/stores/mdTheme';
 import { useBlockVisible, type pageDisplayInfo } from '@/stores/blockVisible';
-import testmd from './testmd';
 import { MdCatalog, MdPreview } from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 import { storeToRefs } from 'pinia';
 import { onMounted, onUnmounted, reactive, nextTick, ref } from 'vue';
 import { throttle } from '@/lib/index';
+import { ArticleItemInfo } from '../../lib/commonType/article';
+
+const { articleDetail } = defineProps({
+  articleDetail: {
+    type: Object as () => ArticleItemInfo,
+    required: true,
+  },
+});
 
 const { setShowMdMenu, setMdMenu } = useBlockVisible();
 
@@ -36,7 +43,7 @@ const staticStore = staticData();
 setMdMenu([]);
 
 const mdData = reactive({
-  text: testmd.content,
+  text: articleDetail.article_content || '',
   id: 'my-editor',
   switch: true,
 });
@@ -84,9 +91,11 @@ onUnmounted(() => {
   justify-content: space-between;
   padding: 0 20px;
   margin-top: 20px;
-  max-width: 1200px;
+  width: 100%;
+  // max-width: 1300px;
   &__catalog {
-    margin-left: 10px;
+    width: 250px;
+    margin-left: 80px;
     position: sticky;
     top: 500px;
     height: calc(100vh - 40px);
