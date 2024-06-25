@@ -62,7 +62,7 @@ export const useFetchState = defineStore('useFetchState', () => {
 
   const getSelectArticleList = async (page: number = 1) => {
     pageTypeInfo.pageLoading = true;
-    const { code, data } = await service.getArticleList({ wightGte: 10, page, pageSize: 10 });
+    const { code, data } = await service.getArticleList({ weightGte: 10, page, pageSize: 10, isSelect: true });
     pageTypeInfo.pageLoading = false;
     if (code !== 200) return;
     selectArticleList[page] = data.resList || [];

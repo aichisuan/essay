@@ -6,7 +6,7 @@
       </el-skeleton>
       <template v-else>
         <!-- 移动端标题 -->
-        <div class="article-item__mobile-title">
+        <div class="article-item__mobile-title" @click="hanldeToDetail(item)">
           {{ item.article_title }}
         </div>
         <div class="article-item__info-wrap">
@@ -18,18 +18,19 @@
                 item.article_content_preview
               }}
             </div>
-            <div class="article-item__tips">
-              <span class="article-item__tips-d" :key="item">发布:{{ getNormalTime(item.create_time) }}</span>
-              <span class="article-item__tips-d" :key="item">更新:{{ item.update_time ? getNormalTime(item.update_time) : '-' }}</span>
+            <div class="article-item__tips" @click="hanldeToDetail(item)">
+              <span class="article-item__tips-d" >发布:{{ getNormalTime(item.create_time) }}</span>
+              <span class="article-item__tips-d" >更新: {{ item.update_time ? getNormalTime(item.update_time) : ' -' }}</span>
             </div>
           </div>
           <div class="article-item__info-img">
-            <ElImage :src="item.article_cover" fit="cover" :preview-src-list="[item.article_cover]" class="img-el" @click.stop />
+            <ElImage :src="`${item.article_cover}?imageView2/w/500/h/500`" fit="cover" :preview-src-list="[item.article_cover]" class="img-el" @click.stop />
           </div>
         </div>
         <!-- pc端tips -->
-        <div class="article-item__mobile-tips">
-          <span class="article-item__tips-d" v-for="item in 2" :key="item">{{ '发布：2024-0611' }}</span>
+        <div class="article-item__mobile-tips" @click="hanldeToDetail(item)">
+          <span class="article-item__tips-d" >发布:{{ getNormalTime(item.create_time) }}</span>
+          <span class="article-item__tips-d" >更新:{{ item.update_time ? getNormalTime(item.update_time) : ' -' }}</span>
         </div>
       </template>
     </div>
@@ -54,7 +55,7 @@ const { item } = defineProps({
 
 const router = useRouter();
 
-const hanldeToDetail = (item) => {
+const hanldeToDetail = (item: ArticleItemInfo) => {
   const { article_id: id } = item;
   console.log('id', id, item);
   router.push({
@@ -143,6 +144,8 @@ const hanldeToDetail = (item) => {
     }
     &__mobile-title {
       display: block;
+      font-weight: 500;
+      font-size: 18px;
     }
     &__mobile-tips {
       display: flex;

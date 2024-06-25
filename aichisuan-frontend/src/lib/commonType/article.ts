@@ -4,11 +4,12 @@ export type ArticleItemInfo = {
   type_name: string;
   article_title: string;
   article_content: string;
+  article_content_preview: string;
   article_comment_count: number | null;
   create_time: Date;
   update_time: Date | null,
   article_like_count: number;
-  read_count: number;
+  article_read_count: number;
   article_weight: number;
   article_cover: string;
   is_dfat: boolean;

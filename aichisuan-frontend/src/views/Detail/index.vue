@@ -3,22 +3,25 @@
   <template v-if="articleDetail.article_id">
     <PageHeader />
     <div class="contents-wrap">
-      <DetailTitleTips :articleDetail="articleDetail" />
-      <DetailMk :articleDetail="articleDetail" />
+      <DetailTitleTips :articleDetail="articleDetail" :key="articleDetail.article_id"/>
+      <DetailMk :articleDetail="articleDetail" :key="articleDetail.article_id"/>
     </div>
+    <!-- 留言 -->
+    <LeaveWord :articleId="articleDetail.article_id"/>
     <go-top />
   </template>
 </template>
 <script setup name="home" lang="ts">
-import { onMounted, ref } from 'vue';
+import { ref, watch, nextTick } from 'vue';
 import DetailMk from '@/components/DetailMk/index.vue';
 import PageHeader from '@/components/PageHeader/index.vue';
 import DetailTitleTips from '@/components/DetailTitleTips/index.vue';
 import GoTop from '@/components/GoTop/index.vue';
 import { useRoute } from 'vue-router';
 import Loading from '@/components/Loading/index.vue';
-import { ArticleItemInfo } from '@/lib/commonType/article';
 import service from '@/lib/fetch/Api';
+import type { ArticleItemInfo } from '../../lib/commonType/article';
+import LeaveWord from '@/components/LeaveWord/index.vue';
 
 const pageLoading = ref<Boolean>(false);
 const articleDetail = ref<ArticleItemInfo>({});
@@ -31,15 +34,39 @@ const getArticleDetail = async (id: number) => {
   articleDetail.value = data;
 };
 
-onMounted(async () => {
-  const route = useRoute();
-  const { id } = route.query;
-  if (!id) return;
-  getArticleDetail(id);
+const updateRead = async (id: number) => {
+  await service.updateArticleReadCount(id);
+};
+
+const route = useRoute();
+
+// onMounted(async () => {
+//   const route = useRoute();
+//   const { id } = route.query;
+//   if (!id) return;
+//   getArticleDetail(+id as number);
+// });
+
+watch(() => route.query?.id, async (newId) => {
+  if (!newId) return;
+  await getArticleDetail(+newId as number);
+  await updateRead(+newId as number);
+  nextTick(() => {
+    window.scrollTo(0, 0);
+  });
+}, {
+  immediate: true,
+  deep: true
 });
+
+
+
+
 </script>
 <style lang="less" scoped>
 .contents-wrap {
+  width: 100%;
+  overflow: hidden;
   max-width: 1200px;
   min-height: calc(100vh - 100px);
   box-sizing: border-box;

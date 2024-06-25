@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-export type pageDisplayInfo = {
+export type PageDisplayInfo = {
   showMdMenu: boolean
   mdMenu: {
     text: string,
@@ -10,7 +10,7 @@ export type pageDisplayInfo = {
 }
 
 export const useBlockVisible = defineStore('blockVisible', () => {
-  const pageDisplayInfo = ref<pageDisplayInfo>({
+  const pageDisplayInfo = ref<PageDisplayInfo>({
     showMdMenu: false,
     mdMenu: []
   })
@@ -19,7 +19,7 @@ export const useBlockVisible = defineStore('blockVisible', () => {
     pageDisplayInfo.value.showMdMenu = value
   }
 
-  const setMdMenu = (value: pageDisplayInfo['mdMenu']) => {
+  const setMdMenu = (value: PageDisplayInfo['mdMenu']) => {
     pageDisplayInfo.value.mdMenu = value
   }
 

@@ -1,0 +1,6 @@
+[2024-06-17T18:35:43.044] [ERROR] cheese - [GET] /api/v1/pc/article_list?wightGte=10&page=1&pageSize=10 - ::1 - Error: 获取文章列表sql失败
+[2024-06-17T18:35:43.239] [ERROR] cheese - [GET] /api/v1/pc/article_list?type_id=1&page=1&pageSize=10 - ::1 - Error: 获取文章列表sql失败
+[2024-06-17T18:39:08.409] [ERROR] cheese - [GET] /api/v1/pc/article_list?wightGte=10&page=1&pageSize=10 - ::1 - Error: 获取文章列表sql失败
+[2024-06-17T18:39:08.477] [ERROR] cheese - [GET] /api/v1/pc/article_list?type_id=1&page=1&pageSize=10 - ::1 - Error: 获取文章列表sql失败
+[2024-06-17T18:45:13.696] [ERROR] cheese - [GET] /api/v1/pc/article_list?wightGte=10&page=1&pageSize=10&isSelect=true - ::1 - Error: 获取文章列表sql失败
+[2024-06-17T18:47:05.343] [ERROR] cheese - [GET] /api/v1/pc/article_list?wightGte=10&page=1&pageSize=10&isSelect=true - ::1 - Error: 获取文章列表sql失败

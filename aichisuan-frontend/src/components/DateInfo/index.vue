@@ -53,6 +53,7 @@ onMounted(async () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    cursor: auto;
   }
   &__item {
     display: flex;

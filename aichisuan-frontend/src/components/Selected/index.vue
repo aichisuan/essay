@@ -19,6 +19,8 @@
 </template>
 
 <script setup lang="ts">
+import { defineEmits } from 'vue';
+
 import { useFetchState } from '@/stores/fetchState';
 import { useRouter } from 'vue-router';
 import { getNormalTime } from '@/lib/timeFormat';
@@ -35,6 +37,9 @@ defineProps({
     default: true,
   },
 })
+
+const emit = defineEmits(['handleCallBack']);
+
 
 const getIconStr = (index: number) => {
   // 图标记得替换
@@ -55,6 +60,7 @@ const getIconStr = (index: number) => {
 };
 
 const handleToDetail = (item: any) => {
+  emit('handleCallBack')
   router.push(
     {
       name: 'detail',

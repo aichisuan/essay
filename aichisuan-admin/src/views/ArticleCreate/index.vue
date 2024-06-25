@@ -138,7 +138,7 @@ const getArticleDetail = async () => {
     article_content,
     create_time: formatTimeDayjs(create_time),
     // 这个时间有待商议 >>>>>>
-    update_time: update_time ? formatTimeDayjs(update_time) : (article_id ? formatTimeDayjs(dayjs()) : null),
+    update_time: update_time ? formatTimeDayjs(update_time) : null,
     type_id,
     is_dfat,
     article_like_count,

@@ -16,6 +16,13 @@
         </el-icon>
         <span>更新：{{ articleDetail.update_time ? getNormalTime(articleDetail.update_time) : '--' }}</span>
       </li>
+      <li class="header__time-li">
+        <!-- 时间 -->
+        <el-icon :size="12" class="header__icon">
+          <Reading />
+        </el-icon>
+        <span>阅读数：{{ articleDetail.article_read_count }}</span>
+      </li>
     </ul>
     <hr class="header__hr" />
   </div>
@@ -23,7 +30,7 @@
 
 <script setup lang="ts">
 import {} from 'vue';
-import { Timer, Calendar } from '@element-plus/icons-vue';
+import { Timer, Calendar, Reading } from '@element-plus/icons-vue';
 import { ArticleItemInfo } from '@/lib/commonType/article';
 import { getNormalTime } from '@/lib/timeFormat/index';
 
@@ -91,8 +98,9 @@ defineProps({
       cursor: pointer;
       &-li {
         flex-basis: 100%;
-        &:first-of-type {
-          margin-bottom: 10px;
+        margin-bottom: 10px;
+        &:last-of-type {
+          margin-bottom: 0px;
         }
       }
     }

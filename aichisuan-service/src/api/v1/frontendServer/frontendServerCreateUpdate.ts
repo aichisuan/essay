@@ -1,9 +1,10 @@
 import Router from 'koa-router';
 import Config from '../../../config/config';
-import { createArticleLike, createCommentLike, deleteComment, getUserPcUnique, prisma, updateArticle, updateArticleLike } from '../../../server/prismaSql';
+import { createArticleLike, createComment, createCommentLike, deleteComment, getUserPcUnique, prisma, updateArticle, updateArticleLike, updateArticleReadCount } from '../../../server/prismaSql';
 import { Prisma } from '@prisma/client';
 import { IncOrDec } from '../../../common/types';
 import getIpd from '../../../common/lib/getIpd';
+import { formatTimeQuery } from '../../../common/utils';
 
 const router = new Router({
   prefix: `${Config.API_PREFIX}v1`,
@@ -140,6 +141,40 @@ router.post('/pc/like_comment', async (ctx) => {
     data: {
       msg: 'success',
     },
+  };
+});
+
+
+// 文章阅读数加1
+router.post('/pc/article_read_count_plus/:article_id', async (ctx) => {
+  const { article_id } = ctx.params as { article_id: string };
+  // 这里无论对错都不影响返回
+  await updateArticleReadCount(+article_id);
+  ctx.body = {
+    code: 200,
+    message: 'ok',
+  };
+});
+
+// 增加评论
+router.post('/pc/add_comment/:article_id', async (ctx) => {
+  const { article_id } = ctx.params as { article_id: string };
+  const { comment_content, parent_comment_id, comment_email, short_time_name } = ctx.request.body as Prisma.user_commentsCreateInput;
+  // 这里无论对错都不影响返回
+  const user_idp = getIpd(ctx);
+  const res = await createComment({
+    article_id: +article_id,
+    comment_content,
+    parent_comment_id,
+    comment_email,
+    short_time_name,
+    user_idp,
+    create_time: formatTimeQuery(new Date())
+  });
+  if (!res) throw Error('增加评论失败');
+  ctx.body = {
+    code: 200,
+    message: 'ok',
   };
 });
 

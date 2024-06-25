@@ -1,17 +1,23 @@
 <template>
   <div class="page-header">
-    <div class="page-header__bg" />
+    <ProgressImg :origin="imgSrcTl" :minOrigin="lowImgSrc"/>
   </div>
 </template>
 
 <script setup lang="ts">
-import {} from "vue"
+import { ref } from "vue"
+import { getRandomTopBg } from '../../lib/topBgList/index';
+import ProgressImg from '../ProgressImg/index.vue';
+const imgSrc = getRandomTopBg();
+const imgSrcTl = `${imgSrc}?imageView2/q/50`
+const lowImgSrc = `${imgSrc}?imageView2/q/8`;
 </script>
 
 <style lang="less" scoped>
 .page-header {
   height: 30rem;
   background-color: #ccc;
+  position: relative;
   &__bg {
     display: flex;
     flex-direction: column;
@@ -22,11 +28,17 @@ import {} from "vue"
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    transition: all .3s linear;
-    background-attachment: fixed;
+    // transition: all .3s linear;
+    // background-attachment: fixed;
     transform-style: preserve-3d;
-    background-image: url('../../../src/assets/img/image.png');
-    background-position: center center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    filter: blur(10px);
+  }
+  &__bg--preview {
+    width: 100%;
+    height: 30rem;
   }
 }
 
@@ -35,6 +47,10 @@ import {} from "vue"
     height: 20rem;
     &__bg {
       height: 20rem;
+    }
+    &__bg--preview {
+      height: 20rem;
+
     }
   }
 }

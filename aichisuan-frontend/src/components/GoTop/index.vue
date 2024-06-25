@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 const showToTop = ref(false);
 const progressPathRef = ref(null);
@@ -55,6 +55,13 @@ onMounted(() => {
   // 监听页面滚动事件，实时更新进度条的进度
   document.addEventListener('scroll', updateProgress);
 });
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
+  document.removeEventListener('scroll', updateProgress);
+});
+
+
 </script>
 
 <style lang="less" scoped>

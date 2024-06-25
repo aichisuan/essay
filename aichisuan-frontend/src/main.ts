@@ -4,7 +4,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import App from './App.vue'
-//引入element-plus官方样式
+// 引入element-plus官方样式
 import 'element-plus/dist/index.css'
 
 import router from './router';

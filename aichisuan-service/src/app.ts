@@ -11,8 +11,11 @@ initCore(app, server);
 
 
 
-app.listen(Config.HTTP_PORT, () => {
-  console.log(`Server is running at http://localhost:${Config.HTTP_PORT}`);
+app.listen({
+  port: Config.HTTP_PORT,
+  host: '192.168.0.101',
+}, () => {
+  console.log(`Server is running at http://192.168.0.101:${Config.HTTP_PORT}`);
   console.log(process.env.NODE_ENV)
 });
 

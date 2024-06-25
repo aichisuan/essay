@@ -1,9 +1,19 @@
 import Router from 'koa-router';
 import Config from '../../../config/config';
-import { ArticleQuery, getArticleDetail, getArticleList, getArticleType, getCommentDetail, getUserPcUnique, getArticleCountInfo } from '../../../server/prismaSql';
+import {
+  ArticleQuery,
+  getArticleDetail,
+  getArticleList,
+  getArticleType,
+  getCommentDetail,
+  getUserPcUnique,
+  getArticleCountInfo,
+} from '../../../server/prismaSql';
 import { WeightQuery } from '../../../common/types';
 import getIpd from '../../../common/lib/getIpd';
 import { Prisma } from '@prisma/client';
+import { formatTime } from '../../../common/utils';
+import dayjs from 'dayjs';
 
 const router = new Router({
   prefix: `${Config.API_PREFIX}v1`,
@@ -34,24 +44,38 @@ router.get('/pc/article_count_info', async (ctx) => {
 
 // 获取文章列表
 router.get('/pc/article_list', async (ctx) => {
-  const { type_id, page = 1, pageSize = 10, wightGt, wightGte, wightLt, wightLte, article_content = '' } = ctx.request.query as unknown as Prisma.mj_articlesWhereInput & ArticleQuery & WeightQuery;
+  const {
+    type_id,
+    page = 1,
+    pageSize = 10,
+    weightGt,
+    weightGte,
+    weightLt,
+    weightLte,
+    article_content = '',
+    isSelect = false,
+  } = ctx.request.query as unknown as Prisma.mj_articlesWhereInput & ArticleQuery & WeightQuery;
   const query: any = type_id ? { type_id: Number(type_id) } : {};
-  const wightMap = {
-    wightGt: 'gt',
-    wightGte: 'gte',
-    wightLt: 'lt',
-    wightLte: 'lte',
+  const weightMap = {
+    weightGt: 'gt',
+    weightGte: 'gte',
+    weightLt: 'lt',
+    weightLte: 'lte',
   };
   // gte10 是精品文章
 
-  if (wightGt) query.article_weight = { [wightMap.wightGt]: Number(wightGt) };
-  if (wightGte) query.article_weight = { [wightMap.wightGte]: Number(wightGte) };
-  if (wightLt) query.article_weight = { [wightMap.wightLt]: Number(wightLt) };
-  if (wightLte) query.article_weight = { [wightMap.wightLte]: Number(wightLte) };
+  if (weightGt) query.article_weight = { [weightMap.weightGt]: Number(weightGt) };
+  if (weightGte) query.article_weight = { [weightMap.weightGte]: Number(weightGte) };
+  if (weightLt) query.article_weight = { [weightMap.weightLt]: Number(weightLt) };
+  if (weightLte) query.article_weight = { [weightMap.weightLte]: Number(weightLte) };
 
   if (article_content) query.article_content = { contains: article_content };
 
-  const res = await getArticleList(page, pageSize, query);
+  const orderBy = isSelect ? { article_weight: 'desc' } : { create_time: 'desc' };
+
+  console.log(query);
+
+  const res = await getArticleList(page, pageSize, query, orderBy);
   ctx.body = {
     code: 200,
     data: {
@@ -76,8 +100,8 @@ router.get('/pc/article_detail/:article_id', async (ctx) => {
 });
 
 // 获取某个文章评论列表
-router.get('/pc/comment_detail', async (ctx) => {
-  const { article_id } = ctx.request.query as { article_id: string };
+router.get('/pc/comment_detail/:article_id', async (ctx) => {
+  const { article_id } = ctx.params as { article_id: string };
   const res = await getCommentDetail(Number(article_id));
   ctx.body = {
     code: 200,
@@ -94,5 +118,7 @@ router.get('/pc/user_touch_list', async (ctx) => {
     data: res,
   };
 });
+
+
 
 export default router;

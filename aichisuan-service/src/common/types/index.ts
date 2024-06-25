@@ -9,8 +9,8 @@ export enum ArticleType {
 
 
  export type WeightQuery = {
-    wightGte?: number,
-    wightGt?: number,
-    wightLte?: number,
-    wightLt?: number,
+    weightGte?: number,
+    weightGt?: number,
+    weightLte?: number,
+    weightLt?: number,
  }

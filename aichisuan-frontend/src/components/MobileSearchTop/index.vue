@@ -20,7 +20,7 @@
       </ul>
     </el-drawer>
     <el-drawer v-model="isShowHot" title="热门文章" direction="ltr" size="80%">
-      <Selected :is-card="false"/>
+      <Selected :is-card="false" @handleCallBack="isShowHot = false"/>
     </el-drawer>
   </div>
 </template>

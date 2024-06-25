@@ -9,8 +9,9 @@
       :code-theme="codeTheme"
       :theme="mainTheme ? 'dark' : 'light'"
       @on-get-catalog="handleCatalog"
-    ></MdPreview>
-    <div :class="['detail__catalog', isScrollImgFinish && 'detail__catalog--center']">
+    >
+    </MdPreview>
+    <div :class="['detail__catalog', isScrollImgFinish && 'detail__catalog--center']" v-if="pageDisplayInfo.mdMenu.length">
       <span class="detail__catalog-title">目录</span>
       <MdCatalog :editorId="mdData.id" :scrollElement="scrollElement" />
     </div>
@@ -19,13 +20,16 @@
 
 <script setup lang="ts">
 import { staticData } from '@/stores/mdTheme';
-import { useBlockVisible, type pageDisplayInfo } from '@/stores/blockVisible';
+import { useBlockVisible, type PageDisplayInfo } from '@/stores/blockVisible';
 import { MdCatalog, MdPreview } from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 import { storeToRefs } from 'pinia';
 import { onMounted, onUnmounted, reactive, nextTick, ref } from 'vue';
 import { throttle } from '@/lib/index';
-import { ArticleItemInfo } from '../../lib/commonType/article';
+import type { ArticleItemInfo } from '../../lib/commonType/article';
+
+
+
 
 const { articleDetail } = defineProps({
   articleDetail: {
@@ -34,7 +38,7 @@ const { articleDetail } = defineProps({
   },
 });
 
-const { setShowMdMenu, setMdMenu } = useBlockVisible();
+const { setShowMdMenu, setMdMenu, pageDisplayInfo } = useBlockVisible();
 
 const isScrollImgFinish = ref(false);
 
@@ -52,7 +56,7 @@ const { codeTheme, previewTheme, mainTheme } = storeToRefs(staticStore);
 
 const scrollElement = document.documentElement;
 
-const handleCatalog = (catalog: pageDisplayInfo['mdMenu']) => {
+const handleCatalog = (catalog: PageDisplayInfo['mdMenu']) => {
   setMdMenu(catalog);
 };
 
@@ -78,10 +82,10 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  // 隐藏预览
-  if (!window || window.innerWidth < 768) return;
-  window.removeEventListener('scroll', handleWindowScroll);
   setShowMdMenu(false);
+  // 隐藏预览
+  if (!window || window.innerWidth > 768) return;
+  window.removeEventListener('scroll', handleWindowScroll);
 });
 </script>
 
@@ -92,7 +96,7 @@ onUnmounted(() => {
   padding: 0 20px;
   margin-top: 20px;
   width: 100%;
-  // max-width: 1300px;
+  box-sizing: border-box;
   &__catalog {
     width: 250px;
     margin-left: 80px;

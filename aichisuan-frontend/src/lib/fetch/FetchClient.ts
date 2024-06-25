@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { _getLocalItem, _removeLocalItem } from '../storage/index';
 import { encrypt } from '../encrypt/encrypt';
+import { _setLocalItem } from '..';
 
 type FetchOptions = {
   baseUrl: string;
@@ -15,8 +16,11 @@ type FetchOptions = {
 const source = axios.CancelToken.source();
 
 const setToken = () => {
-  let token = _getLocalItem('pc-token-auth');
-  if (!token) token = encrypt(uuidv4());
+  let token = _getLocalItem('pc-token-user');
+  if (!token) {
+    token = encrypt(uuidv4());
+    _setLocalItem('pc-token-user', token);
+  }
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 };
 
@@ -35,45 +39,44 @@ class FetchClient {
   private async request(method: Method, endPoint: string, bodyOrQuery?: any, headers?: Record<string, string>) {
     try {
       setToken();
-      return new Promise((reslove) => {
-        axios
-          .create({
-            baseURL: this.baseUrl,
-            timeout: this.timeout,
-            headers: {
-              'Content-Type': 'application/json',
-              ...this.defaultHeaders,
-              ...headers,
-            },
-            cancelToken: source.token,
-          })
-          .request({
-            method,
-            url: endPoint,
-            data: JSON.stringify(bodyOrQuery),
-          })
-          .then((res) => {
-            if (res.status === 200) {
-              reslove({
-                ...res.data
-              });
-            } else {
-              ElMessage.error(res.data.message);
-              reslove({
-                code: 501,
-                message: 'Request failed response not ok',
-                data: {},
-              });
-            }
-          })
-          .catch((err) => {
-            reslove({
-              code: 502,
-              message: JSON.stringify(err),
+      return axios
+        .create({
+          baseURL: this.baseUrl,
+          timeout: this.timeout,
+          headers: {
+            'Content-Type': 'application/json',
+            ...this.defaultHeaders,
+            ...headers,
+          },
+          cancelToken: source.token,
+        })
+        .request({
+          method,
+          url: endPoint,
+          data: JSON.stringify(bodyOrQuery),
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            return {
+              code: 200,
+              ...res.data,
+            };
+          } else {
+            ElMessage.error(res.data.message);
+            return {
+              code: 501,
+              message: 'Request failed response not ok',
               data: {},
-            });
-          });
-      });
+            };
+          }
+        })
+        .catch((err) => {
+          return {
+            code: 502,
+            message: JSON.stringify(err),
+            data: {},
+          };
+        });
     } catch (error) {
       return {
         code: 500,

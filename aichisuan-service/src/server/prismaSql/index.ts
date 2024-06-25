@@ -7,6 +7,7 @@ export type ArticleQuery = {
   page?: number,
   pageSize?: number,
   type_id?: ArticleType,
+  isSelect?: boolean,
   // 查询权重大于多少的可以获得
   article_weight?: {
     gte?: number,
@@ -43,7 +44,7 @@ export const getArticleType = async () => {
 
 
 // 获取文章分页列表
-export const getArticleList = async (page: number, pageSize: number, query: Prisma.mj_articlesWhereInput, ) => {
+export const getArticleList = async (page: number, pageSize: number, query: Prisma.mj_articlesWhereInput, orderBy: any = {article_id: 'asc'}) => {
   const where = {...query};
   try {
     // 返回总数
@@ -55,8 +56,8 @@ export const getArticleList = async (page: number, pageSize: number, query: Pris
       skip: (+page - 1) * +pageSize,
       take: +pageSize,
       orderBy: {
-        article_id: 'asc'
-      }
+        ...(orderBy as any)
+      },
     })
     return {
       resList,
@@ -108,6 +109,26 @@ export const updateArticle = async (article_id: number, data: Prisma.mj_articles
     throw new Error('更新文章sql失败');
   }
 }
+
+// 文章阅读数加1
+export const updateArticleReadCount = async (article_id: number) => {
+  try {
+    return await prisma.mj_articles.update({
+      where: {
+        article_id
+      },
+      data: {
+        article_read_count: {
+          increment: 1
+        }
+      }
+    })
+  } catch (error) {
+    console.log(error, 'error')
+    throw new Error('更新文章阅读数sql失败');
+  }
+}
+
 
 // 删除文章
 export const deleteArticle = async (article_id: number) => {

@@ -23,6 +23,12 @@ dependencies:
   element-plus:
     specifier: ^2.7.2
     version: 2.7.2(vue@3.4.26)
+  generate-avatar:
+    specifier: ^1.4.10
+    version: 1.4.10
+  gsap:
+    specifier: ^3.12.5
+    version: 3.12.5
   highlight.js:
     specifier: ^11.9.0
     version: 11.9.0
@@ -58,6 +64,9 @@ devDependencies:
   '@types/crypto-js':
     specifier: ^4.2.2
     version: 4.2.2
+  '@types/gsap':
+    specifier: ^3.0.0
+    version: 3.0.0
   '@types/node':
     specifier: ^20.12.8
     version: 20.12.8
@@ -1368,6 +1377,13 @@ packages:
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
     dev: true
 
+  /@types/gsap@3.0.0:
+    resolution: {integrity: sha512-BbWLi4WRHGze4C8NV7U7yRevuBFiPkPZZyGa0rryanvh/9HPUFXTNBXsGQxJZJq7Ix7j4RXMYodP3s+OsqCErg==}
+    deprecated: This is a stub types definition. gsap provides its own type definitions, so you do not need this installed.
+    dependencies:
+      gsap: 3.12.5
+    dev: true
+
   /@types/json-schema@7.0.15:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
     dev: true
@@ -1395,6 +1411,10 @@ packages:
 
   /@types/mdurl@2.0.0:
     resolution: {integrity: sha512-RGdgjQUZba5p6QEFAVx2OGb8rQDL/cPRG7GiedRzMcJ1tYnUANBncjbSB1NRGwbvjcPeikRABz2nshyPk1bhWg==}
+    dev: false
+
+  /@types/node@13.13.52:
+    resolution: {integrity: sha512-s3nugnZumCC//n4moGGe6tkNMyYEdaDBitVjwPxXmR5lnMG5dHePinH2EdxkG3Rh1ghFHHixAG4NJhpJW1rthQ==}
     dev: false
 
   /@types/node@20.12.8:
@@ -2442,6 +2462,12 @@ packages:
     resolution: {integrity: sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==}
     dev: true
 
+  /generate-avatar@1.4.10:
+    resolution: {integrity: sha512-HlVz3ZXTqz7F0sb3OoW8591SojdVtyyuqX6kCi/AnmEXH16MLmPRiChv2680E9WF39zl5nlHMrgZxlmqnTrzkQ==}
+    dependencies:
+      '@types/node': 13.13.52
+    dev: false
+
   /gensync@1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==, tarball: https://r2.cnpmjs.org/gensync/-/gensync-1.0.0-beta.2.tgz}
     engines: {node: '>=6.9.0'}
@@ -2505,6 +2531,9 @@ packages:
   /graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
     dev: true
+
+  /gsap@3.12.5:
+    resolution: {integrity: sha512-srBfnk4n+Oe/ZnMIOXt3gT605BX9x5+rh/prT2F1SsNJsU1XuMiP0E2aptW481OnonOGACZWBqseH5Z7csHxhQ==}
 
   /has-flag@3.0.0:
     resolution: {integrity: sha512-sKJf1+ceQBr4SMkvQnBDNDtf4TXpVhVGateu0t918bl30FnbE2m4vNLX+VWe/dpjlb+HugGYzW7uQXH98HPEYw==, tarball: https://r2.cnpmjs.org/has-flag/-/has-flag-3.0.0.tgz}
