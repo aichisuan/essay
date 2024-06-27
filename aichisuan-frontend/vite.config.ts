@@ -26,6 +26,13 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
     }),
   ],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        charset: false
+      }
+    }
+  },
   build: {
     minify: false,
   },
