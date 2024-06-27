@@ -1,4 +1,3 @@
-import qs from 'qs';
 import { message } from 'ant-design-vue';
 import { _getLocalItem, _removeLocalItem } from '../storage/index';
 
