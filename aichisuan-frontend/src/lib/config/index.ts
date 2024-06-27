@@ -1,12 +1,15 @@
+
+
+
 export const essayConfig = {
   footer: {
     copyRight: ' Copyright ©2024 by @aichisuan.All rights reserved',
-    icpRecord: {
-      name: '粤ICP备2021013456号',
+    infoStr1: {
+      name: 'JUU3JUIyJUE0SUNQJUU1JUE0JTg3MjAyMTA1MDIyOCVFNSU4RiVCNy0x',
       url: 'http://beian.miit.gov.cn/',
     },
-    securityRecord: {
-      name: '粤公网安备 44030502003134号',
+    infoStr2: {
+      name: 'JUU3JUIyJUE0JUU1JTg1JUFDJUU3JUJEJTkxJUU1JUFFJTg5JUU1JUE0JTg3NDQwMzA2MDIwMDU3MDQlRTUlOEYlQjc=',
       url: 'http://www.beian.gov.cn/portal/registerSystemInfo',
     },
     descInfoImgs: [

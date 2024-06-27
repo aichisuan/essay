@@ -9,9 +9,9 @@
       <img v-for="item in footer.descInfoImgs" :key="item.id" :src="item.url" alt="">
     </div>
     <div class="footer__copyright">
-      <a :style="{color: textColor}" class="footer__record" :href="footer.icpRecord.url">{{ footer.icpRecord.name }}</a>
+      <a :style="{color: textColor}" class="footer__record" :href="footer.infoStr1.url">{{ getName(footer.infoStr1.name) }}</a>
       <span :style="{color: textColor}" class="footer__split">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-      <a :style="{color: textColor}" class="footer__record" :href="footer.securityRecord.url">{{ footer.securityRecord.name }}</a>
+      <a :style="{color: textColor}" class="footer__record" :href="footer.infoStr2.url">{{ getName(footer.infoStr2.name) }}</a>
     </div>
   </div>
 </template>
@@ -40,6 +40,13 @@ onMounted(() => {
 onUnmounted(() => {
   timer.value && clearInterval(timer.value);
 })
+
+const getName = (name: string) => {
+  // if (!window.atob) {
+  //   return name;
+  // }
+  return decodeURIComponent(window.atob(name));
+}
 
 </script>
 
