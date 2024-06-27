@@ -58,21 +58,6 @@ const columns = ref([
     width: 50,
   },
   {
-    title: '管理员评论',
-    dataIndex: 'is_admin',
-    key: 'is_admin',
-    width: 80,
-    customRender: ({ text }: { text: number }) => {
-      return text === 1 ? '是' : '否';
-    },
-  },
-  {
-    title: '邮箱',
-    dataIndex: 'comment_email',
-    key: 'comment_id',
-    width: 150,
-  },
-  {
     title: '昵称',
     dataIndex: 'short_time_name',
     key: 'short_time_name',
@@ -85,10 +70,25 @@ const columns = ref([
     width: 200,
   },
   {
+    title: '邮箱',
+    dataIndex: 'comment_email',
+    key: 'comment_id',
+    width: 150,
+  },
+  {
     title: '文章id',
     dataIndex: 'article_id',
     key: 'article_id',
     width: 90,
+  },
+  {
+    title: '管理员评论',
+    dataIndex: 'is_admin',
+    key: 'is_admin',
+    width: 80,
+    customRender: ({ text }: { text: number }) => {
+      return text === 1 ? '是' : '否';
+    },
   },
   {
     title: '父评论id',
@@ -127,7 +127,12 @@ const columns = ref([
     key: 'status',
     width: 80,
     customRender: ({ text }: { text: number }) => {
-      return text === 1 ? '显示' : '隐藏';
+      const mapTexts = {
+        1: '显示',
+        0: '隐藏',
+        2: '待审核'
+      }
+      return mapTexts[text as 0 | 1 | 2] || '未知';
     },
   },
   {

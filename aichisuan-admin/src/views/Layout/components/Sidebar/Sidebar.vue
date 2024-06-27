@@ -31,7 +31,7 @@ const router = useRouter();
 
 type Item = {
   key: string;
-  icon: string;
+  icon?: string;
   title: string;
   path?: string;
   children?: Item[];
@@ -100,7 +100,7 @@ const handleToPath = (path: string) => {
 };
 
 const setSelectKeys = (path: string) => {
-  let itemStr: string;
+  let itemStr: string = '';
   items.find((item) => {
     if (item.path === path) {
       itemStr = item.key;
@@ -109,6 +109,7 @@ const setSelectKeys = (path: string) => {
       return item.children.find((child) => (child.path === path ? (itemStr = child.key) : false));
     }
   });
+
   if (itemStr) {
     selectedKeys.value = [itemStr];
   } else {

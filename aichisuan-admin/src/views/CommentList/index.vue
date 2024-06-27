@@ -75,7 +75,7 @@ const formState = reactive<FormState>({
 
 const pageInfo = reactive<PageInfo>({
   page: 1,
-  pageSize: 50,
+  pageSize: 20,
   total: 0,
 });
 
@@ -106,7 +106,7 @@ const getCommentList = async (query: FormState) => {
   }
 
 
-  const { code, data, pageInfo: { pageSize = 1, page = 1, total = 0 } } = await service.getCommentList({
+  const { code, data, pageInfo: { pageSize = 10, page = 1, total = 0 } } = await service.getCommentList({
     ...queryObj,
     ...pageInfo,
   });
@@ -138,7 +138,7 @@ const handleReset = () => {
   formState.create_time = [null, null];
   formState.status = '';
   pageInfo.page = 1;
-  pageInfo.pageSize = 50;
+  pageInfo.pageSize = 20;
   getCommentList({
     ...formState,
   });

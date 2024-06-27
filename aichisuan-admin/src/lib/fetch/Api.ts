@@ -1,6 +1,7 @@
 import FetchClient from './FetchClient';
 
-const baseUrl = 'http://localhost:3000/api/v1/admin';
+// const baseUrl = 'http://localhost:3000/api/v1/admin';
+const baseUrl = 'http://192.168.0.101:3000/api/v1/admin';
 
 const fetch = new FetchClient({
   baseUrl,
