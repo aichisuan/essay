@@ -15,6 +15,7 @@ export default ({ mode }: { mode: string }) => {
     // 热更新
     server: {
       hmr: true,
+      port: 5173,
     },
     plugins: [
       vue({

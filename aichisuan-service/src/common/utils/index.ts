@@ -3,6 +3,7 @@ import path from 'path';
 import Config from '../../config/config';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import os from 'os';
 
 dayjs.locale('zh-cn');
 
@@ -128,4 +129,18 @@ export const extractContentSnippet = (content: string, keyword: string, snippetL
   const start = Math.max(0, startIndex - Math.floor(snippetLength / 2));
   const end = Math.min(content.length, startIndex + keyword.length + Math.floor(snippetLength / 2));
   return (start > 0 ? '...' : '') + content.slice(start, end) + (end < content.length ? '...' : '');
+}
+
+export const getLocalIP = () => {
+  const interfaces = os.networkInterfaces();
+  for (const devName in interfaces) {
+    const iface = interfaces[devName];
+    for (let i = 0; iface && i < iface.length; i++) {
+      const alias = iface[i];
+      if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
+        return alias.address;
+      }
+    }
+  }
+  return 'localhost';
 }
