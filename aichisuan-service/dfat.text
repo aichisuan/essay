@@ -1,5 +1,0 @@
-npm i --save-dev @types/koa @types/koa-bodyparser @types/koa-router @types/koa-session @types/koa-static @types/koa2-cors @types/log4js @types/mongodb @types/mysql @types/validator @types/ajv @types/ioredis @types/jsonwebtoken
-
-
-npm i eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-config-prettier prettier --save-dev
-
