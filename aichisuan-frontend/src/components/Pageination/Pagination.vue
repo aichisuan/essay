@@ -48,20 +48,28 @@ let page = reactive({
 
 const emit = defineEmits(['paginationCb']);
 
+const scrollTop = () => {
+  // window滚动到顶部
+  window.scrollTo(0, 0)
+}
+
 //选择某一页
-const currentChange = (val: number) => {
+const currentChange = async (val: number) => {
   page.current = val;
-  emit('paginationCb', page);
+  await emit('paginationCb', page);
+  scrollTop();
 };
 //上一页
-const prev = (val: number) => {
+const prev = async (val: number) => {
   page.current = val - 1;
-  emit('paginationCb', page);
+  await emit('paginationCb', page);
+  scrollTop();
 };
 //下一页
-const next = (val: number) => {
+const next = async (val: number) => {
   page.current = val + 1;
-  emit('paginationCb', page);
+  await emit('paginationCb', page);
+  scrollTop();
 };
 </script>
 

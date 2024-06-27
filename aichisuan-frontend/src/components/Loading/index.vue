@@ -7,7 +7,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
 import OrbitSpinner from './OrbitSpinner.vue';
 
 defineProps({

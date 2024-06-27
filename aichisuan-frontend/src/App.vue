@@ -6,6 +6,7 @@
         <Loading v-show="pageLoading" />
         <Nav />
         <Router-view />
+        <FooterBA />
       </div>
     </el-config-provider>
   </template>
@@ -19,6 +20,7 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn';
 import { onMounted, ref } from 'vue';
 import { useFetchState } from '@/stores/fetchState';
 import Loading from '@/components/Loading/index.vue';
+import FooterBA from '@/components/FootBA/index.vue';
 
 const { getSelectArticleList, getTypeList } = useFetchState();
 

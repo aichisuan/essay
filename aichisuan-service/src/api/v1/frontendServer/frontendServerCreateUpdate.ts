@@ -37,17 +37,17 @@ router.post('/pc/reply_comment', async (ctx) => {
 });
 
 // 创建评论
-router.post('/pc/create_comment', async (ctx) => {
-  const data = ctx.request.body as Prisma.user_commentsCreateInput;
-  const res = await updateArticle(Number(data.article_id), data);
-  if (!res) throw Error('创建评论失败');
-  ctx.body = {
-    code: 200,
-    data: {
-      msg: 'success',
-    },
-  };
-});
+// router.post('/pc/create_comment', async (ctx) => {
+//   const data = ctx.request.body as Prisma.user_commentsCreateInput;
+//   const res = await updateArticle(Number(data.article_id), data);
+//   if (!res) throw Error('创建评论失败');
+//   ctx.body = {
+//     code: 200,
+//     data: {
+//       msg: 'success',
+//     },
+//   };
+// });
 
 // 增加访问记录
 router.post('/pc/add_visit', async (ctx) => {
@@ -159,7 +159,7 @@ router.post('/pc/article_read_count_plus/:article_id', async (ctx) => {
 // 增加评论
 router.post('/pc/add_comment/:article_id', async (ctx) => {
   const { article_id } = ctx.params as { article_id: string };
-  const { comment_content, parent_comment_id, comment_email, short_time_name } = ctx.request.body as Prisma.user_commentsCreateInput;
+  const { comment_content, parent_comment_id, comment_email, short_time_name, status } = ctx.request.body as Prisma.user_commentsCreateInput;
   // 这里无论对错都不影响返回
   const user_idp = getIpd(ctx);
   const res = await createComment({
@@ -169,7 +169,8 @@ router.post('/pc/add_comment/:article_id', async (ctx) => {
     comment_email,
     short_time_name,
     user_idp,
-    create_time: formatTimeQuery(new Date())
+    create_time: formatTimeQuery(new Date()),
+    status: status || 2,
   });
   if (!res) throw Error('增加评论失败');
   ctx.body = {

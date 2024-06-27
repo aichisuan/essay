@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import {} from 'vue';
+
 const props = defineProps({
   url: {
     type: String,

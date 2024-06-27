@@ -63,7 +63,7 @@ import type { CommentItem } from '../../lib/commonType/comment';
 import { formatTime } from '../../lib/timeFormat';
 import { generateFromString } from 'generate-avatar';
 import { ElMessage, type FormInstance } from 'element-plus';
-import { commentsRules as rules } from './tips';
+import { commentsRules as rules, type CommentStatus } from './tips';
 
 type CommentLi = CommentItem & { children?: CommentItem[] };
 
@@ -101,7 +101,7 @@ const getTime = (time: string) => {
 
 const getCommitList = async () => {
   // >>>>>>
-  const { code, data } = await service.getCommentList(articleId);
+  const { code, data } = await service.getCommentList(articleId, { status: 1 as CommentStatus});
   console.log(code, data);
   if (code !== 200) return;
   commentLength.value = data.length;
@@ -115,13 +115,14 @@ const getCommitList = async () => {
       });
       return li;
     });
+  // 清空和添加
+  commentList.splice(0, commentList.length);
   commentList.push(...list);
-  console.log(commentList);
 };
 
 const handleReplay = (id: number | null) => {
   if (commentLength.value > 1000) {
-    ElMessage.error('留言数量已达上限');
+    ElMessage.error('该文章留言数量已达上限');
   }
   isShowReplay.value = true;
   replayId.value = id;
@@ -148,10 +149,11 @@ const handleSubmitComment = async () => {
     comment_content: replayForm.content,
     short_time_name: replayForm.nickname,
     comment_email: replayForm.email,
+    status: 2 as CommentStatus,
   });
   submitLoading.value = false;
   if (code !== 200) return;
-  ElMessage.success('留言成功');
+  ElMessage.success('留言成功, 作者将尽快审核待审核');
   replayForm.content = '';
   replayForm.nickname = '';
   replayForm.email = '';

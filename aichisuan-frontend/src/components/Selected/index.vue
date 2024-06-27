@@ -19,8 +19,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits } from 'vue';
-
 import { useFetchState } from '@/stores/fetchState';
 import { useRouter } from 'vue-router';
 import { getNormalTime } from '@/lib/timeFormat';

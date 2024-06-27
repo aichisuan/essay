@@ -116,3 +116,16 @@ export const formatQuery = (query: any) => {
   }
   return newQuery;
 }
+
+
+
+// 提取包含关键字的内容片段
+export const extractContentSnippet = (content: string, keyword: string, snippetLength: number = 60): string => {
+  const startIndex = content.toLowerCase().indexOf(keyword.toLowerCase());
+  if (startIndex === -1) {
+    return content.slice(0, snippetLength) + '...'; // 如果没有找到关键字，返回内容的开始部分
+  }
+  const start = Math.max(0, startIndex - Math.floor(snippetLength / 2));
+  const end = Math.min(content.length, startIndex + keyword.length + Math.floor(snippetLength / 2));
+  return (start > 0 ? '...' : '') + content.slice(start, end) + (end < content.length ? '...' : '');
+}

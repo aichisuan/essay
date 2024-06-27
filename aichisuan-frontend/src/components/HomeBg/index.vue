@@ -146,7 +146,7 @@ const initCanvas = () => {
   img.src = bubbleImg;
 
   img.onload = () => {
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 10; i++) {
       //make a few bubbles to start
       m.x = gsap.utils.random(150, innerWidth - 150, 1);
       m.y = gsap.utils.random(150, innerHeight - 150, 1);

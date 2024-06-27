@@ -1,4 +1,11 @@
 
+export enum CommentStatus {
+  REJECT = 0,
+  PASS = 1,
+  WAIT = 2,
+}
+
+
 const checkEmail = (rule: any, value: string, callback: Function) => {
   if (!value) {
     callback(new Error('请输入您的邮箱'));

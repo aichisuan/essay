@@ -29,9 +29,8 @@
 </template>
 
 <script setup lang="ts">
-import {} from 'vue';
 import { Timer, Calendar, Reading } from '@element-plus/icons-vue';
-import { ArticleItemInfo } from '@/lib/commonType/article';
+import type { ArticleItemInfo } from '@/lib/commonType/article';
 import { getNormalTime } from '@/lib/timeFormat/index';
 
 defineProps({

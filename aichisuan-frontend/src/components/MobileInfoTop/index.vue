@@ -1,18 +1,18 @@
 <template>
   <!-- 移动端显示的搜索以及md 列表 -->
-  <div class="bars-mobile-top">
+  <div class="bars-mobile-top" v-if="pageDisplayInfo.showMdMenu && pageDisplayInfo.mdMenu">
     <div class="bars-mobile-top__hot" @click="handleShowHot">
       <i class="iconfont icon-fire"></i>
       <span>hot</span>
     </div>
-    <div class="bars-mobile-top__input-wrap">
-      <input v-model="searchText" placeholder="搜索文章" class="bars-mobile-top__input" />
-      <el-icon class="bars-mobile-top__icon"><Search /></el-icon>
+    <div class="bars-mobile-top__input-wrap">      
+      <!-- 暂时站位 -->
     </div>
+    <!-- <el-icon class="bars-mobile-top__icon"><Search /></el-icon> -->
     <div v-if="pageDisplayInfo.showMdMenu" class="bars-mobile-top__md-menu" @click="handleShowMenu">
       <i class="iconfont icon-icon_Contents"></i>
     </div>
-    <el-drawer v-model="isShowMdMenu" v-if="pageDisplayInfo.showMdMenu && pageDisplayInfo.mdMenu" title="目录" direction="rtl" size="70%">
+    <el-drawer v-model="isShowMdMenu" title="目录" direction="rtl" size="70%">
       <ul class="bars-mobile-top__menu">
         <li v-for="(item, index) in pageDisplayInfo.mdMenu" :key="`${item.text}-${index}`" class="bars-mobile__li" @click="handleMdTo(item.text)">
           <p class="bars-mobile-top__menu-item" :style="`text-indent: ${item.level * 8}px`">{{ item.text }}</p>
@@ -20,7 +20,7 @@
       </ul>
     </el-drawer>
     <el-drawer v-model="isShowHot" title="热门文章" direction="ltr" size="80%">
-      <Selected :is-card="false" @handleCallBack="isShowHot = false"/>
+      <Selected :is-card="false" @handleCallBack="isShowHot = false" />
     </el-drawer>
   </div>
 </template>
@@ -28,9 +28,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useBlockVisible } from '@/stores/blockVisible';
-import { Search } from '@element-plus/icons-vue';
 import Selected from '@/components/Selected/index.vue';
-const searchText = ref<string>('');
+
 
 const { pageDisplayInfo } = useBlockVisible();
 const isShowMdMenu = ref(false);
@@ -62,6 +61,8 @@ const handleMdTo = (elId: string) => {
 
   isShowMdMenu.value = false;
 };
+
+
 </script>
 
 <style lang="less" scoped>
@@ -88,14 +89,14 @@ const handleMdTo = (elId: string) => {
     }
     &__input-wrap {
       flex: 1;
-      margin: 0 10px;
+      // margin: 0 10px;
       padding: 0 10px;
-      background-color: #f0f0f0;
-      display: flex;
-      align-items: center;
+      // background-color: #f0f0f0;
+      // display: flex;
+      // align-items: center;
       height: 2.5rem;
       box-sizing: border-box;
-      border-radius: 3px;
+      // border-radius: 3px;
     }
     &__input {
       border: none;

@@ -13,10 +13,12 @@ const service = {
   getArticleType: () => fetch.get('/article_type'),
   // 获取文章列表
   getArticleList: (query: Record<string, any>) => fetch.get('/article_list', query),
+  // 搜索文章列表
+  getSearchArticleList: (query: Record<string, any>) => fetch.get('/search_article_list', query),
   // 获取文章详情
   getArticleDetail: (article_id: string | number) => fetch.get(`/article_detail/${article_id}`),
   // 获取文章评论列表
-  getCommentList: (article_id: string | number) => fetch.get(`/comment_detail/${article_id}`),
+  getCommentList: (article_id: string | number, query: Record<string, any>) => fetch.get(`/comment_detail/${article_id}`, query),
   // 获取单个文章id的评论列表
   getArticleComment: (article_id: string | number) => fetch.get(`/article_comment_detail/${article_id}`),
   // 获取用户    喜欢列表 点赞文章 评论文章

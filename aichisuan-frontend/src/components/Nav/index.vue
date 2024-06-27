@@ -2,15 +2,15 @@
   <div class="padding-box"></div>
   <div class="nav-top">
     <BarList />
-    <MobileSearchTop/>
+    <MobileInfoTop/>
     <!-- <ChangeTheme /> -->
   </div>
 </template>
 
 <script setup>
-import ChangeTheme from "./ChangeTheme.vue";
+// import ChangeTheme from "./ChangeTheme.vue";
 import BarList from "./BarList.vue";
-import MobileSearchTop from "@/components/MobileSearchTop/index.vue";
+import MobileInfoTop from "@/components/MobileInfoTop/index.vue";
 </script>
 
 <style lang="less" scoped>
@@ -35,7 +35,7 @@ import MobileSearchTop from "@/components/MobileSearchTop/index.vue";
 
 @media screen and (max-width: 768px) {
   .padding-box {
-    height: 6.4rem;
+    height: 2.5rem;
   }
   .nav-top {
     height: 3.2rem;

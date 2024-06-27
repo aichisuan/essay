@@ -1,14 +1,16 @@
 <template>
   <div class="grad-bar"></div>
-  <img src="../../assets/img/nav-left.png" alt="" class="grad-img" />
-  <ul :class="['bars', isSearch ? 'bars--search' : 'bars--no-search']">
+  <img src="../../assets/img/nav-left.png" alt="" class="grad-img" @click="handleTo('/')"/>
+  <!-- isSearch ? 'bars--search' :  -->
+  <ul :class="['bars', 'bars--no-search']">
     <li v-for="item in linkList" :key="item.id" class="bars__li" @click="handleTo(item.path)">
       <span :class="{ bars__title: true, 'bars__title--success': route.fullPath === item.path }">{{ item.name }}</span>
     </li>
-    <i :class="['iconfont icon-search1', isSearch && 'icon-search1--active']" @click="isSearch = !isSearch"></i>
-    <input type="text" :class="['search-input', isSearch && 'search-input--active']" placeholder="搜索" />
+    <i :class="['iconfont icon-search1']" @click="isSearch = !isSearch"></i>
+    <!-- <input type="text" :class="['search-input', isSearch && 'search-input--active']" placeholder="搜索" /> -->
   </ul>
   <div class="bars-drawer">
+    <el-icon class="bars-drawer__icon" @click="handleShowSearch"><Search /></el-icon>
     <el-icon class="bars-drawer__icon" v-if="!isShowDrawer" @click="isShowDrawer = true"><Expand /></el-icon>
     <el-icon class="bars-drawer__icon" v-else @click="isShowDrawer = false"><Fold /></el-icon>
     <el-drawer v-model="isShowDrawer" direction="ltr" size="50%">
@@ -19,13 +21,14 @@
       </ul>
     </el-drawer>
   </div>
-
+  <ArticleSearch @closeArticleSearch="isSearch=false" v-if="isSearch" />
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { Fold, Expand, Search } from '@element-plus/icons-vue';
+import ArticleSearch from '@/components/ArticleSearch/index.vue';
 import { linkList } from '@/lib/business';
 const router = useRouter();
 const route = useRoute();
@@ -34,11 +37,16 @@ const isSearch = ref(false);
 
 const isShowDrawer = ref(false);
 
+const handleShowSearch = () => {
+  isSearch.value = !isSearch.value;
+};
+
 
 
 const handleTo = (path: string) => {
   router.push(path);
 };
+
 </script>
 
 <style lang="less" scoped>
@@ -61,10 +69,10 @@ const handleTo = (path: string) => {
   animation: gradbar 15s ease infinite;
 }
 .grad-img {
-  height: 16px;
+  height: 22px;
   width: auto;
   justify-self: start;
-  margin-left: 20px;
+  margin-left: 16px;
 }
 
 // 这部分 媒体查询控制显示隐藏
@@ -156,6 +164,9 @@ const handleTo = (path: string) => {
     &__icon {
       font-size: 1.5rem;
       color: #5cbfef;
+      &:nth-of-type(1) {
+        margin-right: 10px;
+      }
     }
   }
   .bars-mobile {

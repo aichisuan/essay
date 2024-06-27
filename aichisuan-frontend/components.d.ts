@@ -8,7 +8,9 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ArticleItem: typeof import('./src/components/ArticleItem/index.vue')['default']
+    ArticleSearch: typeof import('./src/components/ArticleSearch/index.vue')['default']
     BarList: typeof import('./src/components/Nav/BarList.vue')['default']
+    Btns: typeof import('./src/components/Btns/index.vue')['default']
     Card: typeof import('./src/components/CardList/index.vue')['default']
     CardList: typeof import('./src/components/CardList/index.vue')['default']
     ChangeTheme: typeof import('./src/components/Nav/ChangeTheme.vue')['default']
@@ -16,8 +18,10 @@ declare module 'vue' {
     DateInfo: typeof import('./src/components/DateInfo/index.vue')['default']
     DetailMk: typeof import('./src/components/DetailMk/index.vue')['default']
     DetailTitleTips: typeof import('./src/components/DetailTitleTips/index.vue')['default']
+    ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
+    ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
@@ -31,6 +35,7 @@ declare module 'vue' {
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSkeleton: typeof import('element-plus/es')['ElSkeleton']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
+    FootBA: typeof import('./src/components/FootBA/index.vue')['default']
     GoTop: typeof import('./src/components/GoTop/index.vue')['default']
     HomeBg: typeof import('./src/components/HomeBg/index.vue')['default']
     HoverCard: typeof import('./src/components/HoverCard/index.vue')['default']
@@ -39,6 +44,7 @@ declare module 'vue' {
     Indev: typeof import('./src/components/Loading/indev.vue')['default']
     LeaveWord: typeof import('./src/components/LeaveWord/index.vue')['default']
     Loading: typeof import('./src/components/Loading/index.vue')['default']
+    MobileInfoTop: typeof import('./src/components/MobileInfoTop/index.vue')['default']
     MobileSearchTop: typeof import('./src/components/MobileSearchTop/index.vue')['default']
     Nav: typeof import('./src/components/Nav/index.vue')['default']
     OrbitSpinner: typeof import('./src/components/Loading/OrbitSpinner.vue')['default']
@@ -49,5 +55,8 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Selected: typeof import('./src/components/Selected/index.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

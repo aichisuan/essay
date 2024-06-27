@@ -38,7 +38,7 @@ const routes = [
       {
         path: '/question',
         name: 'question',
-        component: () => import('@/views/Question/index.vue'),
+        component: () => import('@/views/CommonList/index.vue'),
         meta: { title: '问答' },
       },
       {

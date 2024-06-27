@@ -1,18 +1,9 @@
 import Router from 'koa-router';
 import Config from '../../../config/config';
-import {
-  ArticleQuery,
-  getArticleDetail,
-  getArticleList,
-  getArticleType,
-  getCommentDetail,
-  getUserPcUnique,
-  getArticleCountInfo,
-} from '../../../server/prismaSql';
+import { ArticleQuery, getArticleDetail, getArticleList, getArticleType, getCommentDetail, getUserPcUnique, getArticleCountInfo, getArticleSearchList } from '../../../server/prismaSql';
 import { WeightQuery } from '../../../common/types';
 import getIpd from '../../../common/lib/getIpd';
 import { Prisma } from '@prisma/client';
-import { formatTime } from '../../../common/utils';
 import dayjs from 'dayjs';
 
 const router = new Router({
@@ -73,8 +64,6 @@ router.get('/pc/article_list', async (ctx) => {
 
   const orderBy = isSelect ? { article_weight: 'desc' } : { create_time: 'desc' };
 
-  console.log(query);
-
   const res = await getArticleList(page, pageSize, query, orderBy);
   ctx.body = {
     code: 200,
@@ -85,6 +74,18 @@ router.get('/pc/article_list', async (ctx) => {
         if (reItem?.article_content) delete reItem.article_content;
         return reItem;
       }),
+    },
+  };
+});
+
+// 搜索文章
+router.get('/pc/search_article_list', async (ctx) => {
+  const { search_content, page = 1, pageSize = 10 } = ctx.request.query as { search_content: string; page: string; pageSize: string };
+  const res = await getArticleSearchList(+page, +pageSize, search_content);
+  ctx.body = {
+    code: 200,
+    data: {
+      ...res,
     },
   };
 });
@@ -102,7 +103,8 @@ router.get('/pc/article_detail/:article_id', async (ctx) => {
 // 获取某个文章评论列表
 router.get('/pc/comment_detail/:article_id', async (ctx) => {
   const { article_id } = ctx.params as { article_id: string };
-  const res = await getCommentDetail(Number(article_id));
+  const { status } = ctx.request.query as { status: string };
+  const res = await getCommentDetail(Number(article_id), { status: Number(status) });
   ctx.body = {
     code: 200,
     data: res,
@@ -118,7 +120,5 @@ router.get('/pc/user_touch_list', async (ctx) => {
     data: res,
   };
 });
-
-
 
 export default router;

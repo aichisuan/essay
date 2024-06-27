@@ -1,5 +1,6 @@
 import { PrismaClient, Prisma } from "@prisma/client";
 import { ArticleType, IncOrDec } from "../../common/types";
+import { extractContentSnippet } from "../../common/utils";
 
 export const prisma = new PrismaClient();
 
@@ -66,6 +67,58 @@ export const getArticleList = async (page: number, pageSize: number, query: Pris
   } catch (error) {
     console.log(error, 'error')
     throw new Error('获取文章列表sql失败');
+  }
+}
+
+// 搜索文章 根据标题或者内容 返回内容简写
+export const getArticleSearchList = async (page: number, pageSize: number, search_content: string) => {
+  const where = {
+    OR: [
+      {
+        article_title: {
+          contains: search_content,
+        },
+      },
+      {
+        article_content: {
+          contains: search_content,
+        },
+      },
+    ],
+  };
+  try {
+    const resList = await prisma.mj_articles.findMany({
+      where,
+      skip: (+page - 1) * +pageSize,
+      take: +pageSize,
+      orderBy: {
+        article_weight: 'asc',
+      },
+      select: {
+        article_id: true,
+        article_title: true,
+        article_content: true,
+        article_weight: true,
+        article_read_count: true,
+        create_time: true,
+      }
+    })
+
+    return {
+      resList: resList.map(item => {
+        const res = {
+          ...item,
+          article_content_extract: extractContentSnippet(item.article_content, search_content)
+        }
+        // @ts-ignore 这里删除article_content
+        delete res.article_content;
+        return res;
+      }),
+      total: resList.length,
+    }
+  } catch (error) {
+    console.log(error, 'error')
+    throw new Error('搜索文章失败');
   }
 }
 
@@ -169,12 +222,14 @@ export const getCommentList = async (page: number, pageSize: number, query: Pris
 };
 
 // 获取某个文章评论列表
-export const getCommentDetail = async (article_id: number) => {
+export const getCommentDetail = async (article_id: number, query?: { status: number; } | undefined) => {
+  const where = {
+    article_id,
+    ...(query || {})
+  }
   try {
     return await prisma.user_comments.findMany({
-      where: {
-        article_id
-      },
+      where: where,
       orderBy: {
         comment_id: 'asc'
       }

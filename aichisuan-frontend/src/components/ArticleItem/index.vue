@@ -24,7 +24,7 @@
             </div>
           </div>
           <div class="article-item__info-img">
-            <ElImage :src="`${item.article_cover}?imageView2/w/500/h/500`" fit="cover" :preview-src-list="[item.article_cover]" class="img-el" @click.stop />
+            <ElImage v-if="item.article_cover" :src="`${item.article_cover}?imageView2/w/500/h/500`" fit="cover" :preview-src-list="[item.article_cover]" class="img-el" @click.stop />
           </div>
         </div>
         <!-- pc端tips -->
