@@ -16,12 +16,12 @@ const { origin } =  defineProps({
  
 const isLoaded = ref(false);
 
-const handleLoaded = (e) => {
+const handleLoaded = (e: { target: { parentElement: { classList: { add: (arg0: string) => void; }; }; }; }) => {
   e.target.parentElement.classList.add("loaded");
   isLoaded.value = true;
 };
 
-const handleError = (e) => {
+const handleError = (e: { target: { src: string; }; }) => {
   e.target.src = errorImg;
 }
 

@@ -9,6 +9,7 @@ import bubbleImg from '../../assets/img/bubbles.png';
 
 import { gsap } from '@/lib/gsapLib/index';
 
+
 type BubbleItem = {
   dur: number;
   spriteDur: number;
@@ -23,7 +24,7 @@ type BubbleItem = {
 
 const homeCanvasRef = ref(null);
 
-const debounce = ref(null);
+const debounce = ref(undefined);
 
 const m = reactive({
   x: 0,
@@ -34,7 +35,9 @@ const bubbles = reactive<BubbleItem[]>([]);
 
 const makeBubble = (auto: boolean = false) => {
   if (!debounce.value) return;
+  // @ts-ignore
   if (debounce.value.progress() == 1 || auto) {
+    // @ts-ignore
     debounce.value.play(0);
 
     const dist = gsap.utils.random(100, 200);
@@ -138,7 +141,7 @@ const initCanvas = () => {
   const { innerWidth, innerHeight } = window;
   canvas.width = innerWidth;
   canvas.height = innerHeight;
-
+  // @ts-ignore
   debounce.value = gsap.to(window, { duration: 0.07 });
 
   const img = new Image();

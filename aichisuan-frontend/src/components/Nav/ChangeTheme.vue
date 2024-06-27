@@ -21,7 +21,7 @@ import { Moon, Sunrise } from "@element-plus/icons-vue";
 const { changeTheme, theme } = useThemeStore();
 const currentTheme = ref<boolean>(theme === Theme.LIGHT);
 
-const changeT = (v) => {
+const changeT = (v: any) => {
   changeTheme(v ? Theme.LIGHT : Theme.DARK);
 };
 </script>

@@ -35,7 +35,7 @@ watch(
   { immediate: true }
 );
 
-const paginationCb = (page: number) => {
+const paginationCb = (page: { current: number; }) => {
   setPageInfo(page.current, fetchState.pageTypeInfo.typeId);
   // 第1页用route请求，其他页用getArticleList请求
   if (page.current === 1) return;

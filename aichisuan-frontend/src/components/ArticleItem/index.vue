@@ -1,7 +1,7 @@
 <template>
   <li class="article-item">
     <div class="article-item__box">
-      <el-skeleton v-if="pageTypeInfo.loading" :loading="pageTypeInfo.loading" style="height: 100%" animated>
+      <el-skeleton v-if="pageTypeInfo.pageLoading" :loading="pageTypeInfo.pageLoading" style="height: 100%" animated>
         <!-- 写骨架屏 -->
       </el-skeleton>
       <template v-else>

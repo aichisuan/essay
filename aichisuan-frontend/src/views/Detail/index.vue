@@ -24,6 +24,7 @@ import type { ArticleItemInfo } from '../../lib/commonType/article';
 import LeaveWord from '@/components/LeaveWord/index.vue';
 
 const pageLoading = ref<Boolean>(false);
+// @ts-ignore
 const articleDetail = ref<ArticleItemInfo>({});
 
 const getArticleDetail = async (id: number) => {
