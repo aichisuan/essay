@@ -45,6 +45,7 @@ router.post('/admin/login', async (ctx) => {
         refresh_token,
         user_id: res[0].user_id,
         user_name: res[0].user_name,
+        // @ts-ignore
         user_avatar: res[0].user_avatar,
         administration_id: res[0].administration_id,
       },
