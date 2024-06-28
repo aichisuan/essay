@@ -1,7 +1,10 @@
 import FetchClient from './FetchClient';
 
-// const baseUrl = 'http://localhost:3000/api/v1/admin';
-const baseUrl = `${location.protocol}//${location.hostname}:3000/v1/admin`;
+console.log(import.meta.env.MODE, '---------->>>>>>');
+
+const baseUrl =   import.meta.env.MODE === 'development' 
+? `${location.protocol}//${location.hostname}:3000/v1/admin`
+: `${location.protocol}//${location.hostname}/api/v1/admin`;
 
 const fetch = new FetchClient({
   baseUrl,

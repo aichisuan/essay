@@ -102,7 +102,6 @@ const getTime = (time: string) => {
 const getCommitList = async () => {
   // >>>>>>
   const { code, data } = await service.getCommentList(articleId, { status: 1 as CommentStatus});
-  console.log(code, data);
   if (code !== 200) return;
   commentLength.value = data.length;
   const list = data

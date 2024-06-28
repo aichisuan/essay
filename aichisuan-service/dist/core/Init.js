@@ -18,6 +18,9 @@ const utils_1 = require("../common/utils");
 const cors_1 = __importDefault(require("../middlewares/cors"));
 const config_1 = __importDefault(require("../config/config"));
 const catchError_1 = require("../middlewares/catchError");
+const encryMiddler_1 = __importDefault(require("../middlewares/encryMiddler"));
+const encFlag_1 = __importDefault(require("../config/encFlag"));
+const tcc_1 = __importDefault(require("../common/lib/tcc"));
 class Init {
     static initCore(app, server) {
         Init.app = app;
@@ -25,6 +28,9 @@ class Init {
         Init.initCors();
         Init.loadBodyParser();
         Init.initCatchError();
+        if (encFlag_1.default) {
+            Init.initRsa();
+        }
         Init.initLoadRouters();
     }
     // 解析body参数
@@ -35,6 +41,10 @@ class Init {
     static initCors() {
         Init.app.use(cors_1.default);
     }
+    // rsa 
+    static initRsa() {
+        Init.app.use(encryMiddler_1.default);
+    }
     // 加载路由
     static initLoadRouters() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -44,6 +54,8 @@ class Init {
                 file.routes && Init.app.use(file.routes());
                 file.allowedMethods && Init.app.use(file.allowedMethods());
             });
+            // 加密
+            Init.app.use(tcc_1.default.routes());
         });
     }
     static initCatchError() {

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { _getLocalItem, _setLocalItem } from "@/lib";
-import { useDark, useToggle } from '@vueuse/core'
+import { useDark } from '@vueuse/core'
 // Import the missing functions
 const isDark = useDark({
   // 存储到localStorage/sessionStorage中的Key 根据自己的需求更改
@@ -11,7 +11,11 @@ const isDark = useDark({
   valueLight: "light",
 });
 
-const toggle = useToggle(isDark);
+export type PreviewTheme = "default" | "github" | "vuepress" | "mk-cute" | "smart-blue" | "cyanosis";
+export type CodeTheme = "atom" | "a11y" | "github" | "gradient" | "kimbie" | "paraiso" | "qtcreator" | "stackoverflow";
+
+const localPreviewTheme = _getLocalItem("previewTheme") || 'default';
+const localCodeTheme = _getLocalItem("codeTheme") || 'gradient';
 
 export const staticData = defineStore("staticData", {
   // 数据存到store里刷新页面会重置，持久化就不会了
@@ -31,9 +35,9 @@ export const staticData = defineStore("staticData", {
         "stackoverflow",
       ],
       // md预览主题
-      previewTheme: "default",
+      previewTheme: localPreviewTheme,
       // md代码主题
-      codeTheme: "atom",
+      codeTheme: localCodeTheme,
       // 整体主题 黑夜和白天
       theme: isDark.value,
       // 头部图片地址
@@ -48,10 +52,14 @@ export const staticData = defineStore("staticData", {
   },
   actions: {
     // 切换主题
-    switchMainTheme() {
-      toggle();
-      this.theme = isDark.value;
-      _setLocalItem("mainTheme", this.theme ? "dark" : "light");
+    switchPreviewTheme(theme: PreviewTheme) {
+      this.previewTheme = theme;
+      _setLocalItem("previewTheme",this.previewThemeList.includes(this.previewTheme) ? this.previewTheme : "default");
+    },
+    // 切换代码主题
+    switchCodeTheme(theme: string) {
+      this.codeTheme = theme;
+      _setLocalItem("codeTheme", this.codeThemeList.includes(this.codeTheme) ? this.codeTheme : "atom");
     },
   },
 });

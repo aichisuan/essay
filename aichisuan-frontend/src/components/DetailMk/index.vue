@@ -101,7 +101,8 @@ onUnmounted(() => {
     width: 250px;
     margin-left: 80px;
     position: sticky;
-    top: 500px;
+    position: -webkit-sticky;
+    top: 200px;
     height: calc(100vh - 40px);
     overflow-y: auto;
     &--center {

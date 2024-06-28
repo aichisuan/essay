@@ -70,9 +70,10 @@ export const getArticleList = async (page: number, pageSize: number, query: Pris
   }
 }
 
-// 搜索文章 根据标题或者内容 返回内容简写
+// 搜索文章 根据标题或者内容 返回内容简写 这里一定不是草稿
 export const getArticleSearchList = async (page: number, pageSize: number, search_content: string) => {
   const where = {
+    is_dfat: 0,
     OR: [
       {
         article_title: {

@@ -41,8 +41,11 @@ router.get('/pc/article_count_info', (ctx) => __awaiter(void 0, void 0, void 0, 
 }));
 // 获取文章列表
 router.get('/pc/article_list', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
-    const { type_id, page = 1, pageSize = 10, weightGt, weightGte, weightLt, weightLte, article_content = '', isSelect = false, } = ctx.request.query;
+    const { type_id, page = 1, pageSize = 10, weightGt, weightGte, weightLt, weightLte, article_content = '', isSelect = false, is_dfat = '', } = ctx.request.query;
     const query = type_id ? { type_id: Number(type_id) } : {};
+    if (!['', null, undefined].includes(is_dfat)) {
+        query.is_dfat = +is_dfat;
+    }
     const weightMap = {
         weightGt: 'gt',
         weightGte: 'gte',

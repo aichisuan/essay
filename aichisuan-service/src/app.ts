@@ -3,7 +3,6 @@ import http from 'http';
 import initCore from './core/Init';
 import Config from './config/config';
 import { getLocalIP } from './common/utils';
-import { config } from 'dotenv';
 
 const app = new Koa();
 
@@ -13,13 +12,6 @@ initCore(app, server);
 
 
 const localIP = getLocalIP();
-
-if (process.env.NODE_ENV === 'production') {
-  config({ path: '.env.production' });
-} else {
-  config({ path: '.env.development' });
-}
-
 
 
 app.listen({

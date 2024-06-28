@@ -1,6 +1,6 @@
 {
   "name": "aichisuan-frontend",
-  "version": "0.0.0",
+  "version": "0.0.7",
   "private": true,
   "type": "module",
   "scripts": {
@@ -21,6 +21,7 @@
     "generate-avatar": "^1.4.10",
     "gsap": "^3.12.5",
     "highlight.js": "^11.9.0",
+    "jsencrypt": "^3.3.2",
     "md-editor-v3": "^4.14.1",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",

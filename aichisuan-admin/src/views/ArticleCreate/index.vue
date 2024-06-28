@@ -40,6 +40,7 @@
           <a-col :span="4">
             <a-form-item label="封面图" class="article-form__count">
               <upload-img v-model:img-url="formState.article_cover" />
+              <input type="text" v-model="formState.article_cover">
             </a-form-item>
           </a-col>
         </a-row>

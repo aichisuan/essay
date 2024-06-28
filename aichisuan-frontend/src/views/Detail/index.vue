@@ -67,7 +67,6 @@ watch(() => route.query?.id, async (newId) => {
 <style lang="less" scoped>
 .contents-wrap {
   width: 100%;
-  overflow: hidden;
   max-width: 1200px;
   min-height: calc(100vh - 100px);
   box-sizing: border-box;

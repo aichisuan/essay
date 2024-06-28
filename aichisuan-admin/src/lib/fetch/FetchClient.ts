@@ -1,5 +1,6 @@
 import { message } from 'ant-design-vue';
 import { _getLocalItem, _removeLocalItem } from '../storage/index';
+import dayjs from 'dayjs';
 
 type FetchOptions = {
   baseUrl: string;
@@ -35,7 +36,7 @@ class FetchClient {
     if (authorization) (options.headers as Record<string, string>)['authorization'] = `Bearer ${authorization}`;
 
     if (method.toLocaleLowerCase() === 'get') {
-      endPoint += '?' + new URLSearchParams(bodyOrQuery).toString();
+      endPoint += '?' + new URLSearchParams({ ...(bodyOrQuery || {}), ...{tt: dayjs().valueOf()} }).toString();
     } else {
       options.body = JSON.stringify(bodyOrQuery || {});
     }

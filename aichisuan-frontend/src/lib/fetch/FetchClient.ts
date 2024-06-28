@@ -1,11 +1,15 @@
-import axios, { type AxiosInstance, type Method } from 'axios';
+import axios, { type Method } from 'axios';
 
-import { ElMessage } from 'element-plus';
+import { dayjs, ElMessage } from 'element-plus';
 import { v4 as uuidv4 } from 'uuid';
 
 import { _getLocalItem, _removeLocalItem } from '../storage/index';
-import { encrypt } from '../encrypt/encrypt';
-import { _setLocalItem } from '..';
+import { decryptAes, decryptRsa, encryptEnc, encryptMd5, getRandomStr, getStrForSixteen } from '../encrypt/encrypt';
+import { _setLocalItem } from '../index';
+
+// const whiteList = ['/article_type', '/article_detail'];
+
+const isEnc = true;
 
 type FetchOptions = {
   baseUrl: string;
@@ -15,30 +19,49 @@ type FetchOptions = {
 
 const source = axios.CancelToken.source();
 
-const setToken = () => {
+const setToken = (publicK:string, privateKey: string) => {
   let token = _getLocalItem('pc-token-user');
   if (!token) {
-    token = encrypt(uuidv4());
+    token = encryptMd5(uuidv4());
     _setLocalItem('pc-token-user', token);
   }
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  // @ts-ignore
+  window.tt = privateKey
+  // @ts-ignore
+  window.cc = publicK;
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}${publicK ? ` ${encryptEnc(privateKey, publicK)}` : ''}`;
 };
 
 class FetchClient {
   private readonly baseUrl: string;
   private readonly timeout: number;
   private readonly defaultHeaders: Record<string, string>;
+  private privateKey: string;
+  private publicKey: string;
 
   constructor(options: FetchOptions) {
     const { baseUrl, timeout = 10000, defaultHeaders = {} } = options;
     this.baseUrl = baseUrl;
     this.timeout = timeout;
     this.defaultHeaders = defaultHeaders;
+    this.publicKey = '';
+    this.privateKey = getRandomStr(16);
   }
 
   private async request(method: Method, endPoint: string, bodyOrQuery?: any, headers?: Record<string, string>) {
+    if (!this.publicKey) {
+      const flag = await this.getEncy();
+      if (!flag) {
+        ElMessage.error('获取数据失败,请刷新重试');
+        return {
+          code: 500,
+          message: '获取数据失败,请刷新重试',
+          data: {},
+        };
+      }
+    }
     try {
-      setToken();
+      setToken(this.publicKey, this.privateKey);
       return axios
         .create({
           baseURL: this.baseUrl,
@@ -57,6 +80,7 @@ class FetchClient {
         })
         .then((res) => {
           if (res.status === 200) {
+            if (isEnc) return decryptRsa(res.data, this.privateKey);
             return {
               code: 200,
               ...res.data,
@@ -86,12 +110,28 @@ class FetchClient {
     }
   }
 
-  get(endPoint: string, query?: any, headers?: Record<string, string>) {
-    setToken();
+  async get(endPoint: string, query?: any, headers?: Record<string, string>) {
+    if (!this.publicKey) {
+      const flag = await this.getEncy();
+      if (!flag) {
+        ElMessage.error('获取数据失败,请刷新重试');
+        return {
+          code: 500,
+          message: '获取数据失败,请刷新重试',
+          data: {},
+        };
+      }
+    }
+    setToken(this.publicKey, this.privateKey);
+    let getUrl = `${this.baseUrl}${endPoint}?${new URLSearchParams(query).toString()}`;
+    // if (!(getUrl.includes(whiteList[0]) || getUrl.includes(whiteList[1]))) {
+    getUrl = Object.entries(query || {}).length ?  `${getUrl}&c=${dayjs().valueOf()}` : `${getUrl}c=${dayjs().valueOf()}`;
+    // }
     return axios
-      .get(`${this.baseUrl}${endPoint}?${new URLSearchParams(query).toString()}`, { cancelToken: source.token, headers })
+      .get(getUrl, { cancelToken: source.token, headers })
       .then((r) => {
         if (r.status === 200) {
+          if (isEnc) return decryptRsa(r.data, this.privateKey);
           return {
             ...r.data,
           };
@@ -118,6 +158,24 @@ class FetchClient {
   }
   delete(endPoint: string, headers?: Record<string, string>) {
     return this.request('DELETE', endPoint, undefined, headers);
+  }
+  async getEncy() {
+    if (!isEnc) return true;
+    if (this.publicKey) return true;
+    return axios.get(`${this.baseUrl}/tcc`).then(r => {
+      if (r.status === 200) {
+        if (r.data) {
+          try {
+            this.publicKey = decryptAes(r.data);
+            this.privateKey = getStrForSixteen(this.publicKey)
+            return true
+          } catch (error) {
+            return false
+          }
+        }else return false
+        
+      } else return false;
+    }).catch(() => false);
   }
 }
 

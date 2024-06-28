@@ -27,7 +27,7 @@ model mj_articles {
   article_id              Int       @id @default(autoincrement())
   type_id                 Int
   article_title           String    @db.VarChar(255)
-  article_content         String    @db.MediumText
+  article_content         String    @db.LongText
   article_comment_count   Int?      @default(0)
   create_time             DateTime  @db.DateTime(0)
   update_time             DateTime? @db.DateTime(0)

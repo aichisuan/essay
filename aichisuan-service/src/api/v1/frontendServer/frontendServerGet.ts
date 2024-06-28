@@ -4,7 +4,7 @@ import { ArticleQuery, getArticleDetail, getArticleList, getArticleType, getComm
 import { WeightQuery } from '../../../common/types';
 import getIpd from '../../../common/lib/getIpd';
 import { Prisma } from '@prisma/client';
-import dayjs from 'dayjs';
+
 
 const router = new Router({
   prefix: `${Config.API_PREFIX}v1`,
@@ -45,8 +45,12 @@ router.get('/pc/article_list', async (ctx) => {
     weightLte,
     article_content = '',
     isSelect = false,
+    is_dfat = '',
   } = ctx.request.query as unknown as Prisma.mj_articlesWhereInput & ArticleQuery & WeightQuery;
   const query: any = type_id ? { type_id: Number(type_id) } : {};
+  if (!['', null, undefined].includes(is_dfat as string)) {
+    query.is_dfat = +is_dfat;
+  }
   const weightMap = {
     weightGt: 'gt',
     weightGte: 'gte',
@@ -120,5 +124,7 @@ router.get('/pc/user_touch_list', async (ctx) => {
     data: res,
   };
 });
+
+
 
 export default router;

@@ -1,7 +1,6 @@
 import FetchClient from './FetchClient';
 
 // 判断环境
-console.log(import.meta.env, '------>>>');
 const baseUrl = 
   import.meta.env.MODE === 'development' 
   ? `${location.protocol}//${location.hostname}:3000/v1/pc`
@@ -13,8 +12,10 @@ const fetch = new FetchClient({
   timeout: 5000,
 });
 
-const service = {
 
+const service = {
+  // ency 
+  getEncy: () => fetch.getEncy(),
   // 获取文章类型
   getArticleType: () => fetch.get('/article_type'),
   // 获取文章列表

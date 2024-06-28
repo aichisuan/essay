@@ -65,9 +65,10 @@ const getArticleList = (page_1, pageSize_1, query_1, ...args_1) => __awaiter(voi
     }
 });
 exports.getArticleList = getArticleList;
-// 搜索文章 根据标题或者内容 返回内容简写
+// 搜索文章 根据标题或者内容 返回内容简写 这里一定不是草稿
 const getArticleSearchList = (page, pageSize, search_content) => __awaiter(void 0, void 0, void 0, function* () {
     const where = {
+        is_dfat: 0,
         OR: [
             {
                 article_title: {

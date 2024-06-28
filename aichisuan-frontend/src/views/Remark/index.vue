@@ -41,7 +41,6 @@ const handleToAbout = () => {
 };
 
 const handleGiveReward = () => {
-  console.log('打赏');
   showReward.value = true;
 };
 

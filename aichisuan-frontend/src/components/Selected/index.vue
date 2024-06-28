@@ -5,7 +5,7 @@
       <span>精选文章</span>
     </div>
     <ul class="selected__list">
-      <li class="selected__list-li" v-for="(item, index) in nowList" :key="item.article_id" @click="handleToDetail(item)">
+      <li class="selected__list-li" v-for="(item, index) in (allList.selectArticleList[1] || [])" :key="item.article_id" @click="handleToDetail(item)">
         <div class="selected__li-index">
           <i :class="`iconfont selected__li-icon ${getIconStr(index)}`"></i>
         </div>
@@ -24,9 +24,7 @@ import { useRouter } from 'vue-router';
 import { getNormalTime } from '@/lib/timeFormat';
 
 const router = useRouter();
-const { selectArticleList } = useFetchState();
-
-const nowList = selectArticleList[1] || [];
+const allList = useFetchState();
 
 
 defineProps({

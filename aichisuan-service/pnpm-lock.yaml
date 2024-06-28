@@ -26,9 +26,6 @@ dependencies:
   koa-bodyparser:
     specifier: ^4.4.1
     version: 4.4.1
-  koa-real-ip:
-    specifier: ^1.0.1
-    version: 1.0.1
   koa-router:
     specifier: ^12.0.1
     version: 12.0.1
@@ -50,6 +47,9 @@ dependencies:
   mysql:
     specifier: ^2.18.1
     version: 2.18.1
+  node-rsa:
+    specifier: ^1.1.1
+    version: 1.1.1
   svg-captcha:
     specifier: ^1.4.0
     version: 1.4.0
@@ -97,6 +97,9 @@ devDependencies:
   '@types/mysql':
     specifier: ^2.15.26
     version: 2.15.26
+  '@types/node-rsa':
+    specifier: ^1.1.4
+    version: 1.1.4
   '@types/validator':
     specifier: ^13.11.10
     version: 13.11.10
@@ -474,6 +477,12 @@ packages:
       '@types/node': 20.13.0
     dev: true
 
+  /@types/node-rsa@1.1.4:
+    resolution: {integrity: sha512-dB0ECel6JpMnq5ULvpUTunx3yNm8e/dIkv8Zu9p2c8me70xIRUUG3q+qXRwcSf9rN3oqamv4116iHy90dJGRpA==}
+    dependencies:
+      '@types/node': 20.13.0
+    dev: true
+
   /@types/node@20.13.0:
     resolution: {integrity: sha512-FM6AOb3khNkNIXPnHFDYaHerSv8uN22C91z098AnGccVu+Pcdhi+pNUFDi0iLmPIsVE0JBD0KVS7mzUYt4nRzQ==}
     dependencies:
@@ -722,6 +731,12 @@ packages:
     resolution: {integrity: sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==}
     engines: {node: '>=8'}
     dev: true
+
+  /asn1@0.2.6:
+    resolution: {integrity: sha512-ix/FxPn0MDjeyJ7i/yoHGFt/EX6LyNbxSEhPPXODPL+KB0VPk86UYfL0lMdy+KCnv+fmvIzySwaK5COwqVbWTQ==}
+    dependencies:
+      safer-buffer: 2.1.2
+    dev: false
 
   /balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
@@ -1430,10 +1445,6 @@ packages:
   /inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
 
-  /insubnet@0.0.8:
-    resolution: {integrity: sha512-N9ZJNeVpt2ZxyHR/7O0m1q6Fql4uW9zRROcDqtRuw5gI4EH52OLoLTWneD9QZLy/oyIzrY5FMnKPfg90Fs4m6A==}
-    dev: false
-
   /ioredis@5.4.1:
     resolution: {integrity: sha512-2YZsvl7jopIa1gaePkeMtd9rAcSjOOjPtpcLlOeusyO+XH2SK5ZcT+UCrElPP+WVIInh2TzeI4XW9ENaSLVVHA==}
     engines: {node: '>=12.22.0'}
@@ -1449,12 +1460,6 @@ packages:
       standard-as-callback: 2.1.0
     transitivePeerDependencies:
       - supports-color
-
-  /is-aws-ip@1.0.1:
-    resolution: {integrity: sha512-AlFIULAdacEoziJz+eMNCwF5yRytJy6uQ4HddcO3ul05q7YzmqKcHnyzMyDQcfRMSYlz6zn6rKIwO7xJAuCr3A==}
-    dependencies:
-      insubnet: 0.0.8
-    dev: false
 
   /is-binary-path@2.1.0:
     resolution: {integrity: sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw==}
@@ -1606,12 +1611,6 @@ packages:
     dependencies:
       co: 4.6.0
       koa-compose: 4.1.0
-    dev: false
-
-  /koa-real-ip@1.0.1:
-    resolution: {integrity: sha512-g6VHh/Qm9afRwCgnAacpN06mCOKP6w5IS+eD7ymcOi5+MU9ETiV04/HXcIvGqeKaYvRmpAVqn6GhYU/WW5Yxnw==}
-    dependencies:
-      is-aws-ip: 1.0.1
     dev: false
 
   /koa-router@12.0.1:
@@ -1877,6 +1876,12 @@ packages:
   /negotiator@0.6.3:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
     engines: {node: '>= 0.6'}
+    dev: false
+
+  /node-rsa@1.1.1:
+    resolution: {integrity: sha512-Jd4cvbJMryN21r5HgxQOpMEqv+ooke/korixNNK3mGqfGJmy0M77WDDzo/05969+OkMy3XW1UuZsSmW9KQm7Fw==}
+    dependencies:
+      asn1: 0.2.6
     dev: false
 
   /nodemon@3.1.2:

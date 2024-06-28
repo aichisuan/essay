@@ -52,6 +52,12 @@ const getName = (name: string) => {
 
 <style lang="less" scoped>
 .footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
   margin-top: 20px;
   border-top: 1px solid #f1f1f1;
   padding: 1.5rem;

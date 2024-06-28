@@ -23,15 +23,52 @@
         </el-icon>
         <span>阅读数：{{ articleDetail.article_read_count }}</span>
       </li>
+      <li class="header__time-li">
+        <!-- 时间 -->
+        <el-icon :size="12" class="header__icon">
+          <InfoFilled />
+        </el-icon>
+        <span>主题(可选)：
+          <el-dropdown @command="handlePreviewTheme">
+            <span class="el-dropdown-link">
+              {{ previewTheme }}
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="item in previewThemeList" :command="item" :key="item">预览:{{ item }}</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+          —
+          <el-dropdown @command="handleCodeTheme">
+            <span class="el-dropdown-link">
+              {{ codeTheme }}
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="item in codeThemeList" :command="item" :key="item">代码:{{ item }}</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </span>
+      </li>
     </ul>
     <hr class="header__hr" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { Timer, Calendar, Reading } from '@element-plus/icons-vue';
+import { Timer, Calendar, Reading, InfoFilled } from '@element-plus/icons-vue';
 import type { ArticleItemInfo } from '@/lib/commonType/article';
 import { getNormalTime } from '@/lib/timeFormat/index';
+import { staticData, type PreviewTheme, type CodeTheme } from '@/stores/mdTheme';
+import { storeToRefs } from 'pinia';
+
+const staticStore = staticData();
+
+const { switchPreviewTheme, switchCodeTheme, } = staticStore;
+
+const { codeTheme, previewTheme,previewThemeList, codeThemeList  } = storeToRefs(staticStore);
 
 defineProps({
   articleDetail: {
@@ -40,9 +77,25 @@ defineProps({
   },
 })
 
+const handleCodeTheme = (v: CodeTheme) => {
+  switchCodeTheme(v)
+}
+const handlePreviewTheme = (v: PreviewTheme) => {
+  switchPreviewTheme(v)
+}
+
 </script>
 
 <style lang="less" scoped>
+.el-dropdown-link {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #afafaf;
+  &:focus-visible {
+    outline: none;
+  }
+}
 .header {
   &__title {
     line-height: 3rem;

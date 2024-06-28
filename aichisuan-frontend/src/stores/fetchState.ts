@@ -62,7 +62,7 @@ export const useFetchState = defineStore('useFetchState', () => {
 
   const getSelectArticleList = async (page: number = 1) => {
     pageTypeInfo.pageLoading = true;
-    const { code, data } = await service.getArticleList({ weightGte: 10, page, pageSize: 10, isSelect: true });
+    const { code, data } = await service.getArticleList({ weightGte: 10, page, pageSize: 10, isSelect: true, is_dfat: 0 });
     pageTypeInfo.pageLoading = false;
     if (code !== 200) return;
     selectArticleList[page] = data.resList || [];
@@ -111,7 +111,7 @@ export const useFetchState = defineStore('useFetchState', () => {
     if (!nowList) return console.error('typeId is error');
 
     pageTypeInfo.pageLoading = true;
-    const { code, data } = await service.getArticleList({ type_id: typeId, page, pageSize: 10 });
+    const { code, data } = await service.getArticleList({ type_id: typeId, page, pageSize: 10, is_dfat: 0 });
     pageTypeInfo.pageLoading = false;
     if (code !== 200) return;
     nowList[page] = data.resList || [];

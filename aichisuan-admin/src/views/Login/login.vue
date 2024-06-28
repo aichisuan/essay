@@ -42,6 +42,7 @@
         </div>
       </a-col>
     </a-row>
+    <FooterHome />
   </div>
 </template>
 
@@ -51,6 +52,7 @@ import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
 import { useUserStore, type LoginFrom } from '@/stores/user';
+import FooterHome from '@/components/FootHome/index.vue';
 
 const form = reactive<LoginFrom>({
   name: '',
