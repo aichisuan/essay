@@ -153,7 +153,8 @@ const handleSubmitComment = async () => {
   });
   submitLoading.value = false;
   if (code !== 200) return;
-  ElMessage.success('留言成功, 作者将尽快审核待审核');
+  ElMessage.success('留言成功, 作者将尽快审核');
+  isShowReplay.value = false;
   replayForm.content = '';
   replayForm.nickname = '';
   replayForm.email = '';
