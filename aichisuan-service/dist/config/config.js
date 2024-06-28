@@ -5,7 +5,7 @@ const isDev = process.env.NODE_ENV === 'development';
 class Config {
 }
 Config.HTTP_PORT = 3000;
-Config.API_PREFIX = '/api/';
+Config.API_PREFIX = '/';
 Config.BASE = isDev ? 'src' : 'dist';
 Config.DEFAULT_DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 Config.DEFAULT_DATE_QUERY = 'YYYY-MM-DDTHH:mm:ss.sssZ';
