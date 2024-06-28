@@ -1,6 +1,11 @@
 import FetchClient from './FetchClient';
 
-const baseUrl = `${location.protocol}//${location.hostname}:3000/api/v1/pc`;
+// 判断环境
+console.log(import.meta.env, '------>>>');
+const baseUrl = 
+  import.meta.env.MODE === 'development' 
+  ? `${location.protocol}//${location.hostname}:3000/v1/pc`
+  : `${location.protocol}//${location.hostname}/api/v1/pc`;
 
 
 const fetch = new FetchClient({

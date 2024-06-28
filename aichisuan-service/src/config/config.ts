@@ -2,7 +2,7 @@ const isDev = process.env.NODE_ENV === 'development';;
 
 export default class Config {
   public static readonly HTTP_PORT: number = 3000;
-  public static readonly API_PREFIX: string = '/api/';
+  public static readonly API_PREFIX: string = '/';
   public static readonly BASE: string = isDev ? 'src' : 'dist';
   public static readonly DEFAULT_DATE_FORMAT: string = 'YYYY-MM-DD HH:mm:ss';
   public static readonly DEFAULT_DATE_QUERY: string = 'YYYY-MM-DDTHH:mm:ss.sssZ'

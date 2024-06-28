@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import { message, Modal } from 'ant-design-vue';
-import { inject, ref, defineProps, h } from 'vue';
+import { inject, ref, h } from 'vue';
 import service from '../../../lib/fetch/Api';
 import type { CommentItem, CommentStatus } from '@/lib/commenType/comment';
 import { commentstatusList as statusList } from '@/lib/commonData/index';

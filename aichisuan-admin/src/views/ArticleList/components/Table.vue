@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
 import { Dayjs } from 'dayjs';
-import { ref, defineProps, inject, type Ref } from 'vue';
+import { ref, inject, type Ref } from 'vue';
 import type { ArticleItem, ArticleType } from '../../../lib/commenType/article';
 import { formatTime } from '../../../lib/timeFormat';
 import TableAction from './TableAction.vue';
