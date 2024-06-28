@@ -10,11 +10,13 @@
       <!-- <router-link to="/remark"><Btn :text="'备注'" :btn-id="7"></Btn></router-link> -->
     </div>
     <!-- <FooterBA :text-color="'#fff'" class="home-page__footer"/> -->
+     <FooterHome/>
   </div>
 </template>
 <script setup name="home">
 import HomeBg from '@/components/HomeBg/index.vue';
 // import FooterBA from '@/components/FootBA/index.vue'
+import FooterHome from '@/components/FootHome/index.vue'
 import Btn from '@/components/Btns/index.vue';
 </script>
 <style lang="less" scoped>

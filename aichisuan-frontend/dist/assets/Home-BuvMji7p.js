@@ -1,4 +1,4 @@
-import { d as defineComponent, r as ref, a as reactive, o as onMounted, b as onUnmounted, c as openBlock, e as createElementBlock, F as Fragment, f as createTextVNode, t as toDisplayString, g as createCommentVNode, h as createBaseVNode, n as normalizeClass, _ as _export_sfc, i as resolveComponent, j as createVNode, w as withCtx } from "./index-CZi6AXpH.js";
+import { d as defineComponent, r as ref, a as reactive, o as onMounted, b as onUnmounted, c as openBlock, e as createElementBlock, f as createBaseVNode, t as toDisplayString, u as unref, g as essayConfig, p as pushScopeId, h as popScopeId, _ as _export_sfc, F as Fragment, i as createTextVNode, j as createCommentVNode, n as normalizeClass, k as resolveComponent, l as createVNode, w as withCtx } from "./index-D5w7VRUp.js";
 const bubbleImg = "/assets/bubbles-C0qzsvdh.png";
 function _assertThisInitialized(self) {
   if (self === void 0) {
@@ -5228,7 +5228,7 @@ var MotionPathPlugin = {
 };
 _getGSAP() && gsap.registerPlugin(MotionPathPlugin);
 gsapWithCSS.registerPlugin(MotionPathPlugin);
-const _sfc_main$2 = /* @__PURE__ */ defineComponent({
+const _sfc_main$3 = /* @__PURE__ */ defineComponent({
   __name: "index",
   setup(__props) {
     const homeCanvasRef = ref(null);
@@ -5359,6 +5359,34 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
   }
 });
+const _withScopeId = (n) => (pushScopeId("data-v-00ade2e8"), n = n(), popScopeId(), n);
+const _hoisted_1$2 = { class: "footer" };
+const _hoisted_2$1 = ["href"];
+const _hoisted_3 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("span", { class: "footer__split" }, "  |  ", -1));
+const _hoisted_4 = ["href"];
+const _sfc_main$2 = /* @__PURE__ */ defineComponent({
+  __name: "index",
+  setup(__props) {
+    const { footer } = essayConfig;
+    const getName = (name) => {
+      return decodeURIComponent(window.atob(name));
+    };
+    return (_ctx, _cache) => {
+      return openBlock(), createElementBlock("div", _hoisted_1$2, [
+        createBaseVNode("a", {
+          class: "footer__record",
+          href: unref(footer).infoStr1.url
+        }, toDisplayString(getName(unref(footer).infoStr1.name)), 9, _hoisted_2$1),
+        _hoisted_3,
+        createBaseVNode("a", {
+          class: "footer__record",
+          href: unref(footer).infoStr2.url
+        }, toDisplayString(getName(unref(footer).infoStr2.name)), 9, _hoisted_4)
+      ]);
+    };
+  }
+});
+const FooterHome = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["__scopeId", "data-v-00ade2e8"]]);
 const _hoisted_1$1 = { key: 1 };
 const _sfc_main$1 = /* @__PURE__ */ defineComponent({
   __name: "index",
@@ -5403,7 +5431,7 @@ const _sfc_main = /* @__PURE__ */ Object.assign(__default__, {
     return (_ctx, _cache) => {
       const _component_router_link = resolveComponent("router-link");
       return openBlock(), createElementBlock("div", _hoisted_1, [
-        createVNode(_sfc_main$2),
+        createVNode(_sfc_main$3),
         createBaseVNode("div", _hoisted_2, [
           createVNode(_component_router_link, { to: "/selected" }, {
             default: withCtx(() => [
@@ -5441,12 +5469,13 @@ const _sfc_main = /* @__PURE__ */ Object.assign(__default__, {
             ]),
             _: 1
           })
-        ])
+        ]),
+        createVNode(FooterHome)
       ]);
     };
   }
 });
-const Home = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-d212c2a1"]]);
+const Home = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-92e15870"]]);
 export {
   Home as default
 };

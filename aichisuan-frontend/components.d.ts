@@ -24,6 +24,7 @@ declare module 'vue' {
     ElInput: typeof import('element-plus/es')['ElInput']
     ElSkeleton: typeof import('element-plus/es')['ElSkeleton']
     FootBA: typeof import('./src/components/FootBA/index.vue')['default']
+    FootHome: typeof import('./src/components/FootHome/index.vue')['default']
     GoTop: typeof import('./src/components/GoTop/index.vue')['default']
     HomeBg: typeof import('./src/components/HomeBg/index.vue')['default']
     HoverScaleImg: typeof import('./src/components/HoverScaleImg/HoverScaleImg.vue')['default']
