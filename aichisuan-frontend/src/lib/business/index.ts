@@ -11,7 +11,7 @@ type LinkItem =  {
 
 export const linkList: LinkItem[] = [
   {
-    name: '主页',
+    name: 'Home',
     path: '/',
     id: -1,
     icon: 'el-icon-s-home',

@@ -1,4 +1,4 @@
-const __vite__fileDeps=["assets/Home-BIW9LAxV.js","assets/Home-DnqNje75.css","assets/index-De636ri1.js","assets/_Uint8Array-CjJUcEMS.js","assets/index-DjFC2lnX.css","assets/index-QGwYmQKf.js","assets/el-button-BRLat9o3.js","assets/el-button-BYZ0R81o.css","assets/index-BdXoWs09.css","assets/index-D-KEMdZ2.js","assets/index-DtzYt6MY.css"],__vite__mapDeps=i=>i.map(i=>__vite__fileDeps[i]);
+const __vite__fileDeps=["assets/Home-BOjMshl0.js","assets/Home-DnqNje75.css","assets/index-DEr8WWpl.js","assets/_Uint8Array-B7Nf6onV.js","assets/index-B5xTvNIK.css","assets/index-B0G9wKzd.js","assets/el-button-BeTBmKyG.js","assets/el-button-BYZ0R81o.css","assets/index-BdXoWs09.css","assets/index-C4t7smf6.js","assets/index-DtzYt6MY.css"],__vite__mapDeps=i=>i.map(i=>__vite__fileDeps[i]);
 var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField = (obj, key, value) => {
@@ -7976,12 +7976,6 @@ function createWebHistory(base) {
     get: () => historyNavigation.state.value
   });
   return routerHistory;
-}
-function createWebHashHistory(base) {
-  base = location.host ? base || location.pathname + location.search : "";
-  if (!base.includes("#"))
-    base += "#";
-  return createWebHistory(base);
 }
 function isRouteLocation(route) {
   return typeof route === "string" || route && typeof route === "object";
@@ -23929,7 +23923,7 @@ const _export_sfc = (sfc, props) => {
 const ArticleSearch = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["__scopeId", "data-v-84c38c27"]]);
 const linkList = [
   {
-    name: "主页",
+    name: "Home",
     path: "/",
     id: -1,
     icon: "el-icon-s-home"
@@ -25121,7 +25115,7 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: () => __vitePreload(() => import("./Home-BIW9LAxV.js"), true ? __vite__mapDeps([0,1]) : void 0),
+    component: () => __vitePreload(() => import("./Home-BOjMshl0.js"), true ? __vite__mapDeps([0,1]) : void 0),
     meta: { title: "首页" }
   },
   {
@@ -25132,31 +25126,31 @@ const routes = [
       {
         path: "/selected",
         name: "selected",
-        component: () => __vitePreload(() => import("./index-De636ri1.js"), true ? __vite__mapDeps([2,3,4]) : void 0),
+        component: () => __vitePreload(() => import("./index-DEr8WWpl.js"), true ? __vite__mapDeps([2,3,4]) : void 0),
         meta: { title: "精选" }
       },
       {
         path: "/technology",
         name: "technology",
-        component: () => __vitePreload(() => import("./index-De636ri1.js"), true ? __vite__mapDeps([2,3,4]) : void 0),
+        component: () => __vitePreload(() => import("./index-DEr8WWpl.js"), true ? __vite__mapDeps([2,3,4]) : void 0),
         meta: { title: "技术" }
       },
       {
         path: "/life",
         name: "life",
-        component: () => __vitePreload(() => import("./index-De636ri1.js"), true ? __vite__mapDeps([2,3,4]) : void 0),
+        component: () => __vitePreload(() => import("./index-DEr8WWpl.js"), true ? __vite__mapDeps([2,3,4]) : void 0),
         meta: { title: "生活" }
       },
       {
         path: "/question",
         name: "question",
-        component: () => __vitePreload(() => import("./index-De636ri1.js"), true ? __vite__mapDeps([2,3,4]) : void 0),
+        component: () => __vitePreload(() => import("./index-DEr8WWpl.js"), true ? __vite__mapDeps([2,3,4]) : void 0),
         meta: { title: "问答" }
       },
       {
         path: "/remark",
         name: "remark",
-        component: () => __vitePreload(() => import("./index-QGwYmQKf.js"), true ? __vite__mapDeps([5,6,7,8]) : void 0),
+        component: () => __vitePreload(() => import("./index-B0G9wKzd.js"), true ? __vite__mapDeps([5,6,7,8]) : void 0),
         meta: { title: "其他" }
       }
     ]
@@ -25164,7 +25158,7 @@ const routes = [
   {
     path: "/detail",
     name: "detail",
-    component: () => __vitePreload(() => import("./index-D-KEMdZ2.js"), true ? __vite__mapDeps([9,6,7,3,10]) : void 0),
+    component: () => __vitePreload(() => import("./index-C4t7smf6.js"), true ? __vite__mapDeps([9,6,7,3,10]) : void 0),
     meta: { title: "详情" }
   },
   {
@@ -25174,7 +25168,7 @@ const routes = [
   }
 ];
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes
 });
 const whiteList = ["/detail"];

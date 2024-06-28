@@ -16,7 +16,7 @@ import BlogInfos from './components/BlogInfos.vue';
 <style lang="less" scoped>
 
 .content {
-  min-height: calc(100vh - 120px);
+  min-height: calc(100vh - 240px);
   display: flex;
   position: relative;
   align-items: flex-start;
@@ -34,7 +34,7 @@ import BlogInfos from './components/BlogInfos.vue';
     flex-wrap: wrap;
     max-width: 100vw;
     box-sizing: border-box;
-    min-height: calc(100vh - 120px);
+    min-height: calc(100vh - 180px);
   }
 }
 </style>
